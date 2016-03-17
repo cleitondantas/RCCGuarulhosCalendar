@@ -1,4 +1,4 @@
-package br.com.v8developmentstudio.rccguarulhoscalendar.modelo;
+package br.com.v8developmentstudio.rccguarulhos.modelo;
 
 import java.util.Date;
 
@@ -6,12 +6,20 @@ import java.util.Date;
  * Created by cleiton.dantas on 16/03/2016.
  */
 public class Evento {
+    private Integer id;
     private Date dataHoraInicio;
     private Date dataHoraFim;
     private String local;
     private String sumario;
     private String descricao;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
     public Date getDataHoraFim() {
         return dataHoraFim;
     }
@@ -51,4 +59,5 @@ public class Evento {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
 }

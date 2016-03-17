@@ -1,4 +1,4 @@
-package br.com.v8developmentstudio.rccguarulhoscalendar.bo;
+package br.com.v8developmentstudio.rccguarulhos.bo;
 
 
 import java.io.File;
@@ -15,8 +15,7 @@ import java.util.List;
 import biweekly.Biweekly;
 import biweekly.ICalendar;
 import biweekly.component.VEvent;
-import biweekly.property.DateStart;
-import br.com.v8developmentstudio.rccguarulhoscalendar.modelo.Evento;
+import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 
 /**
  * Created by cleiton.dantas on 15/03/2016.

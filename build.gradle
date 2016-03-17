@@ -13,7 +13,7 @@ buildscript {
 allprojects {
 
     ext {
-        androidApplicationId = 'br.com.v8developmentstudio.rccguarulhoscalendar'
+        androidApplicationId = 'br.com.v8developmentstudio.rccguarulhos'
         androidBuildToolsVersion = "23.0.2"
         androidMinSdkVersion = 11
         androidTargetSdkVersion = 23
