@@ -10,25 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eaf39dda-3d19-476e-902a-5da48d647cee" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/AberturaSplashActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/dao/PersistenceDao.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/task/TaskProcess.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/abertura_splashscreen.xml" />
-      <change type="MOVED" beforePath="C:\Android\ProjetosAndroid\RCCGuarulhosCalendar\app\src\main\java\br\com\v8developmentstudio\rccguarulhoscalendar\MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/MainActivity.java" />
-      <change type="MOVED" beforePath="C:\Android\ProjetosAndroid\RCCGuarulhosCalendar\app\src\main\java\br\com\v8developmentstudio\rccguarulhoscalendar\bo\ConstrutorIcal.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/bo/ConstrutorIcal.java" />
-      <change type="MOVED" beforePath="C:\Android\ProjetosAndroid\RCCGuarulhosCalendar\app\src\main\java\br\com\v8developmentstudio\rccguarulhoscalendar\modelo\Evento.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/modelo/Evento.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RCCGuarulhosCalendar.iml" afterPath="$PROJECT_DIR$/RCCGuarulhosCalendar.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/library.iml" afterPath="$PROJECT_DIR$/library/library.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="RCCGuarulhosCalendar.iws" />
@@ -2795,6 +2776,13 @@
       <option name="number" value="Default" />
       <updated>1458217819498</updated>
     </task>
+    <task id="LOCAL-00001" summary="Criado Banco de Dados &#10;Criado Task para realizar processos em segundo plano &#10;Criado Tela de Splash">
+      <created>1458238078817</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1458238078817</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
