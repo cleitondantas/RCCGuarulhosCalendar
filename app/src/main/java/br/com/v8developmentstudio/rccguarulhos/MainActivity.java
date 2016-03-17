@@ -43,15 +43,12 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-
-
         persistenceDao = new PersistenceDao(this);
         listEventos = persistenceDao.recuperaTodosEventos();
         listView  = (ListView) findViewById(R.id.listview);
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
 
         currentCalendar = Calendar.getInstance(Locale.getDefault());
-    //    gerarListaMarcarCalendario(anotatual, mesatual, null);
         // Set listener, in this case, the same activity
         robotoCalendarView.setRobotoCalendarListener(this);
         // Initialize the RobotoCalendarPicker with the current index and date
@@ -70,8 +67,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
     @Override
     public void onDateSelected(Date date) {
-        // Mark calendar day
-        robotoCalendarView.markDayAsSelectedDay(date);
+
     }
 
     @Override
@@ -91,12 +87,14 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         currentCalendar = Calendar.getInstance(Locale.getDefault());
         currentCalendar.add(Calendar.MONTH, currentMonthIndex);
         robotoCalendarView.initializeCalendar(currentCalendar);
+        listEventos = persistenceDao.recuperaEventosPorMes(currentCalendar.getTime());
+        gerarListaMarcarCalendario();
     }
 
     private void gerarListaMarcarCalendario(){
         listsumariodomes.clear();
         for(Evento evento:listEventos) {
-                robotoCalendarView.markFirstUnderlineWithStyle(RobotoCalendarView.RED_COLOR, evento.getDataHoraInicio());
+             robotoCalendarView.markFirstUnderlineWithStyle(RobotoCalendarView.RED_COLOR, evento.getDataHoraInicio());
             listsumariodomes.add(evento.getSumario());
         }
         construtorAdapter();
