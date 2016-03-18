@@ -55,7 +55,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
         contentValues.put(LOCAL,evento.getLocal());
         contentValues.put(SUMARIO, evento.getSumario());
         contentValues.put(DESCRICAO, evento.getDescricao());
-        System.out.println(contentValues.toString());
         getWritableDatabase().insert(TB_CAL_DIOCESANO, null, contentValues);
     }
 
@@ -80,7 +79,32 @@ public class PersistenceDao extends SQLiteOpenHelper {
         return eventoList;
     }
 
+    /**
+     * Métoddo que recupera lista de eventos por mes
+     * @param date
+     * @return
+     */
     public List<Evento> recuperaEventosPorMes(Date date){
+        return recuperaEventosPor(date,false);
+    }
+
+    /**
+     * Métoddo que recupera lista de eventos por dia
+     * @param date
+     * @return
+     */
+    public List<Evento> recuperaEventosPorDia(Date date){
+        return recuperaEventosPor(date,true);
+    }
+
+    /**
+     * recuperaEventosPor DIA OU MES
+     * Para recuperar por dia envie como true e Para recuperar por Mes envie como false
+     * @param date
+     * @param diaTrue_MesFalse
+     * @return
+     */
+    private List<Evento> recuperaEventosPor(Date date,boolean diaTrue_MesFalse){
         openDB();
         List<Evento> eventoList = new ArrayList<Evento>();
         Calendar cal = new GregorianCalendar();
@@ -88,8 +112,18 @@ public class PersistenceDao extends SQLiteOpenHelper {
         cal.setTimeInMillis(date.getTime());
         String mesFormat = df.format((cal.get(Calendar.MONTH)+1));
         String anoFormt =""+(cal.get(Calendar.YEAR));
-        String dataInicio = anoFormt+"-"+mesFormat+"-"+ df.format(cal.getMinimum(Calendar.DAY_OF_MONTH))+" 00:00:00" ;
-        String dataFim = anoFormt+"-"+mesFormat+"-"+cal.getMaximum(Calendar.DAY_OF_MONTH)+" 23:59:59" ;
+
+        String diaMin = "";
+        String diaMax = "";
+        if(diaTrue_MesFalse) {
+            diaMin = df.format(cal.get(Calendar.DAY_OF_MONTH));
+            diaMax = df.format(cal.get(Calendar.DAY_OF_MONTH));
+        }else{
+            diaMin = df.format(cal.getMinimum(Calendar.DAY_OF_MONTH));
+            diaMax = df.format(cal.getMaximum(Calendar.DAY_OF_MONTH));
+        }
+        String dataInicio = anoFormt+"-"+mesFormat+"-"+ diaMin+" 00:00:00" ;
+        String dataFim = anoFormt+"-"+mesFormat+"-"+diaMax+" 23:59:59" ;
         try {
 
          String[] args = {dataInicio,dataFim};

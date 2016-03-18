@@ -13,5 +13,6 @@
     <color name="dayOfWeekColor">#161d20</color>
     <color name="dayOfMonthColor">#808080</color>
     <color name="currentDayOfMonthColor">#33b5e5</color>
+    <color name="textTistviewColor">#707070</color>
 
 </resources>

@@ -7,31 +7,28 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import com.marcohc.robotocalendar.RobotoCalendarView;
 import com.marcohc.robotocalendar.RobotoCalendarView.RobotoCalendarListener;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import br.com.v8developmentstudio.rccguarulhos.bo.ConstrutorIcal;
+import br.com.v8developmentstudio.rccguarulhos.bo.Adaptador;
+
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
-import br.com.v8developmentstudio.rccguarulhos.task.TaskProcess;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class MainActivity extends AppCompatActivity implements RobotoCalendarListener {
 
     private RobotoCalendarView robotoCalendarView;
-    private int currentMonthIndex;
+    private int currentMonthIndex =0;
     private Calendar currentCalendar;
-    private  ArrayAdapter<String> stringArrayAdapter;
+    private  ArrayAdapter<Evento> eventoArrayAdapter;
     private List<Evento> listEventos;
     private  List<String> listsumariodomes = new ArrayList<String>();
     private ListView listView;
@@ -42,22 +39,16 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        persistenceDao = new PersistenceDao(this);
-        listEventos = persistenceDao.recuperaTodosEventos();
         listView  = (ListView) findViewById(R.id.listview);
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
-
+        //-----
+        persistenceDao = new PersistenceDao(this);
+        listEventos = persistenceDao.recuperaTodosEventos();
         currentCalendar = Calendar.getInstance(Locale.getDefault());
-        // Set listener, in this case, the same activity
         robotoCalendarView.setRobotoCalendarListener(this);
-        // Initialize the RobotoCalendarPicker with the current index and date
-        currentMonthIndex = 0;
-
-        // Mark current day
         robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
 
-        gerarListaMarcarCalendario();
+        updateCalendar();
     }
 
     @Override
@@ -67,7 +58,9 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
     @Override
     public void onDateSelected(Date date) {
-
+        robotoCalendarView.markDayAsSelectedDay(date);
+        listEventos = persistenceDao.recuperaEventosPorDia(date);
+        gerarListaMarcarCalendario();
     }
 
     @Override
@@ -80,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     public void onLeftButtonClick() {
         currentMonthIndex--;
         updateCalendar();
-
     }
 
     private void updateCalendar() {
@@ -101,10 +93,8 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     }
 
     private void construtorAdapter(){
-        stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listsumariodomes);
-        listView.setAdapter(stringArrayAdapter);
+        eventoArrayAdapter = new Adaptador(this.getApplicationContext(),listEventos);
+        listView.setAdapter(eventoArrayAdapter);
     }
-
-
 
 }
