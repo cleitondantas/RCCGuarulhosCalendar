@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -15,7 +17,7 @@ import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 /**
  * Created by cleiton.dantas on 18/03/2016.
  */
-public class DescricaoActivity extends Activity{
+public class DescricaoActivity extends AppCompatActivity {
 
     private PersistenceDao persistenceDao = new PersistenceDao(this);
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy \n HH:mm");
@@ -24,6 +26,8 @@ public class DescricaoActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.descricao_activity);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         int id  = getIntent().getIntExtra(Constantes.ID,1);
         String tbcalendario =PersistenceDao.TB_CAL_DIOCESANO; //savedInstanceState.getString(Constantes.CALENDARIO);

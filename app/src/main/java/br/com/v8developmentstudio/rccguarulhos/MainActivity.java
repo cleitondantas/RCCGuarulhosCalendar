@@ -1,18 +1,22 @@
 
 package br.com.v8developmentstudio.rccguarulhos;
 
-import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.marcohc.robotocalendar.RobotoCalendarView;
 import com.marcohc.robotocalendar.RobotoCalendarView.RobotoCalendarListener;
@@ -30,7 +34,7 @@ import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class MainActivity extends AppCompatActivity implements RobotoCalendarListener {
+public class MainActivity extends AppCompatActivity implements RobotoCalendarListener, NavigationView.OnNavigationItemSelectedListener {
 
     private RobotoCalendarView robotoCalendarView;
     private int currentMonthIndex =0;
@@ -46,8 +50,30 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
         listView  = (ListView) findViewById(R.id.listview);
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4) {
+                Evento evento = (Evento) listView.getAdapter().getItem(p3);
+                redirectDescricaoDoEvento(evento);
+            }
+        });
         //-----
         persistenceDao = new PersistenceDao(this);
         listEventos = persistenceDao.recuperaTodosEventos();
@@ -57,16 +83,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
         updateCalendar();
 
-
-        listView.setClickable(true);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4) {
-              Evento evento=(Evento)listView.getAdapter().getItem(p3);
-                redirectDescricaoDoEvento(evento);
-            }
-        });
     }
 
     @Override
@@ -124,4 +140,12 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }
