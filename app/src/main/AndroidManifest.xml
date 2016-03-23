@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="br.com.v8developmentstudio.rccguarulhos"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="br.com.v8developmentstudio.rccguarulhos">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light">
         <activity
-            android:name="br.com.v8developmentstudio.rccguarulhos.AberturaSplashActivity"
+            android:name=".AberturaSplashActivity"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name=".DescricaoActivity"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name=".DescricaoActivity.Main2Activity"
+            android:label="@string/title_activity_main2"
+            android:parentActivityName=".DescricaoActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.v8developmentstudio.rccguarulhos.DescricaoActivity" />
         </activity>
     </application>
 

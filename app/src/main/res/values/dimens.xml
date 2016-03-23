@@ -19,5 +19,6 @@
     <dimen name="dayOfMonthPaddingBottom">0dp</dimen>
     <dimen name="dayOfMonthImageSize">4dp</dimen>
     <dimen name="dayOfMonthImageMarginTop">32dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>

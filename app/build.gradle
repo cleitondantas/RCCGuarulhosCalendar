@@ -14,7 +14,9 @@ android {
     }
 }
 
+
 dependencies {
-    compile 'net.sf.biweekly:biweekly:0.4.5'
     compile project(':library')
+    compile 'net.sf.biweekly:biweekly:0.4.5'
+    compile 'com.android.support:design:23.2.1'
 }

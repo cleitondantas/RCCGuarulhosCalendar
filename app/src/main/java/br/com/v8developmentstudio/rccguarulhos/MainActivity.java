@@ -1,12 +1,19 @@
 
 package br.com.v8developmentstudio.rccguarulhos;
 
+import android.app.usage.UsageEvents;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.marcohc.robotocalendar.RobotoCalendarView;
 import com.marcohc.robotocalendar.RobotoCalendarView.RobotoCalendarListener;
 import java.util.ArrayList;
@@ -49,6 +56,17 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
 
         updateCalendar();
+
+
+        listView.setClickable(true);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4) {
+              Evento evento=(Evento)listView.getAdapter().getItem(p3);
+                redirectDescricaoDoEvento(evento);
+            }
+        });
     }
 
     @Override
@@ -96,5 +114,12 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         eventoArrayAdapter = new Adaptador(this.getApplicationContext(),listEventos);
         listView.setAdapter(eventoArrayAdapter);
     }
-
+    private void redirectDescricaoDoEvento(final Evento evento) {
+        Intent intent = new Intent(MainActivity.this, DescricaoActivity.class);
+        Bundle dados = new Bundle();
+        dados.putInt(Constantes.ID,evento.getId().intValue());
+        dados.putString(Constantes.CALENDARIO, PersistenceDao.TB_CAL_DIOCESANO);
+        intent.putExtras(dados);
+          this.startActivity(intent);
+    }
 }

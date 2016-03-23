@@ -148,6 +148,26 @@ public class PersistenceDao extends SQLiteOpenHelper {
     }
 
 
+    public Evento recuperaEventoPorID(final int id,final String calendario){
+        openDB();
+        Evento evento=null;
+        try {
+            cursor = bancoDados.rawQuery("SELECT * FROM '"+TB_CAL_DIOCESANO+"' WHERE ID ="+id,null);
+            while (cursor.moveToNext()) {
+                evento = new Evento();
+                evento.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+                evento.setDataHoraInicio(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAINICIO))));
+                evento.setDataHoraFim(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAFIM))));
+                evento.setLocal(cursor.getString(cursor.getColumnIndex(LOCAL)));
+                evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
+                evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return evento;
+    }
+
 
     public SQLiteDatabase openDB(Context context){
         try{
