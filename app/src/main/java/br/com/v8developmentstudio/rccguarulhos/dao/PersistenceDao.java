@@ -185,10 +185,12 @@ public class PersistenceDao extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS "+TB_CAL_DIOCESANO);
        for(String sql:sqls) {
            db.execSQL(sql);
        }
+    }
+    public void onDrop(SQLiteDatabase db){
+        db.execSQL("DROP TABLE IF EXISTS "+TB_CAL_DIOCESANO);
     }
 
     @Override

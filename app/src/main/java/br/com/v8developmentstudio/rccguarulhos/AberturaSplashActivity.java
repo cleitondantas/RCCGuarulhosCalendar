@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -16,7 +18,6 @@ import br.com.v8developmentstudio.rccguarulhos.task.TaskProcess;
 public class AberturaSplashActivity  extends Activity {
 
     private PersistenceDao persistenceDao = new PersistenceDao(this);
-    public static SQLiteDatabase bancoDados = null;
     private Integer TIMESLEAP;
     @Override
     public  void onCreate(Bundle savedInstanceState){
@@ -43,5 +44,4 @@ public class AberturaSplashActivity  extends Activity {
         },TIMESLEAP);
 
     }
-
 }

@@ -2,6 +2,8 @@ package br.com.v8developmentstudio.rccguarulhos.task;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -26,35 +28,48 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
     public TaskProcess(Context context) {
         this.context = context;
         persistenceDao = new PersistenceDao(context);
-        persistenceDao.onCreate(persistenceDao.openDB());
+
     }
     @Override
     protected void onPreExecute(){
         progress = new ProgressDialog(context);
         progress.setMessage("Garregando ...");
         progress.show();
+
+
     }
 
     @Override
     protected String doInBackground(String... urls) {
         try {
             Log.i("DEBUG", "Iniciado");
-            URL url = new URL("http://www.grupoeternaalianca.com/arquivos/basedb.sql");
+            InputStream input = null;
+            if(isOnline()) {
+            URL url = new URL("https://calendar.google.com/calendar/ical/guarulhosrcc%40gmail.com/public/basic.ics");
             publishProgress("Abrindo Connecxao");
-           // URLConnection conec = url.openConnection();
-           // InputStream input  = conec.getInputStream();
-            Log.i("DEBUG", "Iniciado Gravacao");
-           List<Evento> eventoList = getCalendarEventos();
-            for(Evento evento :eventoList){
-                persistenceDao.salvaNovoEvento(evento);
+           Log.i("DEBUG", "Abrindo Connecxao");
+            URLConnection conec = url.openConnection();
+                input = conec.getInputStream();
+                persistenceDao.onDrop(persistenceDao.openDB());
+                persistenceDao.onCreate(persistenceDao.openDB());
+                Log.i("DEBUG", "Iniciado Gravacao");
+                List<Evento> eventoList = getCalendarEventos(input);
+                for(Evento evento :eventoList){
+                    persistenceDao.salvaNovoEvento(evento);
+                }
+            }else{
+                publishProgress("Sem Connecxao");
+                Log.i("DEBUG", "Sem Connecxao");
+                //input = context.getAssets().open("agendarcc.ics");
+               // persistenceDao.onCreate(persistenceDao.openDB());
             }
-            Log.i("DEBUG","Dados Gravados");
+
+            Log.i("DEBUG", "Dados Gravados");
         } catch (IOException e) {
             Log.i("DEBUG","Erro"+e);
             publishProgress("Erro ao Gravar dados"+e);
             e.printStackTrace();
         }
-
         return null;
     }
     @Override
@@ -67,10 +82,9 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
         progress.dismiss();
     }
 
-    private List<Evento> getCalendarEventos(){
+    private List<Evento> getCalendarEventos(InputStream is){
         List<Evento> eventoList = null;
         try {
-            InputStream is = context.getAssets().open("agendarcc.ics");
             contruorical = new ConstrutorIcal(is);
             eventoList= contruorical.getEventos();
         } catch (IOException e) {
@@ -78,5 +92,9 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
         }
         return eventoList;
     }
-
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
 }
