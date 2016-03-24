@@ -10,7 +10,6 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -26,7 +25,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
     private static final int version =1;
 
     public static final String DATABASE_NAME = "DB_CALENDARIOS";
-    public static final String TB_CAL_DIOCESANO = "TB_CAL_DIOCESANO";
     public static final String ID = "ID";
     public static final String DATAHORAINICIO = "DATAHORAINICIO";
     public static final String DATAHORAFIM = "DATAHORAFIM";
@@ -34,7 +32,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
     public static final String SUMARIO = "SUMARIO";
     public static final String DESCRICAO = "DESCRICAO";
 
-    public static final String TB_CALENDARIOS = "TB_CALENDARIOS";
+    public static final String TB_CONFIG_CALENDAR = "TB_CONFIG_CALENDAR";
     public static final String ID_CALENDARIO = "ID_CALENDARIO";
     public static final String NOME_CALENDARIO = "NOME_CALENDARIO";
     public static final String NOME_LABEL = "NOME_LABEL";
@@ -69,7 +67,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
 
     public List<Evento> recuperaTodosEventos() {
         List<Evento> eventoList = new ArrayList<Evento>();
-        List<Calendario> calendarios = recuperaTodosCalendarios();
+        List<Calendario> calendarios = recuperaTodasConfiguracoesCalendar();
         for(Calendario calendario : calendarios) {
             cursor = getWritableDatabase().query(calendario.getNomeCalendario(), new String[]{ID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM, LOCAL, SUMARIO, DESCRICAO}, null, null, null, null, null);
 
@@ -142,7 +140,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         String[] args = {dataInicio, dataFim};
         String[] coluns = new String[]{ID, DATAHORAINICIO, DATAHORAFIM, LOCAL, SUMARIO, DESCRICAO};
 
-        List<Calendario> calendarios = recuperaTodosCalendarios();
+        List<Calendario> calendarios = recuperaTodasConfiguracoesCalendar();
         for(Calendario calendario : calendarios) {
             try {
                 cursor = bancoDados.rawQuery("SELECT * FROM '" + calendario.getNomeCalendario() + "' WHERE " + DATAHORAINICIO + " BETWEEN '" + dataInicio + "' AND '" + dataFim + "'", null);
@@ -186,17 +184,20 @@ public class PersistenceDao extends SQLiteOpenHelper {
         return evento;
     }
 
-
-    public void salvaCalendario(Calendario calendario){
+    /**
+     * Salva os registros do properties calendaris
+     * @param calendario
+     */
+    public void salvaConfiguracaoCalendario(Calendario calendario){
         ContentValues contentValues = new ContentValues();
         contentValues.put(NOME_CALENDARIO,calendario.getNomeCalendario() );
         contentValues.put(NOME_LABEL, calendario.getNomeLabel());
         contentValues.put(URL,calendario.getUrl());
-        getWritableDatabase().insert(TB_CALENDARIOS, null, contentValues);
+        getWritableDatabase().insert(TB_CONFIG_CALENDAR, null, contentValues);
     }
 
-    public List<Calendario> recuperaTodosCalendarios() {
-        cursor = getWritableDatabase().query(TB_CALENDARIOS, new String[]{ID, NOME_CALENDARIO, NOME_LABEL, URL,ALARME}, null, null, null, null, null);
+    public List<Calendario> recuperaTodasConfiguracoesCalendar() {
+        cursor = getWritableDatabase().query(TB_CONFIG_CALENDAR, new String[]{ID, NOME_CALENDARIO, NOME_LABEL, URL,ALARME}, null, null, null, null, null);
         List<Calendario> calendarios = new ArrayList<Calendario>();
         Calendario calendario;
             while (cursor.moveToNext()) {
@@ -212,8 +213,8 @@ public class PersistenceDao extends SQLiteOpenHelper {
         return calendarios;
     }
 
-    public Calendario recuperaCalendarioPorID(int id) {
-        cursor = bancoDados.rawQuery("SELECT * FROM TB_CALENDARIOS WHERE ID =" + id, null);
+    public Calendario recuperaConfigCalendarPorID(int id) {
+        cursor = bancoDados.rawQuery("SELECT * FROM "+ TB_CONFIG_CALENDAR +" WHERE ID =" + id, null);
         Calendario calendario=null;
         while (cursor.moveToNext()) {
             calendario = new Calendario();
@@ -243,22 +244,22 @@ public class PersistenceDao extends SQLiteOpenHelper {
         return bancoDados;
     }
 
-    public void onCreateTabelaCalandario(SQLiteDatabase db,Calendario calendario) {
+    public void onCreateTabelaDeCalandario(SQLiteDatabase db, Calendario calendario) {
             db.execSQL("CREATE TABLE IF NOT EXISTS " + calendario.getNomeCalendario() + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ID_CALENDARIO+" INTEGER NOT NULL," + DATAHORAINICIO + " DATETIME NOT NULL, " + DATAHORAFIM + " DATETIME, " + LOCAL + " VARCHAR (200),"+ SUMARIO + " VARCHAR (200) NOT NULL, "+ DESCRICAO +" TEXT );");
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-           db.execSQL("CREATE TABLE IF NOT EXISTS "+TB_CALENDARIOS+" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+NOME_CALENDARIO+" VARCHAR NOT NULL,"+NOME_LABEL+" VARCHAR NOT NULL,"+URL+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
+           db.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_CONFIG_CALENDAR +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+NOME_CALENDARIO+" VARCHAR NOT NULL,"+NOME_LABEL+" VARCHAR NOT NULL,"+URL+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
     }
 
-    public void onDropTabelaCalandario(SQLiteDatabase db,Calendario calendario) {
+    public void onDropTabelaDeCalandario(SQLiteDatabase db, Calendario calendario) {
         db.execSQL("DROP TABLE IF EXISTS "+calendario.getNomeCalendario());
     }
 
     public void onDrop(SQLiteDatabase db){
-        db.execSQL("DROP TABLE IF EXISTS "+TB_CALENDARIOS);
+        db.execSQL("DROP TABLE IF EXISTS "+ TB_CONFIG_CALENDAR);
     }
 
     @Override

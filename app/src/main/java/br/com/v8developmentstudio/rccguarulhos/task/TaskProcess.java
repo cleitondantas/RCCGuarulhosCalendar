@@ -6,7 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,15 +42,14 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
         progress = new ProgressDialog(context);
         progress.setMessage("Garregando ...");
         progress.show();
-
        // persistenceDao.onDrop(persistenceDao.openDB());
-        persistenceDao.onCreate(persistenceDao.openDB());// Cria a TB_CALENDARIOS
+        persistenceDao.onCreate(persistenceDao.openDB());// Cria a TB_CONFIG_CALENDAR
         // ESSE PROCESSO SÓ DEVE SER EXECUTADO UMA VEZ ---- OU Em Atualizações
         //Processa o arquivo properties
-        if(!persistenceDao.isTBContemRegistro(persistenceDao.openDB(), "TB_CALENDARIOS")){
+        if(!persistenceDao.isTBContemRegistro(persistenceDao.openDB(), persistenceDao.TB_CONFIG_CALENDAR)){
             for(Calendario calendarios : processaCalendariosProperties()){
-                //Salva os dados do Properties na TB_CALENDARIOS
-                persistenceDao.salvaCalendario(calendarios);
+                //Salva os dados do Properties na TB_CONFIG_CALENDAR
+                persistenceDao.salvaConfiguracaoCalendario(calendarios);
                 Log.i("DEBUG", "PERSISTINDO TABELAS DE CALENDARIOS");
             }
         }
@@ -65,14 +63,14 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
             if(isOnline()) {
                 publishProgress("Abrindo Connecxao");
                 Log.i("DEBUG", "Abrindo Connecxao");
-                calendarios = persistenceDao.recuperaTodosCalendarios();
+                calendarios = persistenceDao.recuperaTodasConfiguracoesCalendar();
                 for(Calendario calendario: calendarios) {
                     URL url = new URL(calendario.getUrl());
                     URLConnection conec = url.openConnection();
                     input = conec.getInputStream();
                     Log.i("DEBUG", "Iniciado Gravacao");
-                    persistenceDao.onDropTabelaCalandario(persistenceDao.openDB(), calendario);
-                    persistenceDao.onCreateTabelaCalandario(persistenceDao.openDB(),calendario);
+                    persistenceDao.onDropTabelaDeCalandario(persistenceDao.openDB(), calendario);
+                    persistenceDao.onCreateTabelaDeCalandario(persistenceDao.openDB(), calendario);
                     List<Evento> eventoList = getCalendarEventos(input);
                     for (Evento evento : eventoList) {
                         persistenceDao.salvaNovoEvento(evento,calendario);

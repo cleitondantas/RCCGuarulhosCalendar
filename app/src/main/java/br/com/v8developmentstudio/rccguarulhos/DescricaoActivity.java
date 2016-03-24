@@ -1,7 +1,5 @@
 package br.com.v8developmentstudio.rccguarulhos;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +8,6 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
-import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
@@ -48,7 +45,7 @@ public class DescricaoActivity extends AppCompatActivity {
     }
 
     private Evento getEventoDao(int id,int idCalendario){
-       Calendario calendario = persistenceDao.recuperaCalendarioPorID(idCalendario);
+       Calendario calendario = persistenceDao.recuperaConfigCalendarPorID(idCalendario);
         return  persistenceDao.recuperaEventoPorID(id,calendario.getNomeCalendario());
     }
 
