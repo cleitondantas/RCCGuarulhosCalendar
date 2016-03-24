@@ -12,10 +12,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import br.com.v8developmentstudio.rccguarulhos.bo.ConstrutorIcal;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
+import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 
 /**
@@ -26,9 +29,13 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
     private ProgressDialog progress;
     private ConstrutorIcal contruorical;
     private PersistenceDao persistenceDao;
+    private Properties properties;
+    private AssetsPropertyReader assetsPropertyReader;
+    private List<Calendario> calendarios;
     public TaskProcess(Context context) {
         this.context = context;
         persistenceDao = new PersistenceDao(context);
+        assetsPropertyReader  = new AssetsPropertyReader(context);
 
     }
     @Override
@@ -37,7 +44,17 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
         progress.setMessage("Garregando ...");
         progress.show();
 
-
+       // persistenceDao.onDrop(persistenceDao.openDB());
+        persistenceDao.onCreate(persistenceDao.openDB());// Cria a TB_CALENDARIOS
+        // ESSE PROCESSO SÓ DEVE SER EXECUTADO UMA VEZ ---- OU Em Atualizações
+        //Processa o arquivo properties
+        if(!persistenceDao.isTBContemRegistro(persistenceDao.openDB(), "TB_CALENDARIOS")){
+            for(Calendario calendarios : processaCalendariosProperties()){
+                //Salva os dados do Properties na TB_CALENDARIOS
+                persistenceDao.salvaCalendario(calendarios);
+                Log.i("DEBUG", "PERSISTINDO TABELAS DE CALENDARIOS");
+            }
+        }
     }
 
     @Override
@@ -46,17 +63,20 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
             Log.i("DEBUG", "Iniciado");
             InputStream input = null;
             if(isOnline()) {
-            URL url = new URL("https://calendar.google.com/calendar/ical/guarulhosrcc%40gmail.com/public/basic.ics");
-            publishProgress("Abrindo Connecxao");
-           Log.i("DEBUG", "Abrindo Connecxao");
-            URLConnection conec = url.openConnection();
-                input = conec.getInputStream();
-                persistenceDao.onDrop(persistenceDao.openDB());
-                persistenceDao.onCreate(persistenceDao.openDB());
-                Log.i("DEBUG", "Iniciado Gravacao");
-                List<Evento> eventoList = getCalendarEventos(input);
-                for(Evento evento :eventoList){
-                    persistenceDao.salvaNovoEvento(evento);
+                publishProgress("Abrindo Connecxao");
+                Log.i("DEBUG", "Abrindo Connecxao");
+                calendarios = persistenceDao.recuperaTodosCalendarios();
+                for(Calendario calendario: calendarios) {
+                    URL url = new URL(calendario.getUrl());
+                    URLConnection conec = url.openConnection();
+                    input = conec.getInputStream();
+                    Log.i("DEBUG", "Iniciado Gravacao");
+                    persistenceDao.onDropTabelaCalandario(persistenceDao.openDB(), calendario);
+                    persistenceDao.onCreateTabelaCalandario(persistenceDao.openDB(),calendario);
+                    List<Evento> eventoList = getCalendarEventos(input);
+                    for (Evento evento : eventoList) {
+                        persistenceDao.salvaNovoEvento(evento,calendario);
+                    }
                 }
             }else{
                 publishProgress("Sem Connecxao");
@@ -98,4 +118,22 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
+
+    public List<Calendario> processaCalendariosProperties(){
+        List<Calendario> calendarios = new ArrayList<Calendario>();
+        Calendario calendario;
+        properties =  assetsPropertyReader.getProperties("config.properties");
+        int i =0;
+        for(Object obj: properties.keySet()) {
+            calendario  = new Calendario();
+            calendario.setNomeCalendario(properties.getProperty("TB.CALENDARIO.NOME_TB." + i)) ;
+            calendario.setNomeLabel(properties.getProperty("TB.CALENDARIO.NOME_LABEL." + i));
+            calendario.setUrl(properties.getProperty("TB.CALENDARIO.URL."+i));
+            i++;
+            calendarios.add(calendario);
+        }
+
+    return calendarios;
+    }
+
 }

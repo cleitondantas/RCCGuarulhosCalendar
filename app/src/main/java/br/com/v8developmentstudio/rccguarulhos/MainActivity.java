@@ -134,16 +134,14 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         Intent intent = new Intent(MainActivity.this, DescricaoActivity.class);
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID,evento.getId().intValue());
-        dados.putString(Constantes.CALENDARIO, PersistenceDao.TB_CAL_DIOCESANO);
+        dados.putInt(Constantes.CALENDARIO,evento.getIdCalendario());
         intent.putExtras(dados);
-          this.startActivity(intent);
+        this.startActivity(intent);
     }
 
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

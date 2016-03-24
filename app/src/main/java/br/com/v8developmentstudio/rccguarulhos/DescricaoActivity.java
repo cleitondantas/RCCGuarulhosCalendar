@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 
 import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
+import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 
 /**
@@ -30,7 +31,7 @@ public class DescricaoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         int id  = getIntent().getIntExtra(Constantes.ID,1);
-        String tbcalendario =PersistenceDao.TB_CAL_DIOCESANO; //savedInstanceState.getString(Constantes.CALENDARIO);
+        int idCalendario = getIntent().getIntExtra(Constantes.CALENDARIO,1); //savedInstanceState.getString(Constantes.CALENDARIO);
 
         TextView textViewSumario = (TextView)findViewById(R.id.idsumario);
         TextView textViewDescricao = (TextView)findViewById(R.id.idDescricao);
@@ -38,15 +39,17 @@ public class DescricaoActivity extends AppCompatActivity {
         TextView textViewDataHoraFim = (TextView)findViewById(R.id.idDataHoraFim);
         TextView textViewLocal = (TextView)findViewById(R.id.idLocal);
 
-        Evento evento = getEventoDao(id,tbcalendario);
+        Evento evento = getEventoDao(id,idCalendario);
         textViewSumario.setText(evento.getSumario());
         textViewDescricao.setText(evento.getDescricao());
         textViewDataHoraInicio.setText(dateFormat.format(evento.getDataHoraInicio()));
         textViewDataHoraFim.setText(dateFormat.format(evento.getDataHoraFim()));
         textViewLocal.setText(evento.getLocal());
     }
-    private Evento getEventoDao(int id,String tbcalendario){
-        return  persistenceDao.recuperaEventoPorID(id,tbcalendario);
+
+    private Evento getEventoDao(int id,int idCalendario){
+       Calendario calendario = persistenceDao.recuperaCalendarioPorID(idCalendario);
+        return  persistenceDao.recuperaEventoPorID(id,calendario.getNomeCalendario());
     }
 
 }

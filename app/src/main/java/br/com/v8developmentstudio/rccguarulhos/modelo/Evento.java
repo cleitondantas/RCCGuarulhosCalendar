@@ -7,12 +7,20 @@ import java.util.Date;
  */
 public class Evento {
     private Integer id;
+    private Integer idCalendario;
     private Date dataHoraInicio;
     private Date dataHoraFim;
     private String local;
     private String sumario;
     private String descricao;
 
+
+    public Integer getIdCalendario() {
+        return idCalendario;
+    }
+    public void setIdCalendario(Integer idCalendario) {
+        this.idCalendario = idCalendario;
+    }
     public Integer getId() {
         return id;
     }
@@ -59,5 +67,6 @@ public class Evento {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
 
 }

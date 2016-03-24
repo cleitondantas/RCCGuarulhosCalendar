@@ -15,7 +15,7 @@ allprojects {
     ext {
         androidApplicationId = 'br.com.v8developmentstudio.rccguarulhos'
         androidBuildToolsVersion = "23.0.2"
-        androidMinSdkVersion = 11
+        androidMinSdkVersion = 15
         androidTargetSdkVersion = 23
         androidCompileSdkVersion = 23
         androidVersionCode = 1
