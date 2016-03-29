@@ -1,4 +1,4 @@
-package br.com.v8developmentstudio.rccguarulhos;
+package br.com.v8developmentstudio.rccguarulhos.util;
 
 import java.util.Date;
 

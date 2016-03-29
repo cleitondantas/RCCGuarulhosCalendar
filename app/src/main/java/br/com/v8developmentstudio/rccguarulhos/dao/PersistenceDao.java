@@ -92,6 +92,35 @@ public class PersistenceDao extends SQLiteOpenHelper {
         return eventoList;
     }
 
+    public List<Evento> recuperaTodosEventosPorCalendario(final int idCalendario) {
+        List<Evento> eventoList = new ArrayList<Evento>();
+        List<Calendario> calendarios = recuperaTodasConfiguracoesCalendar();
+        for(Calendario calendario : calendarios) {
+            if(calendario.getId().equals(idCalendario)) {
+                cursor = getWritableDatabase().query(calendario.getNomeCalendario(), new String[]{ID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM, LOCAL, SUMARIO, DESCRICAO}, null, null, null, null, null);
+                Evento evento;
+                try {
+                    while (cursor.moveToNext()) {
+                        evento = new Evento();
+                        evento.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+                        evento.setIdCalendario(cursor.getInt(cursor.getColumnIndex(ID_CALENDARIO)));
+                        evento.setDataHoraInicio(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAINICIO))));
+                        evento.setDataHoraFim(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAFIM))));
+                        evento.setLocal(cursor.getString(cursor.getColumnIndex(LOCAL)));
+                        evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
+                        evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
+
+                        eventoList.add(evento);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return eventoList;
+    }
+
+
     /**
      * Métoddo que recupera lista de eventos por mes
      * @param date

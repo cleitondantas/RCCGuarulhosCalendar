@@ -3,12 +3,10 @@ package br.com.v8developmentstudio.rccguarulhos;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 
+import br.com.v8developmentstudio.rccguarulhos.activitys.MainActivity;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.task.TaskProcess;
 
@@ -32,7 +30,7 @@ public class AberturaSplashActivity  extends Activity {
             TaskProcess taskPross = new TaskProcess(this);
             taskPross.execute();
         }else{
-            TIMESLEAP=4000;
+            TIMESLEAP=2000;
         }
         new Handler().postDelayed(new Runnable() {
             @Override

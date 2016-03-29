@@ -10,6 +10,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="top"
         android:scaleType="fitCenter"
-        android:src="@drawable/rccsplash" />
+        android:src="@drawable/rccpng" />
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package br.com.v8developmentstudio.rccguarulhos;
+package br.com.v8developmentstudio.rccguarulhos.activitys;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -8,9 +8,11 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
+import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
+import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 
 /**
  * Created by cleiton.dantas on 18/03/2016.

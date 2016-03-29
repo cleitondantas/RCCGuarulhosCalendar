@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -19,6 +18,7 @@ import br.com.v8developmentstudio.rccguarulhos.bo.ConstrutorIcal;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
+import br.com.v8developmentstudio.rccguarulhos.util.AssetsPropertyReader;
 
 /**
  * Created by cleiton.dantas on 17/03/2016.
@@ -47,7 +47,7 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
         // ESSE PROCESSO SÓ DEVE SER EXECUTADO UMA VEZ ---- OU Em Atualizações
         //Processa o arquivo properties
         if(!persistenceDao.isTBContemRegistro(persistenceDao.openDB(), persistenceDao.TB_CONFIG_CALENDAR)){
-            for(Calendario calendarios : processaCalendariosProperties()){
+            for(Calendario calendarios : assetsPropertyReader.processaCalendariosProperties()){
                 //Salva os dados do Properties na TB_CONFIG_CALENDAR
                 persistenceDao.salvaConfiguracaoCalendario(calendarios);
                 Log.i("DEBUG", "PERSISTINDO TABELAS DE CALENDARIOS");
@@ -117,21 +117,5 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public List<Calendario> processaCalendariosProperties(){
-        List<Calendario> calendarios = new ArrayList<Calendario>();
-        Calendario calendario;
-        properties =  assetsPropertyReader.getProperties("config.properties");
-        int i =0;
-        for(Object obj: properties.keySet()) {
-            calendario  = new Calendario();
-            calendario.setNomeCalendario(properties.getProperty("TB.CALENDARIO.NOME_TB." + i)) ;
-            calendario.setNomeLabel(properties.getProperty("TB.CALENDARIO.NOME_LABEL." + i));
-            calendario.setUrl(properties.getProperty("TB.CALENDARIO.URL."+i));
-            i++;
-            calendarios.add(calendario);
-        }
-
-    return calendarios;
-    }
 
 }

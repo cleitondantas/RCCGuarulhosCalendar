@@ -18,13 +18,13 @@ public class Armazenador {
     private TextView dataHoraInicio = null;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     // Construtor que instancia os campos
-    Armazenador(View linha, int position) {
+    public Armazenador(View linha, int position) {
         sumario = (TextView) linha.findViewById(R.id.sumario);
         dataHoraInicio = (TextView) linha.findViewById(R.id.datahora);
     }
 
     // Método para "jogar" os textos nos respectivos campos
-    void popularFormulario(Evento evento) {
+    public void popularFormulario(Evento evento) {
         sumario.setText(evento.getSumario());
         dataHoraInicio.setText( dateFormat.format(evento.getDataHoraInicio()) );
     }

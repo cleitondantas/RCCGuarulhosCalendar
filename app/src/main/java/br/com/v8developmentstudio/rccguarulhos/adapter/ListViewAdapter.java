@@ -1,4 +1,4 @@
-package br.com.v8developmentstudio.rccguarulhos.bo;
+package br.com.v8developmentstudio.rccguarulhos.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,16 +9,17 @@ import android.widget.ArrayAdapter;
 import java.util.List;
 
 import br.com.v8developmentstudio.rccguarulhos.R;
+import br.com.v8developmentstudio.rccguarulhos.bo.Armazenador;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 
 /**
  * Created by cleiton.dantas on 18/03/2016.
  */
-public class Adaptador extends ArrayAdapter {
+public class ListViewAdapter extends ArrayAdapter {
     private List<Evento> eventos;
     private Context context;
 
-    public Adaptador(Context context, List<Evento> eventos) {
+    public ListViewAdapter(Context context, List<Evento> eventos) {
         super(context, android.R.layout.simple_list_item_1, eventos);
         this.context = context;
         this.eventos = eventos;

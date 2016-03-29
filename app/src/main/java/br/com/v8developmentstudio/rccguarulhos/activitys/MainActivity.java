@@ -1,5 +1,5 @@
 
-package br.com.v8developmentstudio.rccguarulhos;
+package br.com.v8developmentstudio.rccguarulhos.activitys;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,11 +12,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.marcohc.robotocalendar.RobotoCalendarView;
 import com.marcohc.robotocalendar.RobotoCalendarView.RobotoCalendarListener;
@@ -26,11 +29,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import br.com.v8developmentstudio.rccguarulhos.bo.Adaptador;
+import br.com.v8developmentstudio.rccguarulhos.R;
+import br.com.v8developmentstudio.rccguarulhos.adapter.ListViewAdapter;
 
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
+import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 
+import br.com.v8developmentstudio.rccguarulhos.util.AssetsPropertyReader;
+import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
@@ -43,8 +50,10 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     private List<Evento> listEventos;
     private  List<String> listsumariodomes = new ArrayList<String>();
     private ListView listView;
-
+    private AssetsPropertyReader assetsPropertyReader = new AssetsPropertyReader(this);
     private PersistenceDao persistenceDao=null;
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,19 +61,25 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        persistenceDao = new PersistenceDao(this);
 
         listView  = (ListView) findViewById(R.id.listview);
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        drawer= (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        SubMenu subMenu = menu.addSubMenu("Ministérios");
+        for(Calendario calendario: persistenceDao.recuperaTodasConfiguracoesCalendar()) {
+            subMenu.add(1,calendario.getId(),calendario.getId(),calendario.getNomeLabel());
+        }
         navigationView.setNavigationItemSelectedListener(this);
+        setupDrawerContent(navigationView);
 
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
             }
         });
         //-----
-        persistenceDao = new PersistenceDao(this);
         listEventos = persistenceDao.recuperaTodosEventos();
         currentCalendar = Calendar.getInstance(Locale.getDefault());
         robotoCalendarView.setRobotoCalendarListener(this);
@@ -83,6 +97,28 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
         updateCalendar();
 
+    }
+
+    /**
+     * Método de Click no Menu do Drawer
+     * @param navigationView
+     */
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        Toast.makeText(this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+        redirectListEventos(menuItem.getItemId(),String.valueOf(menuItem.getTitle()));
+        // Close the navigation drawers
+        drawer.closeDrawers();
     }
 
     @Override
@@ -127,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     }
 
     private void construtorAdapter(){
-        eventoArrayAdapter = new Adaptador(this.getApplicationContext(),listEventos);
+        eventoArrayAdapter = new ListViewAdapter(this.getApplicationContext(),listEventos);
         listView.setAdapter(eventoArrayAdapter);
     }
     private void redirectDescricaoDoEvento(final Evento evento) {
@@ -135,6 +171,14 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID,evento.getId().intValue());
         dados.putInt(Constantes.CALENDARIO,evento.getIdCalendario());
+        intent.putExtras(dados);
+        this.startActivity(intent);
+    }
+    private void redirectListEventos(int idCalenadrio,String tituloCalendario) {
+        Intent intent = new Intent(MainActivity.this, ListaEventosActivity.class);
+        Bundle dados = new Bundle();
+        dados.putInt(Constantes.ID,idCalenadrio);
+        dados.putString(Constantes.CALENDARIO, tituloCalendario);
         intent.putExtras(dados);
         this.startActivity(intent);
     }

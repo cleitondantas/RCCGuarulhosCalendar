@@ -7,7 +7,6 @@
 
     <application
         android:allowBackup="true"
-        android:supportsRtl="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light">
@@ -21,14 +20,19 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activitys.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
          </activity>
 
         <activity
-            android:name=".DescricaoActivity"
-            android:label="@string/app_name"
+            android:name=".activitys.DescricaoActivity"
+            android:label="@string/app_descricao"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activitys.ListaEventosActivity"
+            android:label="@string/app_eventos"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
