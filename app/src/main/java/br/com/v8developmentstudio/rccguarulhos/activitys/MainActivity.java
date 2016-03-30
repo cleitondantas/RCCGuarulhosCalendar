@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         toggle.syncState();
 
         Menu menu = navigationView.getMenu();
-        SubMenu subMenu = menu.addSubMenu("Ministérios");
+        SubMenu subMenu = menu.addSubMenu(getString(R.string.ministerios));
         for(Calendario calendario: persistenceDao.recuperaTodasConfiguracoesCalendar()) {
             subMenu.add(1,calendario.getId(),calendario.getId(),calendario.getNomeLabel());
         }
@@ -188,6 +188,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     public boolean onNavigationItemSelected(MenuItem item) {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return false;
     }
 }

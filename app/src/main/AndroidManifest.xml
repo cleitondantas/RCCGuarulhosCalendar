@@ -27,7 +27,7 @@
 
         <activity
             android:name=".activitys.DescricaoActivity"
-            android:label="@string/app_descricao"
+            android:label="@string/informacoes"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity

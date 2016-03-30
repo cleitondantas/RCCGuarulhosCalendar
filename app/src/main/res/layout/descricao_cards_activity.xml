@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_toolbar_descricao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar3"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/verdercc"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+
+
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
@@ -17,28 +34,15 @@
         android:layout_marginRight="5dp"
         android:layout_marginBottom="5dp"
         card_view:cardCornerRadius="6dp"
+        card_view:cardElevation="5dp"
+        card_view:cardUseCompatPadding="true"
         android:foreground="?android:attr/selectableItemBackground"
         card_view:contentPadding="5dp">
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp">
+        <include layout="@layout/descricao_activity" />
 
-            <TextView
-                android:id="@+id/tvtitulo"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_alignParentTop="true"/>
 
-            <TextView
-                android:id="@+id/tvdatainicio"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/tvtitulo"/>
-        </RelativeLayout>
+
     </android.support.v7.widget.CardView>
 
 

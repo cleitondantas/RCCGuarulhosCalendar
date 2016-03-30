@@ -26,7 +26,7 @@ public class AberturaSplashActivity  extends Activity {
         persistenceDao.onCreate(persistenceDao.openDB());
 
         if(true){
-            TIMESLEAP=4000;
+            TIMESLEAP=6000;
             TaskProcess taskPross = new TaskProcess(this);
             taskPross.execute();
         }else{

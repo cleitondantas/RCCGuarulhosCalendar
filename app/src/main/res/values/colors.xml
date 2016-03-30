@@ -8,6 +8,7 @@
     <color name="silver">#C0C0C0</color>
     <color name="black">#3b4144</color>
 
+
     <!-- Fonts -->
     <color name="monthTitleColor">#161d20</color>
     <color name="dayOfWeekColor">#161d20</color>
@@ -16,7 +17,14 @@
     <color name="textTistviewColor">#707070</color>
 
 
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#3a9b3d</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="backgroundCards">#F5F5F5</color>
+
+    <!-- Cores RCC-->
+    <color name="verdercc">#4CAF50</color>
+    <color name="amarelorcc">#FFEB3B</color>
+
 </resources>
