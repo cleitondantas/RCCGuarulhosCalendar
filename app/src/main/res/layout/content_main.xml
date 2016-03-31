@@ -14,10 +14,10 @@
         android:layout_height="wrap_content">
     </com.marcohc.robotocalendar.RobotoCalendarView>
 
-    <ListView
-        android:id="@+id/listview"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/robotoCalendarPicker"/>
 
 </RelativeLayout>

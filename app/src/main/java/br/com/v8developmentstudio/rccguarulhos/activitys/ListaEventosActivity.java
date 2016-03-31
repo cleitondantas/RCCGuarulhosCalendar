@@ -20,6 +20,7 @@ import br.com.v8developmentstudio.rccguarulhos.adapter.MyRecyclerViewAdapter;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
+import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 
 /**
  * Created by cleiton.dantas on 28/03/2016.
@@ -30,6 +31,7 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
     private MyRecyclerViewAdapter myRecyclerViewAdapter;
     private GestureDetectorCompat gestureDetector;
     private PersistenceDao persistenceDao = new PersistenceDao(this);
+    private FiltroDatas filtroDatas = new FiltroDatas();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,7 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
         gestureDetector = new GestureDetectorCompat(this,new RecyclerViewOnGestureListener());
 
         listEventos =   persistenceDao.recuperaTodosEventosPorCalendario(idCalendario);
-        myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos);
+        myRecyclerViewAdapter = new MyRecyclerViewAdapter(filtroDatas.filtraEventosPorDataAtual(listEventos));
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
     }

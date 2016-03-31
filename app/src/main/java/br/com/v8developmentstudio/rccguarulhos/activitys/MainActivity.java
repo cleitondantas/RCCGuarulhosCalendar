@@ -7,13 +7,19 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,16 +38,18 @@ import java.util.Locale;
 import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.adapter.ListViewAdapter;
 
+import br.com.v8developmentstudio.rccguarulhos.adapter.MyRecyclerViewAdapter;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 
 import br.com.v8developmentstudio.rccguarulhos.util.AssetsPropertyReader;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
+import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class MainActivity extends AppCompatActivity implements RobotoCalendarListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements RobotoCalendarListener, NavigationView.OnNavigationItemSelectedListener , RecyclerView.OnItemTouchListener, View.OnClickListener{
 
     private RobotoCalendarView robotoCalendarView;
     private int currentMonthIndex =0;
@@ -49,11 +57,15 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     private  ArrayAdapter<Evento> eventoArrayAdapter;
     private List<Evento> listEventos;
     private  List<String> listsumariodomes = new ArrayList<String>();
-    private ListView listView;
+
     private AssetsPropertyReader assetsPropertyReader = new AssetsPropertyReader(this);
     private PersistenceDao persistenceDao=null;
     private DrawerLayout drawer;
     private NavigationView navigationView;
+    private MyRecyclerViewAdapter myRecyclerViewAdapter;
+    private RecyclerView recyclerView;
+    private GestureDetectorCompat gestureDetector;
+    private FiltroDatas filtroDatas = new FiltroDatas();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         setSupportActionBar(toolbar);
         persistenceDao = new PersistenceDao(this);
 
-        listView  = (ListView) findViewById(R.id.listview);
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer= (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -81,16 +92,19 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         navigationView.setNavigationItemSelectedListener(this);
         setupDrawerContent(navigationView);
 
-        listView.setClickable(true);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4) {
-                Evento evento = (Evento) listView.getAdapter().getItem(p3);
-                redirectDescricaoDoEvento(evento);
-            }
-        });
-        //-----
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_main);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addOnItemTouchListener(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        gestureDetector = new GestureDetectorCompat(this,new RecyclerViewOnGestureListener());
+
         listEventos = persistenceDao.recuperaTodosEventos();
+        myRecyclerViewAdapter = new MyRecyclerViewAdapter(filtroDatas.filtraEventosPorDataAtual(listEventos));
+        recyclerView.setAdapter(myRecyclerViewAdapter);
+
+        //-----
+
         currentCalendar = Calendar.getInstance(Locale.getDefault());
         robotoCalendarView.setRobotoCalendarListener(this);
         robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
@@ -162,15 +176,16 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         construtorAdapter();
     }
 
-    private void construtorAdapter(){
-        eventoArrayAdapter = new ListViewAdapter(this.getApplicationContext(),listEventos);
-        listView.setAdapter(eventoArrayAdapter);
+    public void construtorAdapter(){
+        myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos);
+        recyclerView.setAdapter(myRecyclerViewAdapter);
     }
+
     private void redirectDescricaoDoEvento(final Evento evento) {
         Intent intent = new Intent(MainActivity.this, DescricaoActivity.class);
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID,evento.getId().intValue());
-        dados.putInt(Constantes.CALENDARIO,evento.getIdCalendario());
+        dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
         intent.putExtras(dados);
         this.startActivity(intent);
     }
@@ -183,11 +198,48 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         this.startActivity(intent);
     }
 
-
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        redirectDescricaoDoEvento(listEventos.get(v.getId()));
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        gestureDetector.onTouchEvent(e);
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+    }
+    private class RecyclerViewOnGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            View view = recyclerView.findChildViewUnder(e.getX(), e.getY());
+            int idx = recyclerView.getChildAdapterPosition(view);
+            view.setId(idx);
+            onClick(view);
+            return super.onSingleTapConfirmed(e);
+        }
+
+        public void onLongPress(MotionEvent e) {
+            View view = recyclerView.findChildViewUnder(e.getX(), e.getY());
+            int idx = recyclerView.getChildAdapterPosition(view);
+            super.onLongPress(e);
+        }
     }
 }
