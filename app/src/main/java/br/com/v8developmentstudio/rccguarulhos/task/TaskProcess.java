@@ -79,8 +79,6 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
             }else{
                 publishProgress("Sem Connecxao");
                 Log.i("DEBUG", "Sem Connecxao");
-                //input = context.getAssets().open("agendarcc.ics");
-               // persistenceDao.onCreate(persistenceDao.openDB());
             }
 
             Log.i("DEBUG", "Dados Gravados");

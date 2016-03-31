@@ -3,6 +3,8 @@ package br.com.v8developmentstudio.rccguarulhos;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -16,7 +18,7 @@ import br.com.v8developmentstudio.rccguarulhos.task.TaskProcess;
 public class AberturaSplashActivity  extends Activity {
 
     private PersistenceDao persistenceDao = new PersistenceDao(this);
-    private Integer TIMESLEAP;
+    public static Integer TIMESLEAP;
     @Override
     public  void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -25,10 +27,11 @@ public class AberturaSplashActivity  extends Activity {
 
         persistenceDao.onCreate(persistenceDao.openDB());
 
-        if(true){
+        if(isOnline()){
             TIMESLEAP=6000;
             TaskProcess taskPross = new TaskProcess(this);
             taskPross.execute();
+
         }else{
             TIMESLEAP=2000;
         }
@@ -41,5 +44,11 @@ public class AberturaSplashActivity  extends Activity {
             }
         },TIMESLEAP);
 
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
