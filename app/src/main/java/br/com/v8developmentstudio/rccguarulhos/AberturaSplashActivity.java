@@ -31,7 +31,6 @@ public class AberturaSplashActivity  extends Activity {
             TIMESLEAP=6000;
             TaskProcess taskPross = new TaskProcess(this);
             taskPross.execute();
-
         }else{
             TIMESLEAP=2000;
         }

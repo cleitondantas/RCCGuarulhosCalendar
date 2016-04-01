@@ -7,10 +7,12 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.ProviderException;
 import java.util.List;
 import java.util.Properties;
 
@@ -19,6 +21,7 @@ import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.util.AssetsPropertyReader;
+import br.com.v8developmentstudio.rccguarulhos.util.FileUtil;
 
 /**
  * Created by cleiton.dantas on 17/03/2016.
@@ -31,6 +34,8 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
     private Properties properties;
     private AssetsPropertyReader assetsPropertyReader;
     private List<Calendario> calendarios;
+    private FileUtil fileUtil = new FileUtil();
+    private File inFile;
     public TaskProcess(Context context) {
         this.context = context;
         persistenceDao = new PersistenceDao(context);
@@ -56,7 +61,7 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
     }
 
     @Override
-    protected String doInBackground(String... urls) {
+    protected String doInBackground(String... urls)  {
         try {
             Log.i("DEBUG", "Iniciado");
             InputStream input = null;
@@ -68,19 +73,24 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
                     URL url = new URL(calendario.getUrl());
                     URLConnection conec = url.openConnection();
                     input = conec.getInputStream();
+
+                    //Depois de Baixar o aquivo é gravado um file temporario
+                    inFile = fileUtil.criaArquivo(input, "tmp");
+
                     Log.i("DEBUG", "Iniciado Gravacao");
                     persistenceDao.onDropTabelaDeCalandario(persistenceDao.openDB(), calendario);
                     persistenceDao.onCreateTabelaDeCalandario(persistenceDao.openDB(), calendario);
-                    List<Evento> eventoList = getCalendarEventos(input);
+                    List<Evento> eventoList = getCalendarEventos(fileUtil.recuperaArquivos(inFile.getPath()));
                     for (Evento evento : eventoList) {
                         persistenceDao.salvaNovoEvento(evento,calendario);
                     }
+
+                    inFile.deleteOnExit();
                 }
             }else{
                 publishProgress("Sem Connecxao");
                 Log.i("DEBUG", "Sem Connecxao");
             }
-
             Log.i("DEBUG", "Dados Gravados");
         } catch (IOException e) {
             Log.i("DEBUG","Erro"+e);
