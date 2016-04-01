@@ -35,6 +35,13 @@
             android:label="@string/app_eventos"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <receiver android:name=".services.BroadcastReceiverAux" android:label="BroadcastReceiverAux">
+            <intent-filter>
+                <action android:name="CALENDARIO_RCC_DISPARADO"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

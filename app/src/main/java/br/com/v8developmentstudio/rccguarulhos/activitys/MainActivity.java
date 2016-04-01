@@ -1,6 +1,7 @@
 
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -21,6 +22,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,6 +50,7 @@ import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 
+import br.com.v8developmentstudio.rccguarulhos.services.BroadcastReceiverAux;
 import br.com.v8developmentstudio.rccguarulhos.util.AssetsPropertyReader;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
