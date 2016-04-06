@@ -25,6 +25,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SubMenu;
@@ -81,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         persistenceDao = new PersistenceDao(this);
 
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
@@ -118,7 +122,23 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
 
         updateCalendar();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+
+        if(id == R.id.action_settings){
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            this.startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

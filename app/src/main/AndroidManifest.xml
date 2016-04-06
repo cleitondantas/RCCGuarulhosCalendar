@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -16,39 +17,42 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activitys.MainActivity"
             android:label="@string/app_calendario"
-            android:theme="@style/AppTheme.NoActionBar">
-         </activity>
-
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activitys.DescricaoActivity"
             android:label="@string/informacoes"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activitys.ListaEventosActivity"
             android:label="@string/app_eventos"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activitys.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <receiver
-            android:name=".services.BroadcastReceiverAux" android:label="BroadcastReceiverAux">
+            android:name=".services.BroadcastReceiverAux"
+            android:label="BroadcastReceiverAux">
             <intent-filter>
-                <action android:name="CALENDARIO_RCC_DISPARADO"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="CALENDARIO_RCC_DISPARADO" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver
-            android:name=".services.BootCompletedReceiver" android:label="BootCompletedReceiver">
+            android:name=".services.BootCompletedReceiver"
+            android:label="BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <category android:name="android.intent.category.DEFAULT"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
 

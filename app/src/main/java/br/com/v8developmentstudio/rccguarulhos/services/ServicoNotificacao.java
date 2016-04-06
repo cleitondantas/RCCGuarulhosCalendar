@@ -20,9 +20,12 @@ import br.com.v8developmentstudio.rccguarulhos.modelo.Notificacao;
  * Created by cleiton.dantas on 01/04/2016.
  */
 public class ServicoNotificacao {
+    private Preferences preferences;
 
     private boolean verificaExistencia(Context context){
+        preferences = new Preferences(context);
         return (PendingIntent.getBroadcast(context, 0, new Intent("CALENDARIO_RCC_DISPARADO"), PendingIntent.FLAG_NO_CREATE) == null);
+
     }
 
     public void createAlarmNotification(Context context) {
@@ -33,16 +36,13 @@ public class ServicoNotificacao {
 
             Calendar c = Calendar.getInstance();
             c.setTimeInMillis(System.currentTimeMillis());
-            c.add(Calendar.SECOND, 3);
-
+            c.add(Calendar.SECOND, 5);
             AlarmManager alarme = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            alarme.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),120000, pendingIntent);
+            alarme.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),preferences.preferencesTimeRepeating(), pendingIntent);
 
             //3000000
         } else {
             Log.i("Script", "Alarme já ativo");
         }
     }
-
-
 }
