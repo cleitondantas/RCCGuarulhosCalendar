@@ -35,14 +35,16 @@ import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 
 public class BroadcastReceiverAux extends BroadcastReceiver {
     private PersistenceDao persistenceDao;
+    private Preferences preferences;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     @Override
     public void onReceive(Context context, Intent intent) {
         persistenceDao= new PersistenceDao(context);
+        preferences = new Preferences(context);
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
-        cal.add(Calendar.DAY_OF_MONTH, 11);
+        cal.add(Calendar.DAY_OF_MONTH,preferences.preferencesDiaAlarm());
         Date dia = cal.getTime();
 
         Log.i("Script", "-> Alarme");

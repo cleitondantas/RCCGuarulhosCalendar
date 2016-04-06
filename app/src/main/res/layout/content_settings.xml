@@ -10,25 +10,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="br.com.v8developmentstudio.rccguarulhos.activitys.SettingsActivity"
-    android:fitsSystemWindows="true"
     tools:showIn="@layout/activity_settings">
 
 
     <TableLayout
+
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         android:shrinkColumns="*"  android:stretchColumns="*" android:background="#ffffff">
+        <!-- INICIO SUMARIO -->
 
-        <TableRow
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:gravity="center_horizontal">
-            <TextView
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:textSize="12dp" android:text="Tempo de Refresh:"  android:layout_span="3"
-                android:padding="1dip" android:background="@color/backgroundCards"
-                android:textColor="@color/textTistviewColor"/>
-        </TableRow>
         <TableRow
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
@@ -38,6 +31,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"  />
+            <NumberPicker
+                android:id="@+id/numberPicker2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"  />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal">
+            <TextView
+
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textSize="15dp" android:text="Row 1"  android:layout_span="3"
+                android:paddingBottom="3dp" android:background="@color/backgroundCards"
+                android:textColor="@color/textTistviewColor"/>
+        </TableRow>
+        <!-- FIM SUMARIO -->
+
+
+        <!-- INICIO DESCRICAO -->
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal">
+            <TextView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textSize="12dp" android:text="Descricao:"  android:layout_span="3"
+                android:padding="1dip" android:background="@color/backgroundCards"
+                android:textColor="@color/textTistviewColor"/>
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal">
+            <TextView
+
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textSize="13dp" android:text="Descricao..."  android:layout_span="3"
+                android:paddingBottom="10dp" android:background="@color/backgroundCards"
+                android:textColor="@color/textTistviewColor"/>
         </TableRow>
         <!-- FIM DESCRICAO -->
 
@@ -63,14 +97,14 @@
             android:layout_width="fill_parent"
             android:gravity="center_horizontal">
             <TextView
-                android:id="@+id/id3"
+
                 android:text="VALO DATA HORA INICIO"
                 android:layout_weight="1" android:background="@color/backgroundCards"
                 android:textColor="@color/textTistviewColor"
                 android:paddingBottom="20dip" android:gravity="center"/>
 
             <TextView
-                android:id="@+id/id4"
+
                 android:text="VALOR DATA HORA FIM"
                 android:layout_weight="1" android:background="@color/backgroundCards"
                 android:textColor="@color/textTistviewColor"
@@ -94,12 +128,18 @@
             android:layout_width="fill_parent"
             android:gravity="center_horizontal">
             <TextView
-                android:id="@+id/id5"
+
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:textSize="12dp" android:text="Evento:"  android:layout_span="3"
                 android:paddingBottom="20dip" android:background="@color/backgroundCards"
                 android:textColor="@color/textTistviewColor"/>
         </TableRow>
+
+
     </TableLayout>
+
+
+
+
 
 </RelativeLayout>
