@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:allowBackup="true"
@@ -35,12 +36,22 @@
             android:label="@string/app_eventos"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <receiver android:name=".services.BroadcastReceiverAux" android:label="BroadcastReceiverAux">
+        <receiver
+            android:name=".services.BroadcastReceiverAux" android:label="BroadcastReceiverAux">
             <intent-filter>
                 <action android:name="CALENDARIO_RCC_DISPARADO"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name=".services.BootCompletedReceiver" android:label="BootCompletedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+
 
     </application>
 

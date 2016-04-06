@@ -15,6 +15,7 @@ import java.util.Calendar;
 
 import br.com.v8developmentstudio.rccguarulhos.activitys.MainActivity;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
+import br.com.v8developmentstudio.rccguarulhos.services.ServicoNotificacao;
 import br.com.v8developmentstudio.rccguarulhos.task.TaskProcess;
 
 /**
@@ -23,6 +24,7 @@ import br.com.v8developmentstudio.rccguarulhos.task.TaskProcess;
 public class AberturaSplashActivity  extends Activity {
 
     private PersistenceDao persistenceDao = new PersistenceDao(this);
+    private ServicoNotificacao servicoNotificacao = new ServicoNotificacao();
     public static Integer TIMESLEAP;
     @Override
     public  void onCreate(Bundle savedInstanceState){
@@ -31,11 +33,8 @@ public class AberturaSplashActivity  extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         persistenceDao.onCreate(persistenceDao.openDB());
+        servicoNotificacao.createAlarmNotification(this);
 
-
-
-        boolean alarmeAtivo = (PendingIntent.getBroadcast(this, 0, new Intent("CALENDARIO_RCC_DISPARADO"), PendingIntent.FLAG_NO_CREATE) == null);
-        alarmNotification(alarmeAtivo);
         if(isOnline()){
             TIMESLEAP=6000;
             TaskProcess taskPross = new TaskProcess(this);
@@ -60,21 +59,4 @@ public class AberturaSplashActivity  extends Activity {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    private void alarmNotification(boolean alarmeAtivo) {
-        if (alarmeAtivo) {
-            Log.i("Script", "Novo alarme");
-
-            Intent intent = new Intent("CALENDARIO_RCC_DISPARADO");
-            PendingIntent p = PendingIntent.getBroadcast(this, 0, intent, 0);
-
-            Calendar c = Calendar.getInstance();
-            c.setTimeInMillis(System.currentTimeMillis());
-            c.add(Calendar.SECOND, 3);
-
-            AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarme.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), 5000, p);
-        } else {
-            Log.i("Script", "Alarme já ativo");
-        }
-    }
 }
