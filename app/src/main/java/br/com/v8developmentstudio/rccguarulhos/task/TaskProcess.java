@@ -31,7 +31,6 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
     private ProgressDialog progress;
     private ConstrutorIcal contruorical;
     private PersistenceDao persistenceDao;
-    private Properties properties;
     private AssetsPropertyReader assetsPropertyReader;
     private List<Calendario> calendarios;
     private FileUtil fileUtil = new FileUtil();

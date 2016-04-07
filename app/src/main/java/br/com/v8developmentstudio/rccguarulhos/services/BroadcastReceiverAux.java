@@ -3,7 +3,7 @@ package br.com.v8developmentstudio.rccguarulhos.services;
 /**
  * Created by cleiton.dantas on 01/04/2016.
  */
-import android.app.AlarmManager;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,10 +11,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -23,13 +19,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.activitys.DescricaoActivity;
-import br.com.v8developmentstudio.rccguarulhos.activitys.MainActivity;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
-import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 
@@ -44,7 +37,7 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
-        cal.add(Calendar.DAY_OF_MONTH,preferences.preferencesDiaAlarm());
+        cal.add(Calendar.DAY_OF_MONTH,preferences.getPreferencesDiaAlarm());
         Date dia = cal.getTime();
 
         Log.i("Script", "-> Alarme");
@@ -52,7 +45,7 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
         int numIdentificacao=0;
         for (Evento evento: eventos) {
             numIdentificacao++;
-            gerarNotificacao(context, redirectDescricaoDoEvento(context,evento) , "Novo Evento",evento.getSumario(),dateFormat.format(evento.getDataHoraInicio()),numIdentificacao);
+            gerarNotificacao(context, redirectDescricaoDoEvento(context,evento) ,context.getString(R.string.novoevento),evento.getSumario(),dateFormat.format(evento.getDataHoraInicio()),numIdentificacao);
         }
     }
 

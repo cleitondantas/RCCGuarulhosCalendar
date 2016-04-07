@@ -27,11 +27,11 @@ public class Preferences {
     public void salvarPrefDiaAlarm(int dia){
         SharedPreferences settings = context.getSharedPreferences("Preferences", 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putLong("PrefDiaAlarm",dia);
+        editor.putInt("PrefDiaAlarm",dia);
         editor.commit();
     }
 
-    public int preferencesDiaAlarm(){
+    public int getPreferencesDiaAlarm(){
         SharedPreferences settings = context.getSharedPreferences("Preferences", 0);
         return settings.getInt("PrefDiaAlarm",1);
     }

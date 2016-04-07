@@ -1,42 +1,32 @@
 
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.marcohc.robotocalendar.RobotoCalendarView;
 import com.marcohc.robotocalendar.RobotoCalendarView.RobotoCalendarListener;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,14 +34,12 @@ import java.util.List;
 import java.util.Locale;
 
 import br.com.v8developmentstudio.rccguarulhos.R;
-import br.com.v8developmentstudio.rccguarulhos.adapter.ListViewAdapter;
-
 import br.com.v8developmentstudio.rccguarulhos.adapter.MyRecyclerViewAdapter;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
-
-import br.com.v8developmentstudio.rccguarulhos.services.BroadcastReceiverAux;
+import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
+import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
 import br.com.v8developmentstudio.rccguarulhos.util.AssetsPropertyReader;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
@@ -66,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     private  ArrayAdapter<Evento> eventoArrayAdapter;
     private List<Evento> listEventos;
     private  List<String> listsumariodomes = new ArrayList<String>();
-
+    private  ActivityServices ac = new ActivityServicesImpl();
     private AssetsPropertyReader assetsPropertyReader = new AssetsPropertyReader(this);
     private PersistenceDao persistenceDao=null;
     private DrawerLayout drawer;
@@ -134,8 +122,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         int id = item.getItemId();
 
         if(id == R.id.action_settings){
-            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            this.startActivity(intent);
+            ac.redirect(this,SettingsActivity.class,null);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -210,20 +197,17 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     }
 
     private void redirectDescricaoDoEvento(final Evento evento) {
-        Intent intent = new Intent(MainActivity.this, DescricaoActivity.class);
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID,evento.getId().intValue());
         dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
-        intent.putExtras(dados);
-        this.startActivity(intent);
+        ac.redirect(this, DescricaoActivity.class, dados);
     }
+
     private void redirectListEventos(int idCalenadrio,String tituloCalendario) {
-        Intent intent = new Intent(MainActivity.this, ListaEventosActivity.class);
         Bundle dados = new Bundle();
-        dados.putInt(Constantes.ID,idCalenadrio);
+        dados.putInt(Constantes.ID, idCalenadrio);
         dados.putString(Constantes.CALENDARIO, tituloCalendario);
-        intent.putExtras(dados);
-        this.startActivity(intent);
+        ac.redirect(this, ListaEventosActivity.class, dados);
     }
 
     @Override

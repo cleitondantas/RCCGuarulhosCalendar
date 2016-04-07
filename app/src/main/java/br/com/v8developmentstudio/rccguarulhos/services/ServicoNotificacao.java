@@ -25,7 +25,6 @@ public class ServicoNotificacao {
     private boolean verificaExistencia(Context context){
         preferences = new Preferences(context);
         return (PendingIntent.getBroadcast(context, 0, new Intent("CALENDARIO_RCC_DISPARADO"), PendingIntent.FLAG_NO_CREATE) == null);
-
     }
 
     public void createAlarmNotification(Context context) {
@@ -38,8 +37,8 @@ public class ServicoNotificacao {
             c.setTimeInMillis(System.currentTimeMillis());
             c.add(Calendar.SECOND, 5);
             AlarmManager alarme = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            alarme.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),preferences.preferencesTimeRepeating(), pendingIntent);
-
+            alarme.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
+            //AlarmManager.INTERVAL_HALF_DAY
             //3000000
         } else {
             Log.i("Script", "Alarme já ativo");

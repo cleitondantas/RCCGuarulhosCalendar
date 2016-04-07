@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -19,6 +18,8 @@ import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.adapter.MyRecyclerViewAdapter;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
+import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
+import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 
@@ -32,18 +33,19 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
     private GestureDetectorCompat gestureDetector;
     private PersistenceDao persistenceDao = new PersistenceDao(this);
     private FiltroDatas filtroDatas = new FiltroDatas();
+    private ActivityServices activityServices = new ActivityServicesImpl();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lista_eventos_activity);
         int idCalendario  = getIntent().getIntExtra(Constantes.ID,1);
         String titulo = getIntent().getStringExtra(Constantes.CALENDARIO);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.lista_eventos_toolbar);
         toolbar.setSubtitle(titulo);
 
         setSupportActionBar(toolbar);
 
-        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.lista_eventos_recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addOnItemTouchListener(this);
@@ -78,12 +80,10 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
 
     }
     private void redirectDescricaoDoEvento(final Evento evento) {
-        Intent intent = new Intent(this, DescricaoActivity.class);
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID,evento.getId().intValue());
-        dados.putInt(Constantes.CALENDARIO,evento.getIdCalendario());
-        intent.putExtras(dados);
-        this.startActivity(intent);
+        dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
+        activityServices.redirect(this, DescricaoActivity.class, dados);
     }
 
     private class RecyclerViewOnGestureListener extends GestureDetector.SimpleOnGestureListener {

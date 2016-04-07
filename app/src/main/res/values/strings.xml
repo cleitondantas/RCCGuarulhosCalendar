@@ -9,6 +9,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="informacoes">Informações</string>
     <string name="ministerios">Ministérios</string>
+    <string name="novoevento">Novo Evento</string>
     <string name="title_activity_settings">Preferências</string>
 
 </resources>
