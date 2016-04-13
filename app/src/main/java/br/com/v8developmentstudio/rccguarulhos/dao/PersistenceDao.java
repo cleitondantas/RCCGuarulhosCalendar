@@ -18,6 +18,8 @@ import java.util.List;
 
 import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
+import br.com.v8developmentstudio.rccguarulhos.modelo.EventoFavorito;
+import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 
 /**
  * Created by cleiton.dantas on 17/03/2016.
@@ -27,13 +29,16 @@ public class PersistenceDao extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "DB_CALENDARIOS";
     public static final String ID = "ID";
+    public static final String ID_EVENTO = "ID_EVENTO";
     public static final String DATAHORAINICIO = "DATAHORAINICIO";
     public static final String DATAHORAFIM = "DATAHORAFIM";
+    public static final String DATAHORAMODIFICADO = "DATAHORAMODIFICADO";
     public static final String LOCAL = "LOCAL";
     public static final String SUMARIO = "SUMARIO";
     public static final String DESCRICAO = "DESCRICAO";
 
     public static final String TB_CONFIG_CALENDAR = "TB_CONFIG_CALENDAR";
+    public static final String TB_FAVORITOS = "TB_FAVORITOS";
     public static final String ID_CALENDARIO = "ID_CALENDARIO";
     public static final String NOME_CALENDARIO = "NOME_CALENDARIO";
     public static final String NOME_LABEL = "NOME_LABEL";
@@ -42,8 +47,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
     public static final String UID = "UID";
     public static final String ALARME = "ALARME";
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-
 
     private Cursor cursor;
     private Context context;
@@ -57,25 +60,68 @@ public class PersistenceDao extends SQLiteOpenHelper {
         this.context =context;
     }
 
+    public void updateEvents(Evento evento,Calendario calendario){
+        salvaNovoEvento(evento, calendario);
+    }
+
     public void salvaNovoEvento(Evento evento,Calendario calendario){
         ContentValues contentValues = new ContentValues();
         contentValues.put(ID_CALENDARIO, calendario.getId());
         contentValues.put(UID, evento.getUid());
         contentValues.put(DATAHORAINICIO, dateFormat.format(evento.getDataHoraInicio()));
         contentValues.put(DATAHORAFIM, dateFormat.format(evento.getDataHoraFim()));
+        contentValues.put(DATAHORAMODIFICADO, dateFormat.format(evento.getDataHoraModifcado()));
         contentValues.put(LOCAL,evento.getLocal());
         contentValues.put(SUMARIO, evento.getSumario());
         contentValues.put(DESCRICAO, evento.getDescricao());
         contentValues.put(URI, evento.getUri());
-        contentValues.put(ALARME, evento.getAlarme());
         getWritableDatabase().insert(calendario.getNomeCalendario(), null, contentValues);
     }
+
+    public void salvaEventoFavorito(Evento evento,Calendario calendario,Boolean isAlarme){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ID_CALENDARIO, calendario.getId());
+        contentValues.put(ID_EVENTO, evento.getId());
+        contentValues.put(UID, evento.getUid());
+        contentValues.put(ALARME,isAlarme);
+        getWritableDatabase().insert(TB_FAVORITOS, null, contentValues);
+    }
+    public List<EventoFavorito> recuperaFavoritos(){
+        ArrayList<EventoFavorito> eventoFavoritos = new ArrayList<EventoFavorito>();
+        cursor = getWritableDatabase().query(TB_FAVORITOS, new String[]{ID,ID_CALENDARIO, ID_EVENTO, UID, ALARME}, null, null, null, null, null);
+        EventoFavorito eventoFavorito;
+            try {
+                while (cursor.moveToNext()) {
+                    eventoFavorito = new EventoFavorito();
+                    eventoFavorito.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+                    eventoFavorito.setIdCalendario(cursor.getInt(cursor.getColumnIndex(ID_CALENDARIO)));
+                    eventoFavorito.setUid(cursor.getString(cursor.getColumnIndex(UID)));
+                    eventoFavorito.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME)) > 0);
+                    eventoFavoritos.add(eventoFavorito);
+                }
+            } catch (Exception e) {
+                Log.e("ERROR", "recuperaListEventosFavoritos()-->"+ e);
+                e.printStackTrace();
+            }
+        return eventoFavoritos;
+    }
+
+    public List<Evento> recuperaTodosEventosFavoritos(){
+        List<EventoFavorito> eventoFavoritos = recuperaFavoritos();
+        List<Evento> eventoList = new ArrayList<Evento>();
+        for(EventoFavorito favoritos : eventoFavoritos){
+            eventoList.addAll(recuperaEventoPorUID(favoritos.getUid(), recuperaConfigCalendarPorID(favoritos.getIdCalendario()).getNomeCalendario()));
+        }
+        return eventoList;
+    }
+
+
 
     public List<Evento> recuperaTodosEventos() {
         List<Evento> eventoList = new ArrayList<Evento>();
         List<Calendario> calendarios = recuperaTodasConfiguracoesCalendar();
         for(Calendario calendario : calendarios) {
-            cursor = getWritableDatabase().query(calendario.getNomeCalendario(), new String[]{ID,UID,ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM, LOCAL, SUMARIO, DESCRICAO,URI,ALARME}, null, null, null, null, null);
+            cursor = getWritableDatabase().query(calendario.getNomeCalendario(), new String[]{ID,UID,ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM,DATAHORAMODIFICADO, LOCAL, SUMARIO, DESCRICAO,URI}, null, null, null, null, null);
 
             Evento evento;
             try {
@@ -86,11 +132,11 @@ public class PersistenceDao extends SQLiteOpenHelper {
                     evento.setIdCalendario(cursor.getInt(cursor.getColumnIndex(ID_CALENDARIO)));
                     evento.setDataHoraInicio(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAINICIO))));
                     evento.setDataHoraFim(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAFIM))));
+                    evento.setDataHoraModifcado(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAMODIFICADO))));
                     evento.setLocal(cursor.getString(cursor.getColumnIndex(LOCAL)));
                     evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                     evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
                     evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
-                    evento.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME))>0);
                     eventoList.add(evento);
                 }
             } catch (ParseException e) {
@@ -106,7 +152,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         List<Calendario> calendarios = recuperaTodasConfiguracoesCalendar();
         for(Calendario calendario : calendarios) {
             if(calendario.getId().equals(idCalendario)) {
-                cursor = getWritableDatabase().query(calendario.getNomeCalendario(), new String[]{ID,UID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM, LOCAL, SUMARIO, DESCRICAO,URI,ALARME}, null, null, null, null, null);
+                cursor = getWritableDatabase().query(calendario.getNomeCalendario(), new String[]{ID,UID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM, LOCAL, SUMARIO, DESCRICAO,URI}, null, null, null, null, null);
                 Evento evento;
                 try {
                     while (cursor.moveToNext()) {
@@ -116,6 +162,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
                         evento.setIdCalendario(cursor.getInt(cursor.getColumnIndex(ID_CALENDARIO)));
                         evento.setDataHoraInicio(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAINICIO))));
                         evento.setDataHoraFim(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAFIM))));
+                        evento.setDataHoraModifcado(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAMODIFICADO))));
                         evento.setLocal(cursor.getString(cursor.getColumnIndex(LOCAL)));
                         evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                         evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
@@ -193,11 +240,11 @@ public class PersistenceDao extends SQLiteOpenHelper {
                     evento.setIdCalendario(cursor.getInt(cursor.getColumnIndex(ID_CALENDARIO)));
                     evento.setDataHoraInicio(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAINICIO))));
                     evento.setDataHoraFim(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAFIM))));
+                    evento.setDataHoraModifcado(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAMODIFICADO))));
                     evento.setLocal(cursor.getString(cursor.getColumnIndex(LOCAL)));
                     evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                     evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
                     evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
-                    evento.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME))>0);
                     eventoList.add(evento);
                 }
             } catch (ParseException e) {
@@ -220,11 +267,11 @@ public class PersistenceDao extends SQLiteOpenHelper {
                 evento.setUid(cursor.getString(cursor.getColumnIndex(UID)));
                 evento.setDataHoraInicio(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAINICIO))));
                 evento.setDataHoraFim(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAFIM))));
+                evento.setDataHoraModifcado(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAMODIFICADO))));
                 evento.setLocal(cursor.getString(cursor.getColumnIndex(LOCAL)));
                 evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                 evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
                 evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
-                evento.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME))>0);
             }
         } catch (ParseException e) {
             Log.e("ERROR", "recuperaEventoPorID()--> "+ e);
@@ -232,6 +279,40 @@ public class PersistenceDao extends SQLiteOpenHelper {
         }
         return evento;
     }
+
+    public List<Evento> recuperaEventoPorUID(final String uid,final String calendario){
+        Evento evento=null;
+        List<Evento> eventoList = new ArrayList<Evento>();
+        try {
+            String sqlcoluns[] ={ID,UID,DATAHORAINICIO,DATAHORAFIM,DATAHORAMODIFICADO,LOCAL,SUMARIO,DESCRICAO,URI,ALARME};
+            cursor = bancoDados.query(calendario, sqlcoluns, UID+"=?", new String[]{uid}, null, null, null);
+
+            while (cursor.moveToNext()) {
+                evento = new Evento();
+                evento.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+                evento.setUid(cursor.getString(cursor.getColumnIndex(UID)));
+                evento.setDataHoraInicio(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAINICIO))));
+                evento.setDataHoraFim(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAFIM))));
+                evento.setDataHoraModifcado(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAMODIFICADO))));
+                evento.setLocal(cursor.getString(cursor.getColumnIndex(LOCAL)));
+                evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
+                evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
+                evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
+                eventoList.add(evento);
+            }
+        } catch (ParseException e) {
+            Log.e("ERROR", "recuperaEventoPorID()--> "+ e);
+            e.printStackTrace();
+        }
+        return eventoList;
+    }
+
+    public void deletaEventoPorID(final int id,final String calendario){
+        String whereClause ="ID=?";
+        String[] whereArgs={""+id};
+        bancoDados.delete(calendario,whereClause,whereArgs);
+    }
+
 
     /**
      * Salva os registros do properties calendaris
@@ -256,7 +337,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
                 calendario.setNomeLabel(cursor.getString(cursor.getColumnIndex(NOME_LABEL)));
                 calendario.setUrl(cursor.getString(cursor.getColumnIndex(URL)));
                 calendario.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME))>0);
-
                 calendarios.add(calendario);
             }
         return calendarios;
@@ -272,7 +352,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
             calendario.setNomeLabel(cursor.getString(cursor.getColumnIndex(NOME_LABEL)));
             calendario.setUrl(cursor.getString(cursor.getColumnIndex(URL)));
             calendario.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME)) > 0);
-
         }
         return calendario;
     }
@@ -296,13 +375,13 @@ public class PersistenceDao extends SQLiteOpenHelper {
     }
 
     public void onCreateTabelaDeCalandario(SQLiteDatabase db, Calendario calendario) {
-            db.execSQL("CREATE TABLE IF NOT EXISTS " + calendario.getNomeCalendario() + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+UID+" VARCHAR NOT NULL, " +ID_CALENDARIO+" INTEGER NOT NULL," + DATAHORAINICIO + " DATETIME NOT NULL, " + DATAHORAFIM + " DATETIME, " + LOCAL + " VARCHAR (200),"+ SUMARIO + " VARCHAR (200) NOT NULL, "+ DESCRICAO +" TEXT,"+ URI +" VARCHAR (300), "+ALARME+" BOOLEAN);");
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + calendario.getNomeCalendario() + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+UID+" VARCHAR NOT NULL, " +ID_CALENDARIO+" INTEGER NOT NULL," + DATAHORAINICIO + " DATETIME NOT NULL, " + DATAHORAFIM + " DATETIME, " + DATAHORAMODIFICADO + " DATETIME, " + LOCAL + " VARCHAR (200),"+ SUMARIO + " VARCHAR (200) NOT NULL, "+ DESCRICAO +" TEXT,"+ URI +" VARCHAR (300));");
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-           db.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_CONFIG_CALENDAR +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+NOME_CALENDARIO+" VARCHAR NOT NULL,"+NOME_LABEL+" VARCHAR NOT NULL,"+URL+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
+        db.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_CONFIG_CALENDAR +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+NOME_CALENDARIO+" VARCHAR NOT NULL,"+NOME_LABEL+" VARCHAR NOT NULL,"+URL+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
+        db.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_FAVORITOS +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+ID_CALENDARIO+" INTEGER NOT NULL,"+ID_EVENTO+" INTEGER NOT NULL,"+UID+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
     }
 
     public void onDropTabelaDeCalandario(SQLiteDatabase db, Calendario calendario) {

@@ -36,12 +36,12 @@ public class FileUtil {
             while ((read = is.read(bytes)) != -1) {
                 fs.write(bytes, 0, read);
             }
-            Log.i("DEBUG", "Arquivos Processados com sucesso");
+            Log.i("DEBUG", "criaArquivo --> Arquivos Processados com sucesso");
         } catch (IOException e1) {
-            Log.i("DEBUG", "Erro ao processar arquivo:" + e1);
+            Log.e("ERROR", "Erro ao processar arquivo:" + e1);
 
         } catch (Exception e) {
-            Log.i("DEBUG", "Erro ao processar arquivo:" + e);
+            Log.e("ERROR", "Erro ao processar arquivo:" + e);
         } finally {
             if (is != null) {
                 try {
@@ -49,7 +49,7 @@ public class FileUtil {
                     fs.flush();
                     fs.close();
                 } catch (IOException e) {
-                    Log.i("DEBUG", "Erro ao fechar arquivo!");
+                    Log.e("ERROR", "Erro ao processar arquivo:" + e);
                 }
             }
         }

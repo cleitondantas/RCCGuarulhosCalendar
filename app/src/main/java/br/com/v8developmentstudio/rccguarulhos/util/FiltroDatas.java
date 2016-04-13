@@ -27,4 +27,15 @@ public class FiltroDatas {
         return eventoList;
     }
 
+    public boolean verificaSeDatasSaoIguais(Date primera, Date segunda){
+        boolean data;
+        if (primera.before(segunda)){
+            return false;
+        } else if (primera.after(segunda)) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
 }

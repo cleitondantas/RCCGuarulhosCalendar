@@ -29,7 +29,7 @@ import br.com.v8developmentstudio.rccguarulhos.util.FileUtil;
 public class TaskProcess extends AsyncTask<String,Object,String> {
     private Context context;
     private ProgressDialog progress;
-    private ConstrutorIcal contruorical;
+    private ConstrutorIcal construtorIcal;
     private PersistenceDao persistenceDao;
     private AssetsPropertyReader assetsPropertyReader;
     private List<Calendario> calendarios;
@@ -70,17 +70,17 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
                 for(Calendario calendario: calendarios) {
                     URL url = new URL(calendario.getUrl());
                     URLConnection conec = url.openConnection();
+                    Log.i("DEBUG", "URL CALENDAR : -->"+calendario.getUrl());
                     input = conec.getInputStream();
-
                     //Depois de Baixar o aquivo é gravado um file temporario
-                    inFile = fileUtil.criaArquivo(input, "tmp");
+                    inFile = fileUtil.criaArquivo(input, ".ical");
 
                     Log.i("DEBUG", "Iniciado Gravacao");
                     persistenceDao.onDropTabelaDeCalandario(persistenceDao.openDB(), calendario);
                     persistenceDao.onCreateTabelaDeCalandario(persistenceDao.openDB(), calendario);
-                    List<Evento> eventoList = getCalendarEventos(fileUtil.recuperaArquivos(inFile.getPath()));
+                    List<Evento> eventoList = getCalendarEventosICAL(fileUtil.recuperaArquivos(inFile.getPath()));
                     for (Evento evento : eventoList) {
-                        persistenceDao.salvaNovoEvento(evento,calendario);
+                        persistenceDao.updateEvents(evento,calendario);
                     }
                     inFile.deleteOnExit();
                 }
@@ -106,11 +106,11 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
         progress.dismiss();
     }
 
-    private List<Evento> getCalendarEventos(InputStream is){
+    private List<Evento> getCalendarEventosICAL(InputStream is){
         List<Evento> eventoList = null;
         try {
-            contruorical = new ConstrutorIcal(is);
-            eventoList= contruorical.getEventos();
+            construtorIcal = new ConstrutorIcal(is);
+            eventoList= construtorIcal.getEventos();
         } catch (IOException e) {
             Log.e("ERROR","Erro"+e);
             e.printStackTrace();

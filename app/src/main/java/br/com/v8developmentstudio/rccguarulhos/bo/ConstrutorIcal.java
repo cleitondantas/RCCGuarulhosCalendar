@@ -46,6 +46,7 @@ public List<Evento> getEventos(){
             evento.setUid(event.getUid().getValue());
             evento.setDataHoraInicio(new Date(event.getDateStart().getValue().getTime()));
             evento.setDataHoraFim(new Date(event.getDateEnd().getValue().getTime()));
+            evento.setDataHoraModifcado(new Date(event.getLastModified().getValue().getTime()));
             evento.setSumario(event.getSummary().getValue());
             evento.setDescricao(event.getDescription().getValue());
             evento.setLocal(event.getLocation().getValue());
