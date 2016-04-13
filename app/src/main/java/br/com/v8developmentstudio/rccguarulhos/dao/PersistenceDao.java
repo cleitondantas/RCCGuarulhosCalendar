@@ -37,6 +37,8 @@ public class PersistenceDao extends SQLiteOpenHelper {
     public static final String NOME_CALENDARIO = "NOME_CALENDARIO";
     public static final String NOME_LABEL = "NOME_LABEL";
     public static final String URL = "URL";
+    public static final String URI = "URI";//Imagens
+    public static final String UID = "UID";
     public static final String ALARME = "ALARME";
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -57,11 +59,14 @@ public class PersistenceDao extends SQLiteOpenHelper {
     public void salvaNovoEvento(Evento evento,Calendario calendario){
         ContentValues contentValues = new ContentValues();
         contentValues.put(ID_CALENDARIO, calendario.getId());
+        contentValues.put(UID, evento.getUid());
         contentValues.put(DATAHORAINICIO, dateFormat.format(evento.getDataHoraInicio()));
         contentValues.put(DATAHORAFIM, dateFormat.format(evento.getDataHoraFim()));
         contentValues.put(LOCAL,evento.getLocal());
         contentValues.put(SUMARIO, evento.getSumario());
         contentValues.put(DESCRICAO, evento.getDescricao());
+        contentValues.put(URI, evento.getUri());
+        contentValues.put(ALARME, evento.getAlarme());
         getWritableDatabase().insert(calendario.getNomeCalendario(), null, contentValues);
     }
 
@@ -69,20 +74,22 @@ public class PersistenceDao extends SQLiteOpenHelper {
         List<Evento> eventoList = new ArrayList<Evento>();
         List<Calendario> calendarios = recuperaTodasConfiguracoesCalendar();
         for(Calendario calendario : calendarios) {
-            cursor = getWritableDatabase().query(calendario.getNomeCalendario(), new String[]{ID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM, LOCAL, SUMARIO, DESCRICAO}, null, null, null, null, null);
+            cursor = getWritableDatabase().query(calendario.getNomeCalendario(), new String[]{ID,UID,ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM, LOCAL, SUMARIO, DESCRICAO,URI,ALARME}, null, null, null, null, null);
 
             Evento evento;
             try {
                 while (cursor.moveToNext()) {
                     evento = new Evento();
                     evento.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+                    evento.setUid(cursor.getString(cursor.getColumnIndex(UID)));
                     evento.setIdCalendario(cursor.getInt(cursor.getColumnIndex(ID_CALENDARIO)));
                     evento.setDataHoraInicio(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAINICIO))));
                     evento.setDataHoraFim(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAFIM))));
                     evento.setLocal(cursor.getString(cursor.getColumnIndex(LOCAL)));
                     evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                     evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
-
+                    evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
+                    evento.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME))>0);
                     eventoList.add(evento);
                 }
             } catch (ParseException e) {
@@ -97,19 +104,21 @@ public class PersistenceDao extends SQLiteOpenHelper {
         List<Calendario> calendarios = recuperaTodasConfiguracoesCalendar();
         for(Calendario calendario : calendarios) {
             if(calendario.getId().equals(idCalendario)) {
-                cursor = getWritableDatabase().query(calendario.getNomeCalendario(), new String[]{ID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM, LOCAL, SUMARIO, DESCRICAO}, null, null, null, null, null);
+                cursor = getWritableDatabase().query(calendario.getNomeCalendario(), new String[]{ID,UID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM, LOCAL, SUMARIO, DESCRICAO,URI,ALARME}, null, null, null, null, null);
                 Evento evento;
                 try {
                     while (cursor.moveToNext()) {
                         evento = new Evento();
                         evento.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+                        evento.setUid(cursor.getString(cursor.getColumnIndex(UID)));
                         evento.setIdCalendario(cursor.getInt(cursor.getColumnIndex(ID_CALENDARIO)));
                         evento.setDataHoraInicio(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAINICIO))));
                         evento.setDataHoraFim(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAFIM))));
                         evento.setLocal(cursor.getString(cursor.getColumnIndex(LOCAL)));
                         evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                         evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
-
+                        evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
+                        evento.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME))>0);
                         eventoList.add(evento);
                     }
                 } catch (ParseException e) {
@@ -177,12 +186,15 @@ public class PersistenceDao extends SQLiteOpenHelper {
                 while (cursor.moveToNext()) {
                     evento = new Evento();
                     evento.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+                    evento.setUid(cursor.getString(cursor.getColumnIndex(UID)));
                     evento.setIdCalendario(cursor.getInt(cursor.getColumnIndex(ID_CALENDARIO)));
                     evento.setDataHoraInicio(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAINICIO))));
                     evento.setDataHoraFim(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAFIM))));
                     evento.setLocal(cursor.getString(cursor.getColumnIndex(LOCAL)));
                     evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                     evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
+                    evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
+                    evento.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME))>0);
                     eventoList.add(evento);
                 }
             } catch (ParseException e) {
@@ -201,11 +213,14 @@ public class PersistenceDao extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 evento = new Evento();
                 evento.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+                evento.setUid(cursor.getString(cursor.getColumnIndex(UID)));
                 evento.setDataHoraInicio(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAINICIO))));
                 evento.setDataHoraFim(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAFIM))));
                 evento.setLocal(cursor.getString(cursor.getColumnIndex(LOCAL)));
                 evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                 evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
+                evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
+                evento.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME))>0);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -274,7 +289,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
     }
 
     public void onCreateTabelaDeCalandario(SQLiteDatabase db, Calendario calendario) {
-            db.execSQL("CREATE TABLE IF NOT EXISTS " + calendario.getNomeCalendario() + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ID_CALENDARIO+" INTEGER NOT NULL," + DATAHORAINICIO + " DATETIME NOT NULL, " + DATAHORAFIM + " DATETIME, " + LOCAL + " VARCHAR (200),"+ SUMARIO + " VARCHAR (200) NOT NULL, "+ DESCRICAO +" TEXT );");
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + calendario.getNomeCalendario() + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+UID+" VARCHAR NOT NULL, " +ID_CALENDARIO+" INTEGER NOT NULL," + DATAHORAINICIO + " DATETIME NOT NULL, " + DATAHORAFIM + " DATETIME, " + LOCAL + " VARCHAR (200),"+ SUMARIO + " VARCHAR (200) NOT NULL, "+ DESCRICAO +" TEXT,"+ URI +" VARCHAR (300), "+ALARME+" BOOLEAN);");
     }
 
 

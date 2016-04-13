@@ -1,6 +1,8 @@
 package br.com.v8developmentstudio.rccguarulhos.bo;
 
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,6 +18,8 @@ import java.util.List;
 import biweekly.Biweekly;
 import biweekly.ICalendar;
 import biweekly.component.VEvent;
+import biweekly.parameter.ICalParameters;
+import biweekly.property.Attachment;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 
 /**
@@ -36,6 +40,10 @@ public List<Evento> getEventos(){
         Evento evento;
         for (VEvent event:events){
             evento = new Evento();
+            for(Attachment attachment :event.getAttachments()) {
+                evento.setUri(attachment.getUri());
+            }
+            evento.setUid(event.getUid().getValue());
             evento.setDataHoraInicio(new Date(event.getDateStart().getValue().getTime()));
             evento.setDataHoraFim(new Date(event.getDateEnd().getValue().getTime()));
             evento.setSumario(event.getSummary().getValue());

@@ -7,12 +7,17 @@ import java.util.Date;
  */
 public class Evento {
     private Integer id;
+    private String uid;
     private Integer idCalendario;
     private Date dataHoraInicio;
     private Date dataHoraFim;
+    private Date dataHoraModifcado;
+    private Date dataHoraCriado;
     private String local;
     private String sumario;
     private String descricao;
+    private String uri;
+    private Boolean alarme;
 
 
     public Integer getIdCalendario() {
@@ -68,6 +73,36 @@ public class Evento {
         this.descricao = descricao;
     }
 
+    public String getUid() {
+        return uid;
+    }
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
+    public Date getDataHoraModifcado() {
+        return dataHoraModifcado;
+    }
 
+    public void setDataHoraModifcado(Date dataHoraModifcado) {this.dataHoraModifcado = dataHoraModifcado;}
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public Date getDataHoraCriado() {
+        return dataHoraCriado;
+    }
+
+    public void setDataHoraCriado(Date dataHoraCriado) {
+        this.dataHoraCriado = dataHoraCriado;
+    }
+
+    public Boolean getAlarme() {return alarme;}
+
+    public void setAlarme(Boolean alarme) {this.alarme = alarme;}
 }

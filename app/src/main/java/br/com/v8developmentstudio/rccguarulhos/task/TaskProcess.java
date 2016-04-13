@@ -46,7 +46,6 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
         progress = new ProgressDialog(context);
         progress.setMessage("Garregando ...");
         progress.show();
-       // persistenceDao.onDrop(persistenceDao.openDB());
         persistenceDao.onCreate(persistenceDao.openDB());// Cria a TB_CONFIG_CALENDAR
         // ESSE PROCESSO SÓ DEVE SER EXECUTADO UMA VEZ ---- OU Em Atualizações
         //Processa o arquivo properties
@@ -83,7 +82,6 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
                     for (Evento evento : eventoList) {
                         persistenceDao.salvaNovoEvento(evento,calendario);
                     }
-
                     inFile.deleteOnExit();
                 }
             }else{

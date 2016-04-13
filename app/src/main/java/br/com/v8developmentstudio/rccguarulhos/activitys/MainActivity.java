@@ -144,8 +144,15 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
-        Toast.makeText(this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-        redirectListEventos(menuItem.getItemId(),String.valueOf(menuItem.getTitle()));
+        if(menuItem.getItemId() == R.id.favoritos){
+
+            Toast.makeText(this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+            redirectListEventos(menuItem.getItemId(),String.valueOf(menuItem.getTitle()));
+        }else{
+            Toast.makeText(this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+            redirectListEventos(menuItem.getItemId(),String.valueOf(menuItem.getTitle()));
+        }
+
         // Close the navigation drawers
         drawer.closeDrawers();
     }
@@ -209,6 +216,10 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         dados.putString(Constantes.CALENDARIO, tituloCalendario);
         ac.redirect(this, ListaEventosActivity.class, dados);
     }
+    private void redirectListFavoritos() {
+        ac.redirect(this, ListaEventosActivity.class, null);
+    }
+
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
