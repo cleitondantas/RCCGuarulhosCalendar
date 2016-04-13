@@ -2,6 +2,7 @@ package br.com.v8developmentstudio.rccguarulhos.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /**
  * Created by cleiton.dantas on 06/04/2016.
@@ -17,6 +18,7 @@ public class Preferences {
         SharedPreferences.Editor editor = settings.edit();
         editor.putLong("PrefTimeRepeating",timemilles);
         editor.commit();
+        Log.i("DEBUG", "PERSISTINDO salvarPrefTimeRepeating");
     }
 
     public long preferencesTimeRepeating(){
@@ -29,6 +31,7 @@ public class Preferences {
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("PrefDiaAlarm",dia);
         editor.commit();
+        Log.i("DEBUG", "PERSISTINDO salvarPrefDiaAlarm");
     }
 
     public int getPreferencesDiaAlarm(){

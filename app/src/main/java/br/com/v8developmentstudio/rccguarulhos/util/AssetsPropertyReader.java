@@ -66,7 +66,7 @@ public class AssetsPropertyReader {
             i++;
             calendarios.add(calendario);
         }
-
+        Log.i("DEBUG", "Passou processaCalendariosProperties");
         return calendarios;
     }
 }

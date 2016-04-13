@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -93,6 +94,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
                     eventoList.add(evento);
                 }
             } catch (ParseException e) {
+                Log.e("ERROR", "recuperaTodosEventos()--> "+ e);
                 e.printStackTrace();
             }
         }
@@ -122,6 +124,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
                         eventoList.add(evento);
                     }
                 } catch (ParseException e) {
+                    Log.e("ERROR", "recuperaTodosEventosPorCalendario()-->"+ e);
                     e.printStackTrace();
                 }
             }
@@ -198,6 +201,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
                     eventoList.add(evento);
                 }
             } catch (ParseException e) {
+                Log.e("ERROR", "recuperaEventosPor()--> "+ e);
                 e.printStackTrace();
             }
         }
@@ -223,6 +227,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
                 evento.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME))>0);
             }
         } catch (ParseException e) {
+            Log.e("ERROR", "recuperaEventoPorID()--> "+ e);
             e.printStackTrace();
         }
         return evento;
@@ -277,6 +282,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         try{
             bancoDados = context.openOrCreateDatabase(PersistenceDao.DATABASE_NAME, Context.MODE_WORLD_READABLE, null);
         }catch (Exception e){
+            Log.e("ERROR", "openDB(Context)--> "+ e);
         }
         return bancoDados;
     }
@@ -284,6 +290,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         try{
             bancoDados = context.openOrCreateDatabase(PersistenceDao.DATABASE_NAME, Context.MODE_WORLD_READABLE, null);
         }catch (Exception e){
+            Log.e("ERROR", "openDB()--> "+ e);
         }
         return bancoDados;
     }

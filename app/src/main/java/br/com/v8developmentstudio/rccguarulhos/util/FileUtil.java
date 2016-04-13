@@ -70,7 +70,7 @@ public class FileUtil {
         try {
             stream = new FileInputStream(file.getAbsolutePath());
         } catch (FileNotFoundException e) {
-            Log.i("DEBUG", "Erro ao fechar arquivo!"+e);
+            Log.e("ERROR", "Erro ao fechar arquivo!"+e);
             throw new ProviderException(e);
         }
         return stream;

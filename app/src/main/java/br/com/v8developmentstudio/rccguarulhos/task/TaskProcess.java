@@ -90,7 +90,7 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
             }
             Log.i("DEBUG", "Dados Gravados");
         } catch (IOException e) {
-            Log.i("DEBUG","Erro"+e);
+            Log.e("ERROR","Erro"+e);
             publishProgress("Erro ao Gravar dados"+e);
             e.printStackTrace();
         }
@@ -112,6 +112,7 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
             contruorical = new ConstrutorIcal(is);
             eventoList= contruorical.getEventos();
         } catch (IOException e) {
+            Log.e("ERROR","Erro"+e);
             e.printStackTrace();
         }
         return eventoList;

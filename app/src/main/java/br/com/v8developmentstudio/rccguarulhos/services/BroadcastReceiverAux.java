@@ -73,6 +73,7 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
 //        catch(Exception e){
 //
 //        }
+        Log.i("Script", "-> gerarNotificacao");
     }
 
     private Intent redirectDescricaoDoEvento(final Context context ,final Evento evento) {
