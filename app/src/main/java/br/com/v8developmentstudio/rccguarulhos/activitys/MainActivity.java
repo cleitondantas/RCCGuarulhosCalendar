@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         if(menuItem.getItemId() == R.id.favoritos){
 
             Toast.makeText(this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-            redirectListEventos(menuItem.getItemId(),String.valueOf(menuItem.getTitle()));
+            redirectListFavoritos();
         }else{
             Toast.makeText(this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
             redirectListEventos(menuItem.getItemId(),String.valueOf(menuItem.getTitle()));
@@ -217,7 +217,8 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         ac.redirect(this, ListaEventosActivity.class, dados);
     }
     private void redirectListFavoritos() {
-        ac.redirect(this, ListaEventosActivity.class, null);
+
+        ac.redirect(this, EventosFavoritosActivity.class, null);
     }
 
 

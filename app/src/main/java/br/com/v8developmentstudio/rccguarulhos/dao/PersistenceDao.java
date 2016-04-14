@@ -19,7 +19,6 @@ import java.util.List;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.modelo.EventoFavorito;
-import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 
 /**
  * Created by cleiton.dantas on 17/03/2016.
@@ -86,9 +85,36 @@ public class PersistenceDao extends SQLiteOpenHelper {
         contentValues.put(ALARME,isAlarme);
         getWritableDatabase().insert(TB_FAVORITOS, null, contentValues);
     }
-    public List<EventoFavorito> recuperaFavoritos(){
+
+    public void deletaEventoFavoritoPorUID(String UID){
+        String whereClause ="UID=?";
+        String[] whereArgs={UID};
+        bancoDados.delete(TB_FAVORITOS, whereClause, whereArgs);
+    }
+    public List<EventoFavorito> recuperaFavoritoPorUID(String uid){
         ArrayList<EventoFavorito> eventoFavoritos = new ArrayList<EventoFavorito>();
-        cursor = getWritableDatabase().query(TB_FAVORITOS, new String[]{ID,ID_CALENDARIO, ID_EVENTO, UID, ALARME}, null, null, null, null, null);
+        String whereClause ="UID = ?";
+        String[] whereArgs={uid};
+        cursor = getWritableDatabase().query(TB_FAVORITOS, new String[]{ID,ID_CALENDARIO, ID_EVENTO, UID, ALARME}, whereClause, whereArgs, null, null, null);
+        EventoFavorito eventoFavorito;
+        try {
+            while (cursor.moveToNext()) {
+                eventoFavorito = new EventoFavorito();
+                eventoFavorito.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+                eventoFavorito.setIdCalendario(cursor.getInt(cursor.getColumnIndex(ID_CALENDARIO)));
+                eventoFavorito.setUid(cursor.getString(cursor.getColumnIndex(UID)));
+                eventoFavorito.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME)) > 0);
+                eventoFavoritos.add(eventoFavorito);
+            }
+        } catch (Exception e) {
+            Log.e("ERROR", "recuperaListEventosFavoritos()-->"+ e);
+            e.printStackTrace();
+        }
+        return eventoFavoritos;
+    }
+    public List<EventoFavorito> recuperaTodosFavoritos(){
+        ArrayList<EventoFavorito> eventoFavoritos = new ArrayList<EventoFavorito>();
+        cursor = bancoDados.query(TB_FAVORITOS, new String[]{ID,ID_CALENDARIO, ID_EVENTO, UID, ALARME}, null, null, null, null, null);
         EventoFavorito eventoFavorito;
             try {
                 while (cursor.moveToNext()) {
@@ -106,11 +132,15 @@ public class PersistenceDao extends SQLiteOpenHelper {
         return eventoFavoritos;
     }
 
+
+
     public List<Evento> recuperaTodosEventosFavoritos(){
-        List<EventoFavorito> eventoFavoritos = recuperaFavoritos();
+        List<EventoFavorito> eventoFavoritos = recuperaTodosFavoritos();
         List<Evento> eventoList = new ArrayList<Evento>();
         for(EventoFavorito favoritos : eventoFavoritos){
-            eventoList.addAll(recuperaEventoPorUID(favoritos.getUid(), recuperaConfigCalendarPorID(favoritos.getIdCalendario()).getNomeCalendario()));
+            Calendario calendario =  recuperaConfigCalendarPorID(favoritos.getIdCalendario());
+            List<Evento>  eventoList1 =  recuperaEventoPorUID(favoritos.getUid(),calendario.getNomeCalendario());
+            eventoList.addAll(eventoList1);
         }
         return eventoList;
     }
@@ -121,7 +151,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         List<Evento> eventoList = new ArrayList<Evento>();
         List<Calendario> calendarios = recuperaTodasConfiguracoesCalendar();
         for(Calendario calendario : calendarios) {
-            cursor = getWritableDatabase().query(calendario.getNomeCalendario(), new String[]{ID,UID,ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM,DATAHORAMODIFICADO, LOCAL, SUMARIO, DESCRICAO,URI}, null, null, null, null, null);
+            cursor = bancoDados.query(calendario.getNomeCalendario(), new String[]{ID, UID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM, DATAHORAMODIFICADO, LOCAL, SUMARIO, DESCRICAO, URI}, null, null, null, null, null);
 
             Evento evento;
             try {
@@ -152,7 +182,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         List<Calendario> calendarios = recuperaTodasConfiguracoesCalendar();
         for(Calendario calendario : calendarios) {
             if(calendario.getId().equals(idCalendario)) {
-                cursor = getWritableDatabase().query(calendario.getNomeCalendario(), new String[]{ID,UID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM, LOCAL, SUMARIO, DESCRICAO,URI}, null, null, null, null, null);
+                cursor = bancoDados.query(calendario.getNomeCalendario(), new String[]{ID,UID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM,DATAHORAMODIFICADO, LOCAL, SUMARIO, DESCRICAO,URI}, null, null, null, null, null);
                 Evento evento;
                 try {
                     while (cursor.moveToNext()) {
@@ -167,7 +197,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
                         evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                         evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
                         evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
-                        evento.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME))>0);
                         eventoList.add(evento);
                     }
                 } catch (ParseException e) {
@@ -285,12 +314,14 @@ public class PersistenceDao extends SQLiteOpenHelper {
         List<Evento> eventoList = new ArrayList<Evento>();
         try {
             String sqlcoluns[] ={ID,UID,DATAHORAINICIO,DATAHORAFIM,DATAHORAMODIFICADO,LOCAL,SUMARIO,DESCRICAO,URI,ALARME};
-            cursor = bancoDados.query(calendario, sqlcoluns, UID+"=?", new String[]{uid}, null, null, null);
+            cursor = bancoDados.rawQuery("SELECT * FROM '" + calendario + "' WHERE UID ='" + uid + "'", null);
+           // cursor = getWritableDatabase().query(calendario, sqlcoluns,"UID=?", new String[]{uid}, null, null, null);
 
             while (cursor.moveToNext()) {
                 evento = new Evento();
                 evento.setId(cursor.getInt(cursor.getColumnIndex(ID)));
                 evento.setUid(cursor.getString(cursor.getColumnIndex(UID)));
+                evento.setIdCalendario(cursor.getInt(cursor.getColumnIndex(ID_CALENDARIO)));
                 evento.setDataHoraInicio(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAINICIO))));
                 evento.setDataHoraFim(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAFIM))));
                 evento.setDataHoraModifcado(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DATAHORAMODIFICADO))));
@@ -313,7 +344,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
         bancoDados.delete(calendario,whereClause,whereArgs);
     }
 
-
     /**
      * Salva os registros do properties calendaris
      * @param calendario
@@ -327,7 +357,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
     }
 
     public List<Calendario> recuperaTodasConfiguracoesCalendar() {
-        cursor = getWritableDatabase().query(TB_CONFIG_CALENDAR, new String[]{ID, NOME_CALENDARIO, NOME_LABEL, URL,ALARME}, null, null, null, null, null);
+        cursor = getWritableDatabase().query(TB_CONFIG_CALENDAR, new String[]{ID, NOME_CALENDARIO, NOME_LABEL, URL, ALARME}, null, null, null, null, null);
         List<Calendario> calendarios = new ArrayList<Calendario>();
         Calendario calendario;
             while (cursor.moveToNext()) {

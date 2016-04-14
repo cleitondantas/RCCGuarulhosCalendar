@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"  xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Search / will display always -->
+    <!-- Refresh -->
+    <item android:id="@+id/action_star"
+        android:icon="@drawable/my_star"
+        android:checkable="true"
+        android:title="Star"
+        app:showAsAction="ifRoom"/>
+
+</menu>
