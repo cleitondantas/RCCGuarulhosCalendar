@@ -221,7 +221,10 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     private void redirectListFavoritos() {
         ac.redirect(this, EventosFavoritosActivity.class, null);
     }
-
+    @Override
+    public void onBackPressed() {
+        super.finish();
+    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
