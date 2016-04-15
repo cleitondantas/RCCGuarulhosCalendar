@@ -54,7 +54,10 @@ public class EventosFavoritosActivity extends AppCompatActivity implements Recyc
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
     }
-
+    @Override
+    public void onBackPressed() {
+        activityServices.redirect(this,MainActivity.class,null);
+    }
 
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
@@ -81,6 +84,7 @@ public class EventosFavoritosActivity extends AppCompatActivity implements Recyc
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID,evento.getId().intValue());
         dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
+        dados.putInt(Constantes.ACTIVITYHISTOTY, Constantes.EVENTOSFAVORITOSACTIVITY);
         activityServices.redirect(this, DescricaoActivity.class, dados);
     }
 

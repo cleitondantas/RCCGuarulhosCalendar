@@ -14,6 +14,10 @@ public class Constantes {
     public static String LOCAL = "LOCAL";
     public static String SUMARIO ="SUMARIO";
     public static String DESCRICAO ="DESCRICAO";
+    public static String ACTIVITYHISTOTY = "ACTIVITYHISTOTY";
+    public static int  MAINACTIVITY = 0;
+    public static int EVENTOSFAVORITOSACTIVITY = 1;
+    public static int  LISTAEVENTOSACTIVITY = 2;
 
 
 }

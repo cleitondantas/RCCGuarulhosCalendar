@@ -23,14 +23,17 @@
         <activity
             android:name=".activitys.MainActivity"
             android:label="@string/app_calendario"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activitys.DescricaoActivity"
             android:label="@string/informacoes"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activitys.ListaEventosActivity"
             android:label="@string/app_eventos"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activitys.SettingsActivity"
@@ -39,6 +42,7 @@
         <activity
             android:name=".activitys.EventosFavoritosActivity"
             android:label="@string/app_favoritos"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <receiver
             android:name=".services.BroadcastReceiverAux"

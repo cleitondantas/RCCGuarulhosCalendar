@@ -20,6 +20,7 @@ import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
+import br.com.v8developmentstudio.rccguarulhos.util.Activitys;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 
@@ -81,10 +82,17 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
     }
     private void redirectDescricaoDoEvento(final Evento evento) {
         Bundle dados = new Bundle();
-        dados.putInt(Constantes.ID,evento.getId().intValue());
+        dados.putInt(Constantes.ID, evento.getId().intValue());
         dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
+        dados.putInt(Constantes.ACTIVITYHISTOTY, Constantes.LISTAEVENTOSACTIVITY);
         activityServices.redirect(this, DescricaoActivity.class, dados);
     }
+
+    @Override
+    public void onBackPressed() {
+        activityServices.redirect(this,MainActivity.class,null);
+    }
+
 
     private class RecyclerViewOnGestureListener extends GestureDetector.SimpleOnGestureListener {
 

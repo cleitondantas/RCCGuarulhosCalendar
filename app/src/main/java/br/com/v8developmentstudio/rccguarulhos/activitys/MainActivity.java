@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     private RecyclerView recyclerView;
     private GestureDetectorCompat gestureDetector;
     private FiltroDatas filtroDatas = new FiltroDatas();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID,evento.getId().intValue());
         dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
+        dados.putInt(Constantes.ACTIVITYHISTOTY, Constantes.MAINACTIVITY);
         ac.redirect(this, DescricaoActivity.class, dados);
     }
 
@@ -217,7 +219,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         ac.redirect(this, ListaEventosActivity.class, dados);
     }
     private void redirectListFavoritos() {
-
         ac.redirect(this, EventosFavoritosActivity.class, null);
     }
 

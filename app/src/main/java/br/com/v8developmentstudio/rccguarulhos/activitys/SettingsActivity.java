@@ -7,10 +7,13 @@ import android.util.Log;
 import android.widget.NumberPicker;
 
 import br.com.v8developmentstudio.rccguarulhos.R;
+import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
+import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
 import br.com.v8developmentstudio.rccguarulhos.services.Preferences;
 
 public class SettingsActivity extends AppCompatActivity {
     private NumberPicker dayForAlarm;
+    private ActivityServices activityServices = new ActivityServicesImpl();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,4 +34,11 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        activityServices.redirect(this, MainActivity.class, null);
+    }
+
+
 }
