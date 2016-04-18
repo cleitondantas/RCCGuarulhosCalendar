@@ -34,7 +34,7 @@ public class ServicoNotificacao {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
             AlarmManager alarme = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            alarme.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),60000, pendingIntent);
+            alarme.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
 
             //AlarmManager.INTERVAL_HALF_DAY
             //3000000
