@@ -38,9 +38,10 @@
         <activity
             android:name=".activitys.SettingsActivity"
             android:label="@string/title_activity_settings"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".activitys.EventosFavoritosActivity"
+            android:name=".activitys.ListaEventosFavoritosActivity"
             android:label="@string/app_favoritos"
             android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar"></activity>
@@ -49,7 +50,6 @@
             android:label="BroadcastReceiverAux">
             <intent-filter>
                 <action android:name="CALENDARIO_RCC_DISPARADO" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>

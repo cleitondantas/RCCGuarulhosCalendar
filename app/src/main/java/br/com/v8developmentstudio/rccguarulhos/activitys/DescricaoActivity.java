@@ -106,7 +106,7 @@ public class DescricaoActivity extends AppCompatActivity {
                 ac.redirect(this,MainActivity.class,null);
                 break;
             case 1:
-                ac.redirect(this,EventosFavoritosActivity.class,null);
+                ac.redirect(this,ListaEventosFavoritosActivity.class,null);
             break;
             case 2:
                 Bundle dados = new Bundle();

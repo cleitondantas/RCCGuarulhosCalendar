@@ -124,6 +124,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
                 while (cursor.moveToNext()) {
                     eventoFavorito = new EventoFavorito();
                     eventoFavorito.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+                    eventoFavorito.setIdEvento(cursor.getInt(cursor.getColumnIndex(ID_EVENTO)));
                     eventoFavorito.setIdCalendario(cursor.getInt(cursor.getColumnIndex(ID_CALENDARIO)));
                     eventoFavorito.setUid(cursor.getString(cursor.getColumnIndex(UID)));
                     eventoFavorito.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME)) > 0);
@@ -140,7 +141,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
         List<EventoFavorito> eventoFavoritos = recuperaTodosFavoritos();
         List<Evento> eventoList = new ArrayList<Evento>();
         for(EventoFavorito favoritos : eventoFavoritos){
-            Calendario calendario =  recuperaConfigCalendarPorID(favoritos.getIdCalendario());
             List<Evento>  eventoList1 =  recuperaEventoPorUID(favoritos.getUid());
             eventoList.addAll(eventoList1);
         }
@@ -279,7 +279,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
 
 
     public Evento recuperaEventoPorID(final int id){
-        openDB();
         Evento evento=null;
         try {
             cursor = bancoDados.rawQuery("SELECT * FROM '" + TB_EVENTOS + "' WHERE ID =" + id, null);
@@ -307,9 +306,10 @@ public class PersistenceDao extends SQLiteOpenHelper {
         Evento evento=null;
         List<Evento> eventoList = new ArrayList<Evento>();
         try {
-            String sqlcoluns[] ={ID,UID,DATAHORAINICIO,DATAHORAFIM,DATAHORAMODIFICADO,LOCAL,SUMARIO,DESCRICAO,URI,ALARME};
+            String sqlcoluns[] ={ID,ID_CALENDARIO,UID,DATAHORAINICIO,DATAHORAFIM,DATAHORAMODIFICADO,LOCAL,SUMARIO,DESCRICAO,URI,ALARME};
             String[] query = {"'"+uid +"'"};
-            cursor = getWritableDatabase().query(TB_EVENTOS, sqlcoluns, "UID=? ", new String[]{uid}, null, null, null);
+            cursor = bancoDados.rawQuery("SELECT * FROM '" + TB_EVENTOS + "' WHERE UID ='" + uid + "'", null);
+           // cursor = bancoDados.query(TB_EVENTOS, sqlcoluns, "UID=? ", new String[]{uid}, null, null, null);
 
             while (cursor.moveToNext()) {
                 evento = new Evento();
@@ -398,24 +398,21 @@ public class PersistenceDao extends SQLiteOpenHelper {
         return bancoDados;
     }
 
-    public void onCreateTabelaEventos(SQLiteDatabase db) {
-            db.execSQL("CREATE TABLE IF NOT EXISTS " + TB_EVENTOS + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+UID+" VARCHAR NOT NULL, " +ID_CALENDARIO+" INTEGER NOT NULL," + DATAHORAINICIO + " DATETIME NOT NULL, " + DATAHORAFIM + " DATETIME, " + DATAHORAMODIFICADO + " DATETIME, " + LOCAL + " VARCHAR (200),"+ SUMARIO + " VARCHAR (200) NOT NULL, "+ DESCRICAO +" TEXT,"+ URI +" VARCHAR (300));");
-    }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_CONFIG_CALENDAR +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+NOME_CALENDARIO+" VARCHAR NOT NULL,"+NOME_LABEL+" VARCHAR NOT NULL,"+URL+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
+        db.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_CONFIG_CALENDAR +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+NOME_CALENDARIO+" VARCHAR NOT NULL UNIQUE,"+NOME_LABEL+" VARCHAR NOT NULL,"+URL+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
         db.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_FAVORITOS +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+ID_CALENDARIO+" INTEGER NOT NULL,"+ID_EVENTO+" INTEGER NOT NULL,"+UID+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
-    }
-
-    public void onDropTabelaEventos(SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS "+TB_EVENTOS);
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TB_EVENTOS + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+UID+" VARCHAR NOT NULL, " +ID_CALENDARIO+" INTEGER NOT NULL," + DATAHORAINICIO + " DATETIME NOT NULL, " + DATAHORAFIM + " DATETIME, " + DATAHORAMODIFICADO + " DATETIME, " + LOCAL + " VARCHAR (200),"+ SUMARIO + " VARCHAR (200) NOT NULL, "+ DESCRICAO +" TEXT,"+ URI +" VARCHAR (300));");
     }
 
     public void onDrop(SQLiteDatabase db){
         db.execSQL("DROP TABLE IF EXISTS "+ TB_CONFIG_CALENDAR);
     }
+    public void onDropTabelaEventos(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS "+TB_EVENTOS);
+    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

@@ -2,6 +2,8 @@ package br.com.v8developmentstudio.rccguarulhos.util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +14,11 @@ import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
  */
 public class FiltroDatas {
 
+    /**
+     * Fiutro de datas (DE DATA ATUAL COM -1 ) PRA FRENTE
+     * @param eventos
+     * @return
+     */
     public List<Evento> filtraEventosPorDataAtual(List<Evento> eventos){
         List<Evento> eventoList = new ArrayList<Evento>();
         Date hoje = new Date();
@@ -24,9 +31,16 @@ public class FiltroDatas {
                 eventoList.add(evento);
             }
         }
+        comparatorData(eventoList);
         return eventoList;
     }
 
+    /**
+     * Verificador de Datas iguais
+     * @param primera
+     * @param segunda
+     * @return
+     */
     public boolean verificaSeDatasSaoIguais(Date primera, Date segunda){
         boolean data;
         if (primera.before(segunda)){
@@ -38,4 +52,16 @@ public class FiltroDatas {
         }
     }
 
+    /**
+     * Reordena a lista de eventos
+     * @param eventoList
+     */
+    public void comparatorData(List<Evento> eventoList){
+        Comparator<Evento> cmp = new Comparator<Evento>() {
+            public int compare(Evento o1, Evento o2) {
+                return o1.getDataHoraInicio().compareTo(o2.getDataHoraInicio());
+            }
+        };
+        Collections.sort(eventoList, cmp);
+    }
 }

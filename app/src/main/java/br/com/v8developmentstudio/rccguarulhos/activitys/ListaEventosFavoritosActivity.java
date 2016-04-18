@@ -27,7 +27,7 @@ import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 /**
  * Created by cleiton.dantas on 28/03/2016.
  */
-public class EventosFavoritosActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener, View.OnClickListener{
+public class ListaEventosFavoritosActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener, View.OnClickListener{
     private List<Evento> listEventos;
     private RecyclerView recyclerView;
     private MyRecyclerViewAdapter myRecyclerViewAdapter;
@@ -50,7 +50,7 @@ public class EventosFavoritosActivity extends AppCompatActivity implements Recyc
         gestureDetector = new GestureDetectorCompat(this,new RecyclerViewOnGestureListener());
 
         listEventos =   persistenceDao.recuperaTodosEventosFavoritos();
-        myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos);
+        myRecyclerViewAdapter = new MyRecyclerViewAdapter(filtroDatas.filtraEventosPorDataAtual(listEventos));
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
     }

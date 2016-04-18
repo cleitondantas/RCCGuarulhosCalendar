@@ -2,7 +2,6 @@
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -198,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     }
 
     public void construtorAdapter(){
+        filtroDatas.comparatorData(listEventos);
         myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos);
         recyclerView.setAdapter(myRecyclerViewAdapter);
     }
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         ac.redirect(this, ListaEventosActivity.class, dados);
     }
     private void redirectListFavoritos() {
-        ac.redirect(this, EventosFavoritosActivity.class, null);
+        ac.redirect(this, ListaEventosFavoritosActivity.class, null);
     }
     @Override
     public void onBackPressed() {

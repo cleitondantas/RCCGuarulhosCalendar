@@ -54,6 +54,7 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
         gestureDetector = new GestureDetectorCompat(this,new RecyclerViewOnGestureListener());
 
         listEventos =   persistenceDao.recuperaTodosEventosPorCalendario(idCalendario);
+
         myRecyclerViewAdapter = new MyRecyclerViewAdapter(filtroDatas.filtraEventosPorDataAtual(listEventos));
         recyclerView.setAdapter(myRecyclerViewAdapter);
 

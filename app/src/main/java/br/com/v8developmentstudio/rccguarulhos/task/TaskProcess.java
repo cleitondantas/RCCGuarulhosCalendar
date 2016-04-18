@@ -45,23 +45,23 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
         progress = new ProgressDialog(context);
         progress.setMessage("Garregando ...");
         progress.show();
-        persistenceDao.onCreate(persistenceDao.openDB());// Cria a TB_CONFIG_CALENDAR
-        persistenceDao.onCreateTabelaEventos(persistenceDao.openDB());
+
+        persistenceDao.onDropTabelaEventos(persistenceDao.openDB());
+        persistenceDao.onCreate(persistenceDao.openDB());
+
         // ESSE PROCESSO SÓ DEVE SER EXECUTADO UMA VEZ ---- OU Em Atualizações
         //Processa o arquivo properties
-        if(!persistenceDao.isTBContemRegistro(persistenceDao.openDB(), persistenceDao.TB_CONFIG_CALENDAR)){
-            for(Calendario calendarios : assetsPropertyReader.processaCalendariosProperties()){
+            for(Calendario calendarios : assetsPropertyReader.processaCalendariosProperties()) {
                 //Salva os dados do Properties na TB_CONFIG_CALENDAR
                 persistenceDao.salvaConfiguracaoCalendario(calendarios);
                 Log.i("DEBUG", "PERSISTINDO TABELAS DE CALENDARIOS");
             }
-        }
     }
 
-    @Override
-    protected String doInBackground(String... urls)  {
-        try {
-            Log.i("DEBUG", "Iniciado");
+            @Override
+            protected String doInBackground(String... urls)  {
+          try {
+                    Log.i("DEBUG", "Iniciado");
             InputStream input = null;
             if(isOnline()) {
                 publishProgress("Abrindo Connecxao");
@@ -74,7 +74,6 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
                     input = conec.getInputStream();
                     //Depois de Baixar o aquivo é gravado um file temporario
                     inFile = fileUtil.criaArquivo(input, ".ical");
-
                     Log.i("DEBUG", "Iniciado Gravacao");
                     List<Evento> eventoList = getCalendarEventosICAL(fileUtil.recuperaArquivos(inFile.getPath()));
                     for (Evento evento : eventoList) {

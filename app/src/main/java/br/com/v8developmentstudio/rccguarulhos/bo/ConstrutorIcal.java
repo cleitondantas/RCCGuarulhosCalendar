@@ -1,33 +1,28 @@
 package br.com.v8developmentstudio.rccguarulhos.bo;
 
 
-import android.util.Log;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import biweekly.Biweekly;
 import biweekly.ICalendar;
 import biweekly.component.VEvent;
-import biweekly.parameter.ICalParameters;
 import biweekly.property.Attachment;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
+import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 
 /**
  * Created by cleiton.dantas on 15/03/2016.
  */
 public class ConstrutorIcal {
     private List<ICalendar> icals;
-
+    private FiltroDatas filtroDatas = new FiltroDatas();
     public ConstrutorIcal(InputStream in) throws IOException {
         icals = Biweekly.parse(converter(in)).all();
     }
@@ -44,6 +39,7 @@ public List<Evento> getEventos(){
                 evento.setUri(attachment.getUri());
             }
             evento.setUid(event.getUid().getValue());
+            evento.setDataHoraCriado(event.getCreated().getValue());
             evento.setDataHoraInicio(new Date(event.getDateStart().getValue().getTime()));
             evento.setDataHoraFim(new Date(event.getDateEnd().getValue().getTime()));
             evento.setDataHoraModifcado(new Date(event.getLastModified().getValue().getTime()));
@@ -53,12 +49,7 @@ public List<Evento> getEventos(){
             eventoList.add(evento);
         }
     }
-    Comparator<Evento> cmp = new Comparator<Evento>() {
-        public int compare(Evento o1, Evento o2) {
-            return o1.getDataHoraInicio().compareTo(o2.getDataHoraInicio());
-        }
-    };
-    Collections.sort(eventoList, cmp);
+    filtroDatas.comparatorData(eventoList);
 
     return eventoList;
 }
