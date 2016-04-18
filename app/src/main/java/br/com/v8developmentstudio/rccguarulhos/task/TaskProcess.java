@@ -46,6 +46,7 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
         progress.setMessage("Garregando ...");
         progress.show();
         persistenceDao.onCreate(persistenceDao.openDB());// Cria a TB_CONFIG_CALENDAR
+        persistenceDao.onCreateTabelaEventos(persistenceDao.openDB());
         // ESSE PROCESSO SÓ DEVE SER EXECUTADO UMA VEZ ---- OU Em Atualizações
         //Processa o arquivo properties
         if(!persistenceDao.isTBContemRegistro(persistenceDao.openDB(), persistenceDao.TB_CONFIG_CALENDAR)){
@@ -75,8 +76,6 @@ public class TaskProcess extends AsyncTask<String,Object,String> {
                     inFile = fileUtil.criaArquivo(input, ".ical");
 
                     Log.i("DEBUG", "Iniciado Gravacao");
-                    persistenceDao.onDropTabelaDeCalandario(persistenceDao.openDB(), calendario);
-                    persistenceDao.onCreateTabelaDeCalandario(persistenceDao.openDB(), calendario);
                     List<Evento> eventoList = getCalendarEventosICAL(fileUtil.recuperaArquivos(inFile.getPath()));
                     for (Evento evento : eventoList) {
                         persistenceDao.updateEvents(evento,calendario);

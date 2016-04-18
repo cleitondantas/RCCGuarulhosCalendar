@@ -104,8 +104,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         myRecyclerViewAdapter = new MyRecyclerViewAdapter(filtroDatas.filtraEventosPorDataAtual(listEventos));
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
-        //-----
-
         currentCalendar = Calendar.getInstance(Locale.getDefault());
         robotoCalendarView.setRobotoCalendarListener(this);
         robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
@@ -207,7 +205,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     private void redirectDescricaoDoEvento(final Evento evento) {
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID,evento.getId().intValue());
-        dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
         dados.putInt(Constantes.ACTIVITYHISTOTY, Constantes.MAINACTIVITY);
         ac.redirect(this, DescricaoActivity.class, dados);
     }

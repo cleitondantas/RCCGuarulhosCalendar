@@ -52,7 +52,9 @@ public class DescricaoActivity extends AppCompatActivity {
         TextView textViewDataHoraFim = (TextView)findViewById(R.id.idDataHoraFim);
         TextView textViewLocal = (TextView)findViewById(R.id.idLocal);
 
-        evento = getEventoDao(id,idCalendario);
+        evento = getEventoDao(id);
+        calendario = persistenceDao.recuperaConfigCalendarPorID(evento.getIdCalendario());
+
         textViewSumario.setText(evento.getSumario());
         textViewDescricao.setText(evento.getDescricao());
         textViewDataHoraInicio.setText(dateFormat.format(evento.getDataHoraInicio()));
@@ -63,9 +65,8 @@ public class DescricaoActivity extends AppCompatActivity {
 
     }
 
-    private Evento getEventoDao(int id,int idCalendario){
-        calendario = persistenceDao.recuperaConfigCalendarPorID(idCalendario);
-        return  persistenceDao.recuperaEventoPorID(id,calendario.getNomeCalendario());
+    private Evento getEventoDao(int id){
+        return  persistenceDao.recuperaEventoPorID(id);
     }
 
     @Override
