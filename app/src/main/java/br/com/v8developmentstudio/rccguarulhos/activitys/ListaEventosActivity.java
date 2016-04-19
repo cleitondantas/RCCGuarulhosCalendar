@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -43,9 +44,11 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
         String titulo = getIntent().getStringExtra(Constantes.CALENDARIO);
         Toolbar toolbar = (Toolbar) findViewById(R.id.lista_eventos_toolbar);
         toolbar.setSubtitle(titulo);
-
         setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerView = (RecyclerView) findViewById(R.id.lista_eventos_recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -54,10 +57,19 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
         gestureDetector = new GestureDetectorCompat(this,new RecyclerViewOnGestureListener());
 
         listEventos =   persistenceDao.recuperaTodosEventosPorCalendario(idCalendario);
-
-        myRecyclerViewAdapter = new MyRecyclerViewAdapter(filtroDatas.filtraEventosPorDataAtual(listEventos));
+        listEventos =filtroDatas.filtraEventosPorDataAtual(listEventos);
+        myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos);
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -87,11 +99,13 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
         dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
         dados.putInt(Constantes.ACTIVITYHISTOTY, Constantes.LISTAEVENTOSACTIVITY);
         activityServices.redirect(this, DescricaoActivity.class, dados);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
     @Override
     public void onBackPressed() {
         activityServices.redirect(this,MainActivity.class,null);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
 

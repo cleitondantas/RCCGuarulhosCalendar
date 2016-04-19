@@ -1,15 +1,13 @@
 package br.com.v8developmentstudio.rccguarulhos;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -25,7 +23,7 @@ public class AberturaSplashActivity  extends Activity {
 
     private PersistenceDao persistenceDao = new PersistenceDao(this);
     private ServicoNotificacao servicoNotificacao = new ServicoNotificacao();
-    public static Integer TIMESLEAP;
+    public static Integer TIMESLEAP = 2000;
     @Override
     public  void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -36,21 +34,20 @@ public class AberturaSplashActivity  extends Activity {
         servicoNotificacao.createAlarmNotification(this);
 
         if(isOnline()){
-            TIMESLEAP=6000;
             TaskProcess taskPross = new TaskProcess(this);
             taskPross.execute();
-        }else{
-            TIMESLEAP=2000;
+        } else{
+            Toast toast = Toast.makeText(this, "SEM CONEXÂO!", Toast.LENGTH_LONG);
+            toast.show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent minhaintent = new Intent(getApplicationContext(),MainActivity.class);
+                    AberturaSplashActivity.this.startActivity(minhaintent);
+                    AberturaSplashActivity.this.finish();
+                }
+            },TIMESLEAP);
         }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent minhaintent = new Intent(getApplicationContext(),MainActivity.class);
-                AberturaSplashActivity.this.startActivity(minhaintent);
-                AberturaSplashActivity.this.finish();
-            }
-        },TIMESLEAP);
-
     }
 
     public boolean isOnline() {

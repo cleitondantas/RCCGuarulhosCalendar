@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.activitys.ListaEventosActivity;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 
@@ -20,5 +21,6 @@ public class ActivityServicesImpl implements ActivityServices{
             intent.putExtras(dados);
         }
         context.startActivity(intent);
+
     }
 }

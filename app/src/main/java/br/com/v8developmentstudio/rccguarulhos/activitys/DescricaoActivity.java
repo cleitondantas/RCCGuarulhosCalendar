@@ -41,6 +41,8 @@ public class DescricaoActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         int id  = getIntent().getIntExtra(Constantes.ID,1);
         int idCalendario = getIntent().getIntExtra(Constantes.CALENDARIO,1); //savedInstanceState.getString(Constantes.CALENDARIO);
@@ -94,6 +96,9 @@ public class DescricaoActivity extends AppCompatActivity {
             case R.id.action_star:
                 pressFavorito(item);
                 return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -104,15 +109,18 @@ public class DescricaoActivity extends AppCompatActivity {
         switch (activityHistory){
             case 0:
                 ac.redirect(this,MainActivity.class,null);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case 1:
-                ac.redirect(this,ListaEventosFavoritosActivity.class,null);
+                ac.redirect(this, ListaEventosFavoritosActivity.class, null);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             break;
             case 2:
                 Bundle dados = new Bundle();
-                dados.putInt(Constantes.ID,calendario.getId());
+                dados.putInt(Constantes.ID, calendario.getId());
                 dados.putString(Constantes.CALENDARIO, calendario.getNomeLabel());
-                ac.redirect(this,ListaEventosActivity.class,dados);
+                ac.redirect(this, ListaEventosActivity.class, dados);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             break;
 
         }

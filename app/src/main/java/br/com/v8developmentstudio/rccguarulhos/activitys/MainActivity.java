@@ -207,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         dados.putInt(Constantes.ID,evento.getId().intValue());
         dados.putInt(Constantes.ACTIVITYHISTOTY, Constantes.MAINACTIVITY);
         ac.redirect(this, DescricaoActivity.class, dados);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     private void redirectListEventos(int idCalenadrio,String tituloCalendario) {
@@ -214,13 +215,20 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         dados.putInt(Constantes.ID, idCalenadrio);
         dados.putString(Constantes.CALENDARIO, tituloCalendario);
         ac.redirect(this, ListaEventosActivity.class, dados);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
     private void redirectListFavoritos() {
         ac.redirect(this, ListaEventosFavoritosActivity.class, null);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
+
     @Override
     public void onBackPressed() {
-        super.finish();
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }else {
+            super.finish();
+        }
     }
 
     @Override

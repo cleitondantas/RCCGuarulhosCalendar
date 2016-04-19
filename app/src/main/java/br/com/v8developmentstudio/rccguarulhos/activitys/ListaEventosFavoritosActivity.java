@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -41,6 +42,8 @@ public class ListaEventosFavoritosActivity extends AppCompatActivity implements 
         setContentView(R.layout.lista_eventos_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.lista_eventos_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = (RecyclerView) findViewById(R.id.lista_eventos_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -50,13 +53,26 @@ public class ListaEventosFavoritosActivity extends AppCompatActivity implements 
         gestureDetector = new GestureDetectorCompat(this,new RecyclerViewOnGestureListener());
 
         listEventos =   persistenceDao.recuperaTodosEventosFavoritos();
-        myRecyclerViewAdapter = new MyRecyclerViewAdapter(filtroDatas.filtraEventosPorDataAtual(listEventos));
+        listEventos =filtroDatas.filtraEventosPorDataAtual(listEventos);
+        myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos);
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onBackPressed() {
         activityServices.redirect(this,MainActivity.class,null);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
     @Override
@@ -86,6 +102,8 @@ public class ListaEventosFavoritosActivity extends AppCompatActivity implements 
         dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
         dados.putInt(Constantes.ACTIVITYHISTOTY, Constantes.EVENTOSFAVORITOSACTIVITY);
         activityServices.redirect(this, DescricaoActivity.class, dados);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
     }
 
     private class RecyclerViewOnGestureListener extends GestureDetector.SimpleOnGestureListener {
