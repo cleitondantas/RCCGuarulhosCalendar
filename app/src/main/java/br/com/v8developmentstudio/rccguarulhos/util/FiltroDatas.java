@@ -64,4 +64,21 @@ public class FiltroDatas {
         };
         Collections.sort(eventoList, cmp);
     }
+
+    /**
+     * Fiutro de datas (DE DATA ATUAL COM +1 ) PRA FRENTE
+     * @return
+     */
+    public boolean verificaDataUltimaAtualizacao(Date datarecuperada){
+        Date hoje = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(hoje);
+        //c.add(Calendar.DATE, -1);
+        c.add(Calendar.MINUTE, -10);
+        hoje = c.getTime();
+            if(datarecuperada.before(hoje)){
+                return true;
+            }
+        return false;
+    }
 }

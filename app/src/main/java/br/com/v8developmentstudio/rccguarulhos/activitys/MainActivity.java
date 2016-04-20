@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         dados.putInt(Constantes.ID,evento.getId().intValue());
         dados.putInt(Constantes.ACTIVITYHISTOTY, Constantes.MAINACTIVITY);
         ac.redirect(this, DescricaoActivity.class, dados);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
     private void redirectListEventos(int idCalenadrio,String tituloCalendario) {

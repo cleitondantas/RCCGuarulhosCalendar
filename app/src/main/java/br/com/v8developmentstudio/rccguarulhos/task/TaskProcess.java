@@ -2,8 +2,6 @@ package br.com.v8developmentstudio.rccguarulhos.task;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 import java.io.File;
@@ -40,13 +38,13 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
         this.context = context;
         persistenceDao = new PersistenceDao(context);
         assetsPropertyReader = new AssetsPropertyReader(context);
+
     }
 
     @Override
     protected void onPreExecute() {
         progress = new ProgressDialog(context);
-        progress.setMessage("Garregando ...");
-        progress.show();
+        postMensagem("Garregando...");
         persistenceDao.onDropTabelaEventos(persistenceDao.openDB());
         persistenceDao.onCreate(persistenceDao.openDB());
         for (Calendario calendarios : assetsPropertyReader.processaCalendariosProperties()) {
@@ -61,10 +59,7 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
         try {
             Log.i("DEBUG", "Iniciado");
             InputStream input = null;
-            if (isOnline()) {
-                publishProgress("Abrindo Connecxao");
                 Log.i("DEBUG", "Abrindo Connecxao");
-
                 calendarios = persistenceDao.recuperaTodasConfiguracoesCalendar();
                 for (Calendario calendario : calendarios) {
                     URL url = new URL(calendario.getUrl());
@@ -80,10 +75,6 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
                     }
                     inFile.deleteOnExit();
                 }
-            } else {
-                publishProgress("Sem Connecxao");
-                Log.i("DEBUG", "Sem Connecxao");
-            }
             Log.i("DEBUG", "Dados Gravados");
         } catch (IOException e) {
             Log.e("ERROR", "Erro" + e);
@@ -95,6 +86,7 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
 
     @Override
     protected void onProgressUpdate(Object... params) {
+        Log.i("DEBUG", "onProgressUpdate" + params);
         super.onProgressUpdate(params);
     }
 
@@ -116,13 +108,9 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
         }
         return eventoList;
     }
-
-    public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
+    private void postMensagem(String mensagem){
+        progress.setMessage(mensagem);
+        progress.show();
     }
-
-
 }
 

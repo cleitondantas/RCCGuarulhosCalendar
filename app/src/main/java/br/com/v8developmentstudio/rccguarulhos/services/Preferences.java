@@ -13,6 +13,19 @@ public class Preferences {
         this.context = context;
     }
 
+    public void salvarPrefTimeAtulizacao(long timemilles){
+        SharedPreferences settings = context.getSharedPreferences("Preferences", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putLong("TimeAtulizacao",timemilles);
+        editor.commit();
+        Log.i("DEBUG", "PERSISTINDO TimeAtulizacao");
+    }
+    public long preferencesTimeAtulizacao(){
+        SharedPreferences settings = context.getSharedPreferences("Preferences", 0);
+        return settings.getLong("TimeAtulizacao",120000);
+    }
+
+
     public void salvarPrefTimeRepeating(long timemilles){
         SharedPreferences settings = context.getSharedPreferences("Preferences", 0);
         SharedPreferences.Editor editor = settings.edit();
@@ -26,6 +39,7 @@ public class Preferences {
        return settings.getLong("PrefTimeRepeating",120000);
     }
 
+
     public void salvarPrefDiaAlarm(int dia){
         SharedPreferences settings = context.getSharedPreferences("Preferences", 0);
         SharedPreferences.Editor editor = settings.edit();
@@ -38,6 +52,5 @@ public class Preferences {
         SharedPreferences settings = context.getSharedPreferences("Preferences", 0);
         return settings.getInt("PrefDiaAlarm",1);
     }
-
 
 }

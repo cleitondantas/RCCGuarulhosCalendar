@@ -35,17 +35,30 @@ public List<Evento> getEventos(){
         Evento evento;
         for (VEvent event:events){
             evento = new Evento();
-            for(Attachment attachment :event.getAttachments()) {
-                evento.setUri(attachment.getUri());
+
+            String descriccao = event.getDescription().getValue();
+            if(descriccao.contains("<img>") && descriccao.contains("</img>")){
+                String uri =  descriccao.substring(descriccao.indexOf("<img>") + 5, descriccao.indexOf("</img>", descriccao.indexOf("<img>")));
+                if(!uri.isEmpty()){
+                    evento.setUri(uri);
+                    descriccao = descriccao.replace("<img>"+uri+"</img>","");
+                }
             }
+
+            evento.setDescricao(descriccao);
             evento.setUid(event.getUid().getValue());
             evento.setDataHoraCriado(event.getCreated().getValue());
             evento.setDataHoraInicio(new Date(event.getDateStart().getValue().getTime()));
             evento.setDataHoraFim(new Date(event.getDateEnd().getValue().getTime()));
             evento.setDataHoraModifcado(new Date(event.getLastModified().getValue().getTime()));
             evento.setSumario(event.getSummary().getValue());
-            evento.setDescricao(event.getDescription().getValue());
             evento.setLocal(event.getLocation().getValue());
+
+            /* Temporariamente Inutilizado Devido a forma do google montar a uri
+            for(Attachment attachment :event.getAttachments()) {
+                evento.setUri(attachment.getUri());
+            }
+            */
             eventoList.add(evento);
         }
     }

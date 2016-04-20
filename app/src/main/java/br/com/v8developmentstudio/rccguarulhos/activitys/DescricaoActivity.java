@@ -1,6 +1,9 @@
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,8 +11,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -20,6 +32,7 @@ import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.modelo.EventoFavorito;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
+import br.com.v8developmentstudio.rccguarulhos.task.DownloadImagesTask;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 
 /**
@@ -43,10 +56,13 @@ public class DescricaoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         int id  = getIntent().getIntExtra(Constantes.ID,1);
-        int idCalendario = getIntent().getIntExtra(Constantes.CALENDARIO,1); //savedInstanceState.getString(Constantes.CALENDARIO);
         activityHistory =  getIntent().getIntExtra(Constantes.ACTIVITYHISTOTY,0);
+
+        ImageView thumbnail = (ImageView)findViewById(R.id.thumbnail);
+        thumbnail.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+
 
         TextView textViewSumario = (TextView)findViewById(R.id.idsumario);
         TextView textViewDescricao = (TextView)findViewById(R.id.idDescricao);
@@ -56,6 +72,13 @@ public class DescricaoActivity extends AppCompatActivity {
 
         evento = getEventoDao(id);
         calendario = persistenceDao.recuperaConfigCalendarPorID(evento.getIdCalendario());
+
+        if(evento.getUri()!=null){
+            thumbnail.setTag(evento.getUri());
+            thumbnail.setMaxHeight(250);
+            thumbnail.setMinimumHeight(250);
+            new DownloadImagesTask().execute(thumbnail);
+        }
 
         textViewSumario.setText(evento.getSumario());
         textViewDescricao.setText(evento.getDescricao());
@@ -108,8 +131,8 @@ public class DescricaoActivity extends AppCompatActivity {
     public void onBackPressed() {
         switch (activityHistory){
             case 0:
-                ac.redirect(this,MainActivity.class,null);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                ac.redirect(this, MainActivity.class, null);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
             case 1:
                 ac.redirect(this, ListaEventosFavoritosActivity.class, null);
@@ -139,6 +162,5 @@ public class DescricaoActivity extends AppCompatActivity {
         }
 
     }
-
 
 }
