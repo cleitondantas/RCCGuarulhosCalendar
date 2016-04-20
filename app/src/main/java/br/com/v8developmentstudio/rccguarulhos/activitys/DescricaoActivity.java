@@ -1,5 +1,6 @@
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -33,6 +34,7 @@ import br.com.v8developmentstudio.rccguarulhos.modelo.EventoFavorito;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
 import br.com.v8developmentstudio.rccguarulhos.task.DownloadImagesTask;
+import br.com.v8developmentstudio.rccguarulhos.task.ImageDownloadAndSave;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 
 /**
@@ -73,11 +75,18 @@ public class DescricaoActivity extends AppCompatActivity {
         evento = getEventoDao(id);
         calendario = persistenceDao.recuperaConfigCalendarPorID(evento.getIdCalendario());
 
+
         if(evento.getUri()!=null){
+
+           // String[] urlImage = {evento.getUri(),"10001"};
+            //new ImageDownloadAndSave().execute(urlImage);
+
             thumbnail.setTag(evento.getUri());
+            Object[] obj = {thumbnail,evento.getUid()};
+            new DownloadImagesTask().execute(obj);
             thumbnail.setMaxHeight(250);
             thumbnail.setMinimumHeight(250);
-            new DownloadImagesTask().execute(thumbnail);
+
         }
 
         textViewSumario.setText(evento.getSumario());

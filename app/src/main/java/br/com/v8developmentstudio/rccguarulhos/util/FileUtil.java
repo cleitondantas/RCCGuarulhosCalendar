@@ -1,5 +1,7 @@
 package br.com.v8developmentstudio.rccguarulhos.util;
 
+import android.graphics.Bitmap;
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
@@ -8,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.ProviderException;
 
 /**
@@ -76,5 +79,24 @@ public class FileUtil {
         return stream;
     }
 
+
+    public void downloadTempImage(){
+        Bitmap mBitmap =null;
+        File f3=new File(Environment.getExternalStorageDirectory()+"/"+Constantes.IMG_PATH_TEMP+"/");
+        if(!f3.exists()){
+            f3.mkdirs();
+        }
+        OutputStream outStream = null;
+        File file = new File(Environment.getExternalStorageDirectory() +"/"+Constantes.IMG_PATH_TEMP+"/"+"seconds"+".jpg");
+        try {
+            outStream = new FileOutputStream(file);
+            mBitmap.compress(Bitmap.CompressFormat.JPEG, 90, outStream);
+            outStream.flush();
+            outStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

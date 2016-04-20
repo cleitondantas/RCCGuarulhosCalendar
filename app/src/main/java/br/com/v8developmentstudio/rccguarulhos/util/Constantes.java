@@ -18,6 +18,8 @@ public class Constantes {
     public static int  MAINACTIVITY = 0;
     public static int EVENTOSFAVORITOSACTIVITY = 1;
     public static int  LISTAEVENTOSACTIVITY = 2;
+    public static String IMG_PATH_TEMP = "RCC_IMGTemp";
+    public static String JPG = ".jpg";
 
 
 }

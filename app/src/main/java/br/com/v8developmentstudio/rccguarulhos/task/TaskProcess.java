@@ -38,7 +38,6 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
         this.context = context;
         persistenceDao = new PersistenceDao(context);
         assetsPropertyReader = new AssetsPropertyReader(context);
-
     }
 
     @Override
