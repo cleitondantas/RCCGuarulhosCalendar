@@ -48,7 +48,6 @@ public class DownloadImagesTask extends AsyncTask<Object, Void, Bitmap> {
                 criaArquivo(is,nomeFile);
             }
 
-
             if (null != bmp)
                 return bmp;
 

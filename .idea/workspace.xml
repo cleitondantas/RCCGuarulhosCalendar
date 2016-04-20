@@ -13,13 +13,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eaf39dda-3d19-476e-902a-5da48d647cee" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/task/ImageDownloadAndSave.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/util/Constantes.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/util/Constantes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/activitys/DescricaoActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/activitys/DescricaoActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/task/DownloadImagesTask.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/task/DownloadImagesTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/util/FileUtil.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/util/FileUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/task/TaskProcess.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/task/TaskProcess.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="RCCGuarulhosCalendar.iws" />
@@ -73,8 +67,8 @@
       <file leaf-file-name="DownloadImagesTask.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/task/DownloadImagesTask.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.35604396">
-              <caret line="56" column="5" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.61758244">
+              <caret line="48" column="13" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#934#935#0" expanded="true" />
@@ -3293,7 +3287,13 @@
       <option name="project" value="LOCAL" />
       <updated>1461169645633</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Criado método de buffer de Imagems com imagens temporarias">
+      <created>1461185655356</created>
+      <option name="number" value="00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1461185655356</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TodoView" selected-index="3">
@@ -3315,7 +3315,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988507" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41149426" sideWeight="0.841687" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41149426" sideWeight="0.841687" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294621" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43333334" sideWeight="0.710269" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
@@ -3385,7 +3385,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Criado método que lista eventos do dia e do mês" />
     <MESSAGE value="Criado pagina de Visualização de Eventos" />
     <MESSAGE value="Incluido método que reconhece conexao com a internet" />
     <MESSAGE value="Realizado mudanças para implementação do Material Desing&#10;" />
@@ -3410,7 +3409,8 @@
     <MESSAGE value=" Notificacao" />
     <MESSAGE value="Criado botão de Voltar no actionbar" />
     <MESSAGE value="Criado método de buffer de Imagems" />
-    <option name="LAST_COMMIT_MESSAGE" value="Criado método de buffer de Imagems" />
+    <MESSAGE value="Criado método de buffer de Imagems com imagens temporarias" />
+    <option name="LAST_COMMIT_MESSAGE" value="Criado método de buffer de Imagems com imagens temporarias" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3441,7 +3441,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/task/DownloadImagesTask.java</url>
-          <line>87</line>
+          <line>86</line>
           <properties />
           <option name="timeStamp" value="143" />
         </line-breakpoint>
@@ -3902,8 +3902,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/task/DownloadImagesTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35604396">
-          <caret line="56" column="5" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.61758244">
+          <caret line="48" column="13" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#934#935#0" expanded="true" />
