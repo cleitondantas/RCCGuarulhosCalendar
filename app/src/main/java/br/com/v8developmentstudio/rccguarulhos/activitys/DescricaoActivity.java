@@ -1,18 +1,25 @@
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,22 +55,21 @@ public class DescricaoActivity extends AppCompatActivity {
     private Calendario calendario;
     private List<EventoFavorito> eventoFavoritos;
     private int activityHistory;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private  Toolbar toolbar;
     private ActivityServices ac = new ActivityServicesImpl();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.descricao_cards_activity);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar3);
+        toolbar = (Toolbar) findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
+
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         int id  = getIntent().getIntExtra(Constantes.ID,1);
         activityHistory =  getIntent().getIntExtra(Constantes.ACTIVITYHISTOTY,0);
-
-        ImageView thumbnail = (ImageView)findViewById(R.id.thumbnail);
-        thumbnail.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
 
 
         TextView textViewSumario = (TextView)findViewById(R.id.idsumario);
@@ -71,33 +77,26 @@ public class DescricaoActivity extends AppCompatActivity {
         TextView textViewDataHoraInicio = (TextView)findViewById(R.id.idDataHoraInicio);
         TextView textViewDataHoraFim = (TextView)findViewById(R.id.idDataHoraFim);
         TextView textViewLocal = (TextView)findViewById(R.id.idLocal);
+        ImageView thumbnail = (ImageView)findViewById(R.id.thumbnail);
+        thumbnail.setScaleType(ImageView.ScaleType.FIT_XY);
 
         evento = getEventoDao(id);
         calendario = persistenceDao.recuperaConfigCalendarPorID(evento.getIdCalendario());
 
-
         if(evento.getUri()!=null){
-
-           // String[] urlImage = {evento.getUri(),"10001"};
-            //new ImageDownloadAndSave().execute(urlImage);
-
             thumbnail.setTag(evento.getUri());
             Object[] obj = {thumbnail,evento.getUid()};
             new DownloadImagesTask().execute(obj);
-            thumbnail.setMaxHeight(250);
-            thumbnail.setMinimumHeight(250);
-
         }
-
         textViewSumario.setText(evento.getSumario());
         textViewDescricao.setText(evento.getDescricao());
         textViewDataHoraInicio.setText(dateFormat.format(evento.getDataHoraInicio()));
         textViewDataHoraFim.setText(dateFormat.format(evento.getDataHoraFim()));
         textViewLocal.setText(evento.getLocal());
-
         eventoFavoritos  =  persistenceDao.recuperaFavoritoPorUID(evento.getUid());
 
     }
+
 
     private Evento getEventoDao(int id){
         return  persistenceDao.recuperaEventoPorID(id);
@@ -117,7 +116,6 @@ public class DescricaoActivity extends AppCompatActivity {
         }else{
             someMenuItem.setIcon(android.R.drawable.btn_star_big_off);
         }
-
     return  super.onPrepareOptionsMenu(menu);
     }
 

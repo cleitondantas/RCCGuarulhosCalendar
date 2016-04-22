@@ -7,27 +7,37 @@
     android:layout_height="wrap_content">
 
 
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_toolbar_descricao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar3"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/verdercc"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar3"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/verdercc"
+                app:popupTheme="@style/AppTheme.PopupOverlay" >
+            </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+
 
 
     <ImageView
         android:id="@+id/thumbnail"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:adjustViewBounds="true"
         android:layout_alignParentTop="true"
-        android:scaleType="centerCrop"
-        android:layout_below="@+id/card_view"/>
+        android:scaleType="centerCrop" />
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_toolbar_descricao">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
@@ -36,10 +46,7 @@
         android:layout_gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_margin="5dp"
         card_view:cardCornerRadius="6dp"
         card_view:cardElevation="5dp"
         card_view:cardUseCompatPadding="true"
@@ -48,7 +55,7 @@
         <include layout="@layout/descricao_activity" />
     </android.support.v7.widget.CardView>
 
-
+    </ScrollView>
 </LinearLayout>
 
 
