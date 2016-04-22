@@ -58,11 +58,14 @@ public class AssetsPropertyReader {
         Calendario calendario;
         properties =  getProperties("config.properties");
         int i =0;
-        for(Object obj: properties.keySet()) {
+        while (properties.keySet().iterator().hasNext()){
             calendario  = new Calendario();
+            if(properties.getProperty("TB.CALENDARIO.NOME_TB." + i) ==null){
+             break;
+            }
             calendario.setNomeCalendario(properties.getProperty("TB.CALENDARIO.NOME_TB." + i)) ;
             calendario.setNomeLabel(properties.getProperty("TB.CALENDARIO.NOME_LABEL." + i));
-            calendario.setUrl(properties.getProperty("TB.CALENDARIO.URL."+i));
+            calendario.setUrl(properties.getProperty("TB.CALENDARIO.URL." + i));
             i++;
             calendarios.add(calendario);
         }

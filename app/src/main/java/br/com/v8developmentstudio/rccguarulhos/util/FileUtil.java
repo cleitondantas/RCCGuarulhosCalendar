@@ -31,7 +31,10 @@ public class FileUtil {
         FileOutputStream fs = null;
         File file = null;
         try {
-            file = File.createTempFile("temp",sufix);
+            file = new File(System.getProperty("java.io.tmpdir"),sufix);
+            if(!file.exists()){
+                file.createNewFile();
+            }
             Log.i("DEBUG", "Iniciado" + file.getAbsolutePath());
             fs = new FileOutputStream(file);
             int read = 0;

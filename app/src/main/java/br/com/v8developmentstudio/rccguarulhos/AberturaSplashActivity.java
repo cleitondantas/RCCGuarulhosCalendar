@@ -44,8 +44,6 @@ public class AberturaSplashActivity  extends Activity {
             if (isOnline && filtroDatas.verificaDataUltimaAtualizacao(date)) {
                 TaskProcess taskPross = new TaskProcess(this);
                 taskPross.execute();
-                preferences.salvarPrefTimeAtulizacao(System.currentTimeMillis());
-
             } else {
                 if(!isOnline) {
                     Toast toast = Toast.makeText(this, "SEM CONEXÂO!", Toast.LENGTH_LONG);

@@ -74,7 +74,7 @@ public class FiltroDatas {
         Calendar c = Calendar.getInstance();
         c.setTime(hoje);
         //c.add(Calendar.DATE, -1);
-        c.add(Calendar.MINUTE, -10);
+        c.add(Calendar.MINUTE, -20);
         hoje = c.getTime();
             if(datarecuperada.before(hoje)){
                 return true;

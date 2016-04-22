@@ -17,6 +17,7 @@ import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
+import br.com.v8developmentstudio.rccguarulhos.services.Preferences;
 import br.com.v8developmentstudio.rccguarulhos.util.AssetsPropertyReader;
 import br.com.v8developmentstudio.rccguarulhos.util.FileUtil;
 
@@ -33,11 +34,12 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
     private FileUtil fileUtil = new FileUtil();
     private File inFile;
     private ActivityServices ac = new ActivityServicesImpl();
-
+    private Preferences preferences;
     public TaskProcess(Context context) {
         this.context = context;
         persistenceDao = new PersistenceDao(context);
         assetsPropertyReader = new AssetsPropertyReader(context);
+        preferences = new Preferences(context);
     }
 
     @Override
@@ -58,22 +60,22 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
         try {
             Log.i("DEBUG", "Iniciado");
             InputStream input = null;
-                Log.i("DEBUG", "Abrindo Connecxao");
-                calendarios = persistenceDao.recuperaTodasConfiguracoesCalendar();
-                for (Calendario calendario : calendarios) {
-                    URL url = new URL(calendario.getUrl());
-                    URLConnection conec = url.openConnection();
-                    Log.i("DEBUG", "URL CALENDAR : -->" + calendario.getUrl());
-                    input = conec.getInputStream();
-                    //Depois de Baixar o aquivo é gravado um file temporario
-                    inFile = fileUtil.criaArquivo(input, ".ical");
-                    Log.i("DEBUG", "Iniciado Gravacao");
-                    final List<Evento> eventoList = getCalendarEventosICAL(fileUtil.recuperaArquivos(inFile.getPath()));
-                    for (final Evento evento : eventoList) {
-                        persistenceDao.updateEvents(evento, calendario);
-                    }
-                    inFile.deleteOnExit();
+            Log.i("DEBUG", "Abrindo Connecxao");
+            calendarios = persistenceDao.recuperaTodasConfiguracoesCalendar();
+            for (Calendario calendario : calendarios) {
+                URL url = new URL(calendario.getUrl());
+                URLConnection conec = url.openConnection();
+                Log.i("DEBUG", "URL CALENDAR : -->" + calendario.getUrl());
+                input = conec.getInputStream();
+                //Depois de Baixar o aquivo é gravado um file temporario
+                inFile = fileUtil.criaArquivo(input,System.currentTimeMillis()+".ical");
+                Log.i("DEBUG", "Iniciado Gravacao");
+                final List<Evento> eventoList = getCalendarEventosICAL(fileUtil.recuperaArquivos(inFile.getPath()));
+                for (final Evento evento : eventoList) {
+                    persistenceDao.updateEvents(evento, calendario);
                 }
+                inFile.deleteOnExit();
+            }
             Log.i("DEBUG", "Dados Gravados");
         } catch (IOException e) {
             Log.e("ERROR", "Erro" + e);
@@ -93,6 +95,7 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
     protected void onPostExecute(String params) {
         progress.setMessage("Base atualizada !");
         progress.dismiss();
+        preferences.salvarPrefTimeAtulizacao(System.currentTimeMillis());
         ac.redirect(context, MainActivity.class, null);
     }
 
@@ -112,4 +115,3 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
         progress.show();
     }
 }
-
