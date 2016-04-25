@@ -1,4 +1,3 @@
-
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
 import android.content.Context;
@@ -45,17 +44,17 @@ import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class MainActivity extends AppCompatActivity implements RobotoCalendarListener, NavigationView.OnNavigationItemSelectedListener , RecyclerView.OnItemTouchListener, View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements RobotoCalendarListener, NavigationView.OnNavigationItemSelectedListener, RecyclerView.OnItemTouchListener, View.OnClickListener {
 
     private RobotoCalendarView robotoCalendarView;
-    private int currentMonthIndex =0;
+    private int currentMonthIndex = 0;
     private Calendar currentCalendar;
-    private  ArrayAdapter<Evento> eventoArrayAdapter;
+    private ArrayAdapter<Evento> eventoArrayAdapter;
     private List<Evento> listEventos;
-    private  List<String> listsumariodomes = new ArrayList<String>();
-    private  ActivityServices ac = new ActivityServicesImpl();
+    private List<String> listsumariodomes = new ArrayList<String>();
+    private ActivityServices ac = new ActivityServicesImpl();
     private AssetsPropertyReader assetsPropertyReader = new AssetsPropertyReader(this);
-    private PersistenceDao persistenceDao=null;
+    private PersistenceDao persistenceDao = null;
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private MyRecyclerViewAdapter myRecyclerViewAdapter;
@@ -77,17 +76,16 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        drawer= (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         Menu menu = navigationView.getMenu();
         SubMenu subMenu = menu.addSubMenu(getString(R.string.ministerios));
-        for(Calendario calendario: persistenceDao.recuperaTodasConfiguracoesCalendar()) {
-            subMenu.add(1,calendario.getId(),calendario.getId(),calendario.getNomeLabel());
+        for (Calendario calendario : persistenceDao.recuperaTodasConfiguracoesCalendar()) {
+            subMenu.add(1, calendario.getId(), calendario.getId(), calendario.getNomeLabel());
         }
         navigationView.setNavigationItemSelectedListener(this);
         setupDrawerContent(navigationView);
@@ -97,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addOnItemTouchListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        gestureDetector = new GestureDetectorCompat(this,new RecyclerViewOnGestureListener());
+        gestureDetector = new GestureDetectorCompat(this, new RecyclerViewOnGestureListener());
 
         listEventos = persistenceDao.recuperaTodosEventos();
         myRecyclerViewAdapter = new MyRecyclerViewAdapter(filtroDatas.filtraEventosPorDataAtual(listEventos));
@@ -111,16 +109,16 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu,menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.action_settings){
-            ac.redirect(this,SettingsActivity.class,null);
+        if (id == R.id.action_settings) {
+            ac.redirect(this, SettingsActivity.class, null);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -128,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
     /**
      * Método de Click no Menu do Drawer
+     *
      * @param navigationView
      */
     private void setupDrawerContent(NavigationView navigationView) {
@@ -142,13 +141,13 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
-        if(menuItem.getItemId() == R.id.favoritos){
+        if (menuItem.getItemId() == R.id.favoritos) {
 
             Toast.makeText(this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
             redirectListFavoritos();
-        }else{
+        } else {
             Toast.makeText(this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-            redirectListEventos(menuItem.getItemId(),String.valueOf(menuItem.getTitle()));
+            redirectListEventos(menuItem.getItemId(), String.valueOf(menuItem.getTitle()));
         }
 
         // Close the navigation drawers
@@ -187,16 +186,16 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         gerarListaMarcarCalendario();
     }
 
-    private void gerarListaMarcarCalendario(){
+    private void gerarListaMarcarCalendario() {
         listsumariodomes.clear();
-        for(Evento evento:listEventos) {
-             robotoCalendarView.markFirstUnderlineWithStyle(RobotoCalendarView.RED_COLOR, evento.getDataHoraInicio());
+        for (Evento evento : listEventos) {
+            robotoCalendarView.markFirstUnderlineWithStyle(RobotoCalendarView.RED_COLOR, evento.getDataHoraInicio());
             listsumariodomes.add(evento.getSumario());
         }
         construtorAdapter();
     }
 
-    public void construtorAdapter(){
+    public void construtorAdapter() {
         filtroDatas.comparatorData(listEventos);
         myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos);
         recyclerView.setAdapter(myRecyclerViewAdapter);
@@ -204,19 +203,20 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
     private void redirectDescricaoDoEvento(final Evento evento) {
         Bundle dados = new Bundle();
-        dados.putInt(Constantes.ID,evento.getId().intValue());
+        dados.putInt(Constantes.ID, evento.getId().intValue());
         dados.putInt(Constantes.ACTIVITYHISTOTY, Constantes.MAINACTIVITY);
         ac.redirect(this, DescricaoActivity.class, dados);
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
-    private void redirectListEventos(int idCalenadrio,String tituloCalendario) {
+    private void redirectListEventos(int idCalenadrio, String tituloCalendario) {
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID, idCalenadrio);
         dados.putString(Constantes.CALENDARIO, tituloCalendario);
         ac.redirect(this, ListaEventosActivity.class, dados);
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
+
     private void redirectListFavoritos() {
         ac.redirect(this, ListaEventosFavoritosActivity.class, null);
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }else {
+        } else {
             super.finish();
         }
     }
@@ -258,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
     }
+
     private class RecyclerViewOnGestureListener extends GestureDetector.SimpleOnGestureListener {
 
         @Override

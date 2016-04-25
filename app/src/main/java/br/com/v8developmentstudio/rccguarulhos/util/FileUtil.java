@@ -3,7 +3,6 @@ package br.com.v8developmentstudio.rccguarulhos.util;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

@@ -8,8 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,7 +26,7 @@ import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 /**
  * Created by cleiton.dantas on 28/03/2016.
  */
-public class ListaEventosFavoritosActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener, View.OnClickListener{
+public class ListaEventosFavoritosActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener, View.OnClickListener {
     private List<Evento> listEventos;
     private RecyclerView recyclerView;
     private MyRecyclerViewAdapter myRecyclerViewAdapter;
@@ -36,6 +34,7 @@ public class ListaEventosFavoritosActivity extends AppCompatActivity implements 
     private PersistenceDao persistenceDao = new PersistenceDao(this);
     private FiltroDatas filtroDatas = new FiltroDatas();
     private ActivityServices activityServices = new ActivityServicesImpl();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +49,10 @@ public class ListaEventosFavoritosActivity extends AppCompatActivity implements 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addOnItemTouchListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        gestureDetector = new GestureDetectorCompat(this,new RecyclerViewOnGestureListener());
+        gestureDetector = new GestureDetectorCompat(this, new RecyclerViewOnGestureListener());
 
-        listEventos =   persistenceDao.recuperaTodosEventosFavoritos();
-        listEventos =filtroDatas.filtraEventosPorDataAtual(listEventos);
+        listEventos = persistenceDao.recuperaTodosEventosFavoritos();
+        listEventos = filtroDatas.filtraEventosPorDataAtual(listEventos);
         myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos);
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
@@ -71,7 +70,7 @@ public class ListaEventosFavoritosActivity extends AppCompatActivity implements 
 
     @Override
     public void onBackPressed() {
-        activityServices.redirect(this,MainActivity.class,null);
+        activityServices.redirect(this, MainActivity.class, null);
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
@@ -96,9 +95,10 @@ public class ListaEventosFavoritosActivity extends AppCompatActivity implements 
         redirectDescricaoDoEvento(listEventos.get(v.getId()));
 
     }
+
     private void redirectDescricaoDoEvento(final Evento evento) {
         Bundle dados = new Bundle();
-        dados.putInt(Constantes.ID,evento.getId().intValue());
+        dados.putInt(Constantes.ID, evento.getId().intValue());
         dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
         dados.putInt(Constantes.ACTIVITYHISTOTY, Constantes.EVENTOSFAVORITOSACTIVITY);
         activityServices.redirect(this, DescricaoActivity.class, dados);

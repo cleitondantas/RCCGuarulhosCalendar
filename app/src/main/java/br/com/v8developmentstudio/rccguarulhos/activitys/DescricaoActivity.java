@@ -1,35 +1,20 @@
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -41,7 +26,6 @@ import br.com.v8developmentstudio.rccguarulhos.modelo.EventoFavorito;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
 import br.com.v8developmentstudio.rccguarulhos.task.DownloadImagesTask;
-import br.com.v8developmentstudio.rccguarulhos.task.ImageDownloadAndSave;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 
 /**
@@ -55,37 +39,42 @@ public class DescricaoActivity extends AppCompatActivity {
     private Calendario calendario;
     private List<EventoFavorito> eventoFavoritos;
     private int activityHistory;
-    private CollapsingToolbarLayout collapsingToolbarLayout;
-    private  Toolbar toolbar;
+    private Toolbar toolbar;
     private ActivityServices ac = new ActivityServicesImpl();
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private AppBarLayout appBarLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.descricao_cards_activity);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        int id = getIntent().getIntExtra(Constantes.ID, 1);
+        activityHistory = getIntent().getIntExtra(Constantes.ACTIVITYHISTOTY, 0);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
-
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        int id  = getIntent().getIntExtra(Constantes.ID,1);
-        activityHistory =  getIntent().getIntExtra(Constantes.ACTIVITYHISTOTY,0);
 
 
-        TextView textViewSumario = (TextView)findViewById(R.id.idsumario);
-        TextView textViewDescricao = (TextView)findViewById(R.id.idDescricao);
-        TextView textViewDataHoraInicio = (TextView)findViewById(R.id.idDataHoraInicio);
-        TextView textViewDataHoraFim = (TextView)findViewById(R.id.idDataHoraFim);
-        TextView textViewLocal = (TextView)findViewById(R.id.idLocal);
-        ImageView thumbnail = (ImageView)findViewById(R.id.thumbnail);
-        thumbnail.setScaleType(ImageView.ScaleType.FIT_XY);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbarLayout.setTitle(getResources().getString(R.string.informacoes));
+
+        appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+        TextView textViewSumario = (TextView) findViewById(R.id.idsumario);
+        TextView textViewDescricao = (TextView) findViewById(R.id.idDescricao);
+        TextView textViewDataHoraInicio = (TextView) findViewById(R.id.idDataHoraInicio);
+        TextView textViewDataHoraFim = (TextView) findViewById(R.id.idDataHoraFim);
+        TextView textViewLocal = (TextView) findViewById(R.id.idLocal);
+        ImageView thumbnail = (ImageView) findViewById(R.id.thumbnail);
 
         evento = getEventoDao(id);
         calendario = persistenceDao.recuperaConfigCalendarPorID(evento.getIdCalendario());
 
-        if(evento.getUri()!=null){
+        if (evento.getUri() != null) {
             thumbnail.setTag(evento.getUri());
-            Object[] obj = {thumbnail,evento.getUid()};
+            Object[] obj = {thumbnail, evento.getUid()};
             new DownloadImagesTask().execute(obj);
         }
         textViewSumario.setText(evento.getSumario());
@@ -93,13 +82,13 @@ public class DescricaoActivity extends AppCompatActivity {
         textViewDataHoraInicio.setText(dateFormat.format(evento.getDataHoraInicio()));
         textViewDataHoraFim.setText(dateFormat.format(evento.getDataHoraFim()));
         textViewLocal.setText(evento.getLocal());
-        eventoFavoritos  =  persistenceDao.recuperaFavoritoPorUID(evento.getUid());
+        eventoFavoritos = persistenceDao.recuperaFavoritoPorUID(evento.getUid());
 
     }
 
 
-    private Evento getEventoDao(int id){
-        return  persistenceDao.recuperaEventoPorID(id);
+    private Evento getEventoDao(int id) {
+        return persistenceDao.recuperaEventoPorID(id);
     }
 
     @Override
@@ -108,15 +97,16 @@ public class DescricaoActivity extends AppCompatActivity {
         inflater.inflate(R.menu.activity_main_actions, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu){
+    public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem someMenuItem = menu.findItem(R.id.action_star);
-        if(eventoFavoritos.size()>0){
+        if (eventoFavoritos.size() > 0) {
             someMenuItem.setIcon(android.R.drawable.btn_star_big_on);
-        }else{
+        } else {
             someMenuItem.setIcon(android.R.drawable.btn_star_big_off);
         }
-    return  super.onPrepareOptionsMenu(menu);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -136,7 +126,7 @@ public class DescricaoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        switch (activityHistory){
+        switch (activityHistory) {
             case 0:
                 ac.redirect(this, MainActivity.class, null);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -144,25 +134,26 @@ public class DescricaoActivity extends AppCompatActivity {
             case 1:
                 ac.redirect(this, ListaEventosFavoritosActivity.class, null);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            break;
+                break;
             case 2:
                 Bundle dados = new Bundle();
                 dados.putInt(Constantes.ID, calendario.getId());
                 dados.putString(Constantes.CALENDARIO, calendario.getNomeLabel());
                 ac.redirect(this, ListaEventosActivity.class, dados);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            break;
+                break;
 
         }
 
     }
-    private void pressFavorito(MenuItem item){
-        eventoFavoritos  =  persistenceDao.recuperaFavoritoPorUID(evento.getUid());
-        if(eventoFavoritos!=null && eventoFavoritos.size()>0){
+
+    private void pressFavorito(MenuItem item) {
+        eventoFavoritos = persistenceDao.recuperaFavoritoPorUID(evento.getUid());
+        if (eventoFavoritos != null && eventoFavoritos.size() > 0) {
             persistenceDao.deletaEventoFavoritoPorUID(evento.getUid());
             item.setIcon(android.R.drawable.btn_star_big_off);
-            Log.i("DEBUG","CHECK FALSE");
-        }else{
+            Log.i("DEBUG", "CHECK FALSE");
+        } else {
             persistenceDao.salvaEventoFavorito(evento, calendario, false);
             item.setIcon(android.R.drawable.btn_star_big_on);
             Log.i("DEBUG", "CHECK TRUE");

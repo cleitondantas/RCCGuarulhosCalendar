@@ -14,6 +14,7 @@ import br.com.v8developmentstudio.rccguarulhos.services.Preferences;
 public class SettingsActivity extends AppCompatActivity {
     private NumberPicker dayForAlarm;
     private ActivityServices activityServices = new ActivityServicesImpl();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.setting_toolbar);
         setSupportActionBar(toolbar);
         final Preferences preferences = new Preferences(this);
-        dayForAlarm =(NumberPicker) findViewById(R.id.diasparaalarme);
+        dayForAlarm = (NumberPicker) findViewById(R.id.diasparaalarme);
 
         dayForAlarm.setMinValue(1);
         dayForAlarm.setMaxValue(120);

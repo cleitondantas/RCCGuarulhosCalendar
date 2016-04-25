@@ -1,6 +1,5 @@
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,14 +20,13 @@ import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
-import br.com.v8developmentstudio.rccguarulhos.util.Activitys;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 
 /**
  * Created by cleiton.dantas on 28/03/2016.
  */
-public class ListaEventosActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener, View.OnClickListener{
+public class ListaEventosActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener, View.OnClickListener {
     private List<Evento> listEventos;
     private RecyclerView recyclerView;
     private MyRecyclerViewAdapter myRecyclerViewAdapter;
@@ -36,11 +34,12 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
     private PersistenceDao persistenceDao = new PersistenceDao(this);
     private FiltroDatas filtroDatas = new FiltroDatas();
     private ActivityServices activityServices = new ActivityServicesImpl();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lista_eventos_activity);
-        int idCalendario  = getIntent().getIntExtra(Constantes.ID,1);
+        int idCalendario = getIntent().getIntExtra(Constantes.ID, 1);
         String titulo = getIntent().getStringExtra(Constantes.CALENDARIO);
         Toolbar toolbar = (Toolbar) findViewById(R.id.lista_eventos_toolbar);
         toolbar.setSubtitle(titulo);
@@ -54,14 +53,15 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addOnItemTouchListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        gestureDetector = new GestureDetectorCompat(this,new RecyclerViewOnGestureListener());
+        gestureDetector = new GestureDetectorCompat(this, new RecyclerViewOnGestureListener());
 
-        listEventos =   persistenceDao.recuperaTodosEventosPorCalendario(idCalendario);
-        listEventos =filtroDatas.filtraEventosPorDataAtual(listEventos);
+        listEventos = persistenceDao.recuperaTodosEventosPorCalendario(idCalendario);
+        listEventos = filtroDatas.filtraEventosPorDataAtual(listEventos);
         myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos);
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -93,6 +93,7 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
         redirectDescricaoDoEvento(listEventos.get(v.getId()));
 
     }
+
     private void redirectDescricaoDoEvento(final Evento evento) {
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID, evento.getId().intValue());
@@ -104,7 +105,7 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
 
     @Override
     public void onBackPressed() {
-        activityServices.redirect(this,MainActivity.class,null);
+        activityServices.redirect(this, MainActivity.class, null);
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
