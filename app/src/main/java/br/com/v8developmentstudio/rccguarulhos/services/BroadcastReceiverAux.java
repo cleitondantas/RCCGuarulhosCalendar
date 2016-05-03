@@ -27,11 +27,14 @@ import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.activitys.DescricaoActivity;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
+import br.com.v8developmentstudio.rccguarulhos.task.TaskProcess;
+import br.com.v8developmentstudio.rccguarulhos.task.TaskProcessBackground;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 
 public class BroadcastReceiverAux extends BroadcastReceiver {
     private PersistenceDao persistenceDao;
     private Preferences preferences;
+    private ActivityServices activityServices = new ActivityServicesImpl();
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -44,8 +47,15 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
         Date dia = cal.getTime();
 
         Log.i("Script", "-> Alarme");
-        List<Evento> eventos = persistenceDao.recuperaEventosPorDia(dia);
 
+        boolean isOnline = activityServices.isOnline(context);
+        if(isOnline){
+            TaskProcessBackground taskPross = new TaskProcessBackground(context);
+            taskPross.execute();
+            Log.i("Script", "-> Base atualizada em Background");
+        }
+        List<Evento> eventos = persistenceDao.recuperaEventosPorDia(dia);
+        atualizaBase();
         int numIdentificacao=0;
         for (Evento evento: eventos) {
             numIdentificacao++;
@@ -100,6 +110,11 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
             e.printStackTrace();
         }
         Log.i("Script", "-> gerarNotificacao");
+    }
+
+
+    public void atualizaBase(){
+
     }
 }
 

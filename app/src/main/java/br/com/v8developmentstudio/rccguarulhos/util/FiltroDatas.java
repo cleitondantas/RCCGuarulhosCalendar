@@ -73,8 +73,8 @@ public class FiltroDatas {
         Date hoje = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(hoje);
-        //c.add(Calendar.DATE, -1);
-        c.add(Calendar.MINUTE, -20);
+        c.add(Calendar.DATE, -1);
+      //  c.add(Calendar.MINUTE, -20);
         hoje = c.getTime();
             if(datarecuperada.before(hoje)){
                 return true;

@@ -50,4 +50,22 @@ public class Calendario {
     public void setAlarme(Boolean alarme) {
         this.alarme = alarme;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Calendario that = (Calendario) o;
+
+        if (!getUrl().equals(that.getUrl())) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return getUrl().hashCode();
+    }
 }

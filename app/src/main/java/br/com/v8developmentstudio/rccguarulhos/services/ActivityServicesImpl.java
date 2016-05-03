@@ -2,6 +2,8 @@ package br.com.v8developmentstudio.rccguarulhos.services;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import br.com.v8developmentstudio.rccguarulhos.R;
@@ -23,4 +25,12 @@ public class ActivityServicesImpl implements ActivityServices{
         context.startActivity(intent);
 
     }
+
+    @Override
+    public boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
 }

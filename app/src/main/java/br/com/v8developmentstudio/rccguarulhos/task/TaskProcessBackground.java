@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+
 import br.com.v8developmentstudio.rccguarulhos.activitys.MainActivity;
 import br.com.v8developmentstudio.rccguarulhos.bo.ConstrutorIcal;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
@@ -25,18 +27,16 @@ import br.com.v8developmentstudio.rccguarulhos.util.FileUtil;
 /**
  * Created by cleiton.dantas on 17/03/2016.
  */
-public class TaskProcess extends AsyncTask<String, Object, String> {
+public class TaskProcessBackground extends AsyncTask<String, Object, String> {
     private Context context;
-    private ProgressDialog progress;
     private ConstrutorIcal construtorIcal;
     private PersistenceDao persistenceDao;
     private AssetsPropertyReader assetsPropertyReader;
     private List<Calendario> calendarios;
     private FileUtil fileUtil = new FileUtil();
     private File inFile;
-    private ActivityServices ac = new ActivityServicesImpl();
     private Preferences preferences;
-    public TaskProcess(Context context) {
+    public TaskProcessBackground(Context context) {
         this.context = context;
         persistenceDao = new PersistenceDao(context);
         assetsPropertyReader = new AssetsPropertyReader(context);
@@ -45,10 +45,9 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
 
     @Override
     protected void onPreExecute() {
-        progress = new ProgressDialog(context);
-        postMensagem("Garregando...");
         persistenceDao.onDropTabelaEventos(persistenceDao.openDB());
         persistenceDao.onCreate(persistenceDao.openDB());
+
 
         for (Calendario calendarios : verificaListaCalendarios()) {
             //Salva os dados do Properties na TB_CONFIG_CALENDAR
@@ -95,10 +94,7 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
 
     @Override
     protected void onPostExecute(String params) {
-        progress.setMessage("Base atualizada !");
-        progress.dismiss();
         preferences.salvarPrefTimeAtulizacao(System.currentTimeMillis());
-        ac.redirect(context, MainActivity.class, null);
     }
 
     private List<Evento> getCalendarEventosICAL(InputStream is) {
@@ -111,10 +107,6 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
             e.printStackTrace();
         }
         return eventoList;
-    }
-    private void postMensagem(String mensagem){
-        progress.setMessage(mensagem);
-        progress.show();
     }
 
     private List<Calendario> verificaListaCalendarios(){
@@ -138,4 +130,5 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
         }
         return calendariosAssets;
     }
+
 }

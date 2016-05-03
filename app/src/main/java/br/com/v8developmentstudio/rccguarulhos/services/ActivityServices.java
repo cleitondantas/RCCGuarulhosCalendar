@@ -8,4 +8,7 @@ import android.os.Bundle;
  */
 public interface ActivityServices {
     public void redirect(Context context,Class<?>  clazz, Bundle dados);
+    public boolean isOnline(Context context);
 }
+
+

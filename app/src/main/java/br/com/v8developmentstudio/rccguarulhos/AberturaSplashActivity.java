@@ -14,6 +14,8 @@ import java.util.Date;
 
 import br.com.v8developmentstudio.rccguarulhos.activitys.MainActivity;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
+import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
+import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
 import br.com.v8developmentstudio.rccguarulhos.services.Preferences;
 import br.com.v8developmentstudio.rccguarulhos.services.ServicoNotificacao;
 import br.com.v8developmentstudio.rccguarulhos.task.TaskProcess;
@@ -26,6 +28,7 @@ public class AberturaSplashActivity  extends Activity {
 
     private PersistenceDao persistenceDao = new PersistenceDao(this);
     private ServicoNotificacao servicoNotificacao = new ServicoNotificacao();
+    private ActivityServices activityServices = new ActivityServicesImpl();
     public static Integer TIMESLEAP = 2000;
     private FiltroDatas filtroDatas = new FiltroDatas();
     private Preferences preferences = new Preferences(this);
@@ -40,7 +43,7 @@ public class AberturaSplashActivity  extends Activity {
         servicoNotificacao.createAlarmNotification(this);
 
         Date date = new Date(preferences.preferencesTimeAtulizacao());
-        boolean isOnline = isOnline();
+        boolean isOnline = activityServices.isOnline(this);
             if (isOnline && filtroDatas.verificaDataUltimaAtualizacao(date)) {
                 TaskProcess taskPross = new TaskProcess(this);
                 taskPross.execute();
@@ -59,13 +62,5 @@ public class AberturaSplashActivity  extends Activity {
                 }, TIMESLEAP);
             }
     }
-
-    public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(this.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
-
-
 
 }

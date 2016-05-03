@@ -1,5 +1,6 @@
 package br.com.v8developmentstudio.rccguarulhos.task;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -44,10 +45,10 @@ public class DownloadImagesTask extends AsyncTask<Object, Void, Bitmap> {
                 is = con.getInputStream();
             }
             bmp = BitmapFactory.decodeStream(is);
+
             if(!fileImag.exists()){
                 criaArquivo(is,nomeFile);
             }
-
             if (null != bmp)
                 return bmp;
 

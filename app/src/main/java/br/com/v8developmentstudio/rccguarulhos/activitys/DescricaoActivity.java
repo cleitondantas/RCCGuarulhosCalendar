@@ -1,6 +1,9 @@
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
+import android.animation.ValueAnimator;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -8,17 +11,19 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-
 import br.com.v8developmentstudio.rccguarulhos.R;
+import br.com.v8developmentstudio.rccguarulhos.adapter.ScaleImageView;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
@@ -57,25 +62,35 @@ public class DescricaoActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        mCollapsingToolbarLayout.setTitle(getResources().getString(R.string.informacoes));
-
         appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+        mCollapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT); // transperent color = #00000000
+
+
         TextView textViewSumario = (TextView) findViewById(R.id.idsumario);
         TextView textViewDescricao = (TextView) findViewById(R.id.idDescricao);
         TextView textViewDataHoraInicio = (TextView) findViewById(R.id.idDataHoraInicio);
         TextView textViewDataHoraFim = (TextView) findViewById(R.id.idDataHoraFim);
         TextView textViewLocal = (TextView) findViewById(R.id.idLocal);
-        ImageView thumbnail = (ImageView) findViewById(R.id.thumbnail);
+        ScaleImageView thumbnail = (ScaleImageView) findViewById(R.id.thumbnail);
 
         evento = getEventoDao(id);
         calendario = persistenceDao.recuperaConfigCalendarPorID(evento.getIdCalendario());
+        Display disply = getWindowManager().getDefaultDisplay();
+
+        Point size = new Point();
+        disply.getSize(size);
 
         if (evento.getUri() != null) {
             thumbnail.setTag(evento.getUri());
             Object[] obj = {thumbnail, evento.getUid()};
             new DownloadImagesTask().execute(obj);
+            int width = size.x;
+            int height = size.y/2;
+            thumbnail.setMaxHeight(height);
+            thumbnail.setMinimumHeight(height);
+            thumbnail.setMaxWidth(width);
+            thumbnail.setMinimumWidth(width);
         }
         textViewSumario.setText(evento.getSumario());
         textViewDescricao.setText(evento.getDescricao());
