@@ -1,6 +1,8 @@
 package br.com.v8developmentstudio.rccguarulhos.bo;
 
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,6 +17,7 @@ import biweekly.ICalendar;
 import biweekly.component.VEvent;
 import biweekly.property.Attachment;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
+import br.com.v8developmentstudio.rccguarulhos.util.FileUtil;
 import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 
 /**
@@ -23,8 +26,9 @@ import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 public class ConstrutorIcal {
     private List<ICalendar> icals;
     private FiltroDatas filtroDatas = new FiltroDatas();
+    private FileUtil fileUtil = new FileUtil();
     public ConstrutorIcal(InputStream in) throws IOException {
-        icals = Biweekly.parse(converter(in)).all();
+        icals = Biweekly.parse(fileUtil.converter(in)).all();
     }
 
 public List<Evento> getEventos(){
@@ -67,47 +71,15 @@ public List<Evento> getEventos(){
     return eventoList;
 }
 
-
-    /**
-     * Método que converte InputStream para File / Criando um arquivo temporario e passando o caminho
-      * @param inputStream
-     * @return
-     */
-public File converter(InputStream inputStream){
-    OutputStream outputStream = null;
-    File file =null;
-    try {
-        file= File.createTempFile("file",".ical");
-            // write the inputStream to a FileOutputStream
-            outputStream = new FileOutputStream(file);
-
-            int read = 0;
-            byte[] bytes = new byte[1024];
-
-            while ((read = inputStream.read(bytes)) != -1) {
-                outputStream.write(bytes, 0, read);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (outputStream != null) {
-                try {
-                    // outputStream.flush();
-                    outputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    return file;
+    private List<Evento> getCalendarEventosICAL(InputStream is) {
+        List<Evento> eventoList = null;
+            eventoList = getEventos();
+        return eventoList;
     }
+
+
+
+
 
 }
 

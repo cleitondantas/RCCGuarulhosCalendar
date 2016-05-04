@@ -100,5 +100,44 @@ public class FileUtil {
         }
 
     }
+    /**
+     * Método que converte InputStream para File / Criando um arquivo temporario e passando o caminho
+     * @param inputStream
+     * @return
+     */
+    public File converter(InputStream inputStream){
+        OutputStream outputStream = null;
+        File file =null;
+        try {
+            file= File.createTempFile("file",".ical");
+            // write the inputStream to a FileOutputStream
+            outputStream = new FileOutputStream(file);
 
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    // outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return file;
+    }
 }

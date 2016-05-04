@@ -15,6 +15,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -27,7 +28,6 @@ import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.activitys.DescricaoActivity;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
-import br.com.v8developmentstudio.rccguarulhos.task.TaskProcess;
 import br.com.v8developmentstudio.rccguarulhos.task.TaskProcessBackground;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 
@@ -41,29 +41,18 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
         persistenceDao= new PersistenceDao(context);
         preferences = new Preferences(context);
 
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.DAY_OF_MONTH, preferences.getPreferencesDiaAlarm());
-        Date dia = cal.getTime();
-
         Log.i("Script", "-> Alarme");
 
-        boolean isOnline = activityServices.isOnline(context);
-        if(isOnline){
-            TaskProcessBackground taskPross = new TaskProcessBackground(context);
-            taskPross.execute();
-            Log.i("Script", "-> Base atualizada em Background");
-        }
-        List<Evento> eventos = persistenceDao.recuperaEventosPorDia(dia);
-        atualizaBase();
         int numIdentificacao=0;
-        for (Evento evento: eventos) {
+        for (Evento evento: persistenceDao.recuperaEventosPorDia(getDatePreferences())) {
             numIdentificacao++;
            if(persistenceDao.recuperaFavoritoPorUID(evento.getUid()).size()!=0) {
                gerarNotificacao(context, redirectDescricaoDoEvento(context, evento), context.getString(R.string.novoevento), evento.getSumario(), dateFormat.format(evento.getDataHoraInicio()), numIdentificacao);
            }
         }
+        atualizaBase(context);
     }
+
 
     public void gerarNotificacao(Context context, Intent intent, CharSequence ticker, CharSequence titulo, CharSequence descricao,int numerodaNotificacao) {
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -113,8 +102,22 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
     }
 
 
-    public void atualizaBase(){
+    public void atualizaBase(Context context){
+        boolean isOnline = activityServices.isOnline(context);
+        if(isOnline){
+            TaskProcessBackground taskPross = new TaskProcessBackground(context);
+            taskPross.execute();
+            Log.i("Script", "-> Base Atualizado in BackGround");
+        }
+    }
 
+
+    @NonNull
+    private Date getDatePreferences() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DAY_OF_MONTH, preferences.getPreferencesDiaAlarm());
+        return cal.getTime();
     }
 }
 
