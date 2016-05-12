@@ -18,7 +18,7 @@ allprojects {
         androidMinSdkVersion = 15
         androidTargetSdkVersion = 23
         androidCompileSdkVersion = 23
-        androidVersionCode = 1
+        androidVersionCode = 2
         androidVersionName = "1.2.1.1"
     }
 

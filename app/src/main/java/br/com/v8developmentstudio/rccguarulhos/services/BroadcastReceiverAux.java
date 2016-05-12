@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
@@ -40,14 +41,15 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         persistenceDao= new PersistenceDao(context);
         preferences = new Preferences(context);
-
         Log.i("Script", "-> Alarme");
 
         int numIdentificacao=0;
-        for (Evento evento: persistenceDao.recuperaEventosPorDia(getDatePreferences())) {
+        int[]p = {1,3};
+        for(int dia :p)
+        for (Evento evento: persistenceDao.recuperaEventosPorDia(getDatePreferences(dia))) {
             numIdentificacao++;
            if(persistenceDao.recuperaFavoritoPorUID(evento.getUid()).size()!=0) {
-               gerarNotificacao(context, redirectDescricaoDoEvento(context, evento), context.getString(R.string.novoevento), evento.getSumario(), dateFormat.format(evento.getDataHoraInicio()), numIdentificacao);
+               gerarNotificacao(context, redirectDescricaoDoEvento(context, evento), context.getString(R.string.lembrete), evento.getSumario(), dateFormat.format(evento.getDataHoraInicio()), numIdentificacao);
            }
         }
         atualizaBase(context);
@@ -63,7 +65,11 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
         builder.setContentText(descricao);
         builder.setSmallIcon(R.drawable.rcc);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.rcc));
+
         builder.setContentIntent(pendingIntent);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setFullScreenIntent(pendingIntent, true);
+        }
 
         Notification n = builder.build();
         n.vibrate = new long[]{150, 300, 150, 600};
@@ -113,10 +119,11 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
 
 
     @NonNull
-    private Date getDatePreferences() {
+    private Date getDatePreferences(int dias) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
-        cal.add(Calendar.DAY_OF_MONTH, preferences.getPreferencesDiaAlarm());
+        //cal.add(Calendar.DAY_OF_MONTH, preferences.getPreferencesDiaAlarm());
+        cal.add(Calendar.DAY_OF_MONTH,dias);
         return cal.getTime();
     }
 }

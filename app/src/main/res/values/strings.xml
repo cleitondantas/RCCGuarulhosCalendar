@@ -10,6 +10,7 @@
     <string name="informacoes">Informações</string>
     <string name="ministerios">Ministérios</string>
     <string name="novoevento">Novo Evento</string>
+    <string name="lembrete">Lembrete</string>
     <string name="title_activity_settings">Preferências</string>
     <string name="app_favoritos">Favoritos</string>
 </resources>

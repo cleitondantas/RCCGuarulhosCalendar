@@ -20,12 +20,19 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:text="Dias para alarme" />
+        android:text="SOBRE" />
 
-    <NumberPicker
-        android:id="@+id/diasparaalarme"
+    <TextView
+        android:id="@+id/textView2"
+        android:textSize="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"  />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textView1"
+        android:text="Calendario RCC Guarulhos \n Desenvolvido por \n V8 Development Studio" />
+
+
 
 </RelativeLayout>

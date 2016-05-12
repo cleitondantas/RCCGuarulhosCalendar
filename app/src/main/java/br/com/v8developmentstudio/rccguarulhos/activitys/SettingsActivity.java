@@ -22,18 +22,18 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.setting_toolbar);
         setSupportActionBar(toolbar);
         final Preferences preferences = new Preferences(this);
-        dayForAlarm = (NumberPicker) findViewById(R.id.diasparaalarme);
-
-        dayForAlarm.setMinValue(1);
-        dayForAlarm.setMaxValue(120);
-        dayForAlarm.setValue(preferences.getPreferencesDiaAlarm());
-        dayForAlarm.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                Log.i("DEBUG", "-->  Dia" + newVal);
-                preferences.salvarPrefDiaAlarm(newVal);
-            }
-        });
+//        dayForAlarm = (NumberPicker) findViewById(R.id.diasparaalarme);
+//
+//        dayForAlarm.setMinValue(1);
+//        dayForAlarm.setMaxValue(120);
+//        dayForAlarm.setValue(preferences.getPreferencesDiaAlarm());
+//        dayForAlarm.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//            @Override
+//            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+//                Log.i("DEBUG", "-->  Dia" + newVal);
+//                preferences.salvarPrefDiaAlarm(newVal);
+//            }
+//        });
     }
 
     @Override
