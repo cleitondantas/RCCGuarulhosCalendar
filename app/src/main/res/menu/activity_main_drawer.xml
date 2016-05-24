@@ -4,4 +4,5 @@
             <item android:id="@+id/favoritos" android:icon="@android:drawable/btn_star"
                 android:title="Eventos Favoritos" />
 
+
 </menu>

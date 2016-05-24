@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         persistenceDao = new PersistenceDao(this);
 
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);

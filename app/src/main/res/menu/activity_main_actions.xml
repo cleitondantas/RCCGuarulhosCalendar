@@ -2,10 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"  xmlns:app="http://schemas.android.com/apk/res-auto">
     <!-- Search / will display always -->
     <!-- Refresh -->
-    <item android:id="@+id/action_star"
-        android:icon="@drawable/my_star"
-        android:checkable="true"
-        android:title="Star"
-        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_star" android:icon="@drawable/my_star" android:checkable="true" android:title="Star" app:showAsAction="ifRoom"/>
+    <item android:id="@+id/addCalendar" android:icon="@android:drawable/ic_menu_day" android:title="ADD Calendar"  app:showAsAction="ifRoom"/>
 
 </menu>

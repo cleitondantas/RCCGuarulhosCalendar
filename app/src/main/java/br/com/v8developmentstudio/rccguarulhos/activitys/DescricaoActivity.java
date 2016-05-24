@@ -1,10 +1,16 @@
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.animation.ValueAnimator;
+import android.content.ContentValues;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -19,9 +25,12 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
+
 import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.adapter.ScaleImageView;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
@@ -30,8 +39,12 @@ import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.modelo.EventoFavorito;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
+import br.com.v8developmentstudio.rccguarulhos.services.CalendarEventService;
 import br.com.v8developmentstudio.rccguarulhos.task.DownloadImagesTask;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
+
+import android.provider.CalendarContract.Calendars;
+import android.provider.CalendarContract.Events;
 
 /**
  * Created by cleiton.dantas on 18/03/2016.
@@ -48,6 +61,9 @@ public class DescricaoActivity extends AppCompatActivity {
     private ActivityServices ac = new ActivityServicesImpl();
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private AppBarLayout appBarLayout;
+    private CalendarEventService calendarEventService;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +78,11 @@ public class DescricaoActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        calendarEventService = new CalendarEventService(this);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         mCollapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT); // transperent color = #00000000
-
+        mCollapsingToolbarLayout.setTitle("Informações");
 
         TextView textViewSumario = (TextView) findViewById(R.id.idsumario);
         TextView textViewDescricao = (TextView) findViewById(R.id.idDescricao);
@@ -91,13 +108,28 @@ public class DescricaoActivity extends AppCompatActivity {
             thumbnail.setMinimumHeight(height);
             thumbnail.setMaxWidth(width);
             thumbnail.setMinimumWidth(width);
+            appBarLayout.setExpanded(true);
+        }else{
+            int width = size.x;
+            int height = size.y/2;
+            thumbnail.setMaxHeight(height);
+            thumbnail.setMinimumHeight(height);
+            thumbnail.setMaxWidth(width);
+            thumbnail.setMinimumWidth(width);
+            appBarLayout.setExpanded(false);
         }
+
         textViewSumario.setText(evento.getSumario());
         textViewDescricao.setText(evento.getDescricao());
         textViewDataHoraInicio.setText(dateFormat.format(evento.getDataHoraInicio()));
         textViewDataHoraFim.setText(dateFormat.format(evento.getDataHoraFim()));
         textViewLocal.setText(evento.getLocal());
         eventoFavoritos = persistenceDao.recuperaFavoritoPorUID(evento.getUid());
+
+    }
+
+    private void addEventoLocalCalendar(){
+        calendarEventService.addEventoAoCalendarioLocal(evento);
 
     }
 
@@ -134,6 +166,9 @@ public class DescricaoActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.addCalendar:
+                addEventoLocalCalendar();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -161,6 +196,7 @@ public class DescricaoActivity extends AppCompatActivity {
         }
 
     }
+
 
     private void pressFavorito(MenuItem item) {
         eventoFavoritos = persistenceDao.recuperaFavoritoPorUID(evento.getUid());
