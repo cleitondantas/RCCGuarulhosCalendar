@@ -44,13 +44,15 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
         Log.i("Script", "-> Alarme");
 
         int numIdentificacao=0;
-        int[]p = {1,3};
-        for(int dia :p)
-        for (Evento evento: persistenceDao.recuperaEventosPorDia(getDatePreferences(dia))) {
-            numIdentificacao++;
-           if(persistenceDao.recuperaFavoritoPorUID(evento.getUid()).size()!=0) {
-               gerarNotificacao(context, redirectDescricaoDoEvento(context, evento), context.getString(R.string.lembrete), evento.getSumario(), dateFormat.format(evento.getDataHoraInicio()), numIdentificacao);
-           }
+        int[]p = {1,3,5,7,9,11,13,15,17,19,20,22};
+
+        for(int dia :p) {
+            for (Evento evento : persistenceDao.recuperaEventosPorDia(getDatePreferences(dia))) {
+                numIdentificacao++;
+                if (persistenceDao.recuperaFavoritoPorUID(evento.getUid()).size() != 0) {
+                    gerarNotificacao(context, redirectDescricaoDoEvento(context, evento), context.getString(R.string.lembrete), evento.getSumario(), dateFormat.format(evento.getDataHoraInicio()), numIdentificacao);
+                }
+            }
         }
         atualizaBase(context);
     }

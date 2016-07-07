@@ -81,8 +81,8 @@ public class DescricaoActivity extends AppCompatActivity {
         textViewLocal = (TextView) findViewById(R.id.idLocal);
         thumbnail = (ScaleImageView) findViewById(R.id.thumbnail);
 
-        final Animation animeFloating = AnimationUtils.loadAnimation(this, R.animator.rotate);
-        final Animation animeFloating2 = AnimationUtils.loadAnimation(this, R.animator.rotate2);
+        final Animation animeFloating = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        final Animation animeFloating2 = AnimationUtils.loadAnimation(this, R.anim.rotate2);
         fabMenu = (FloatingActionButton) findViewById(R.id.idFabMenu);
         fabShare = (FloatingActionButton) findViewById(R.id.idFabShare);
         fabAddCalendar = (FloatingActionButton) findViewById(R.id.idFabAddCalendar);

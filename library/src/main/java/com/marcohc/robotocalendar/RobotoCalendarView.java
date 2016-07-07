@@ -17,6 +17,9 @@ package com.marcohc.robotocalendar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -236,6 +239,7 @@ public class RobotoCalendarView extends LinearLayout {
             dayOfMonthContainer.setOnClickListener(onDayOfMonthClickListener);
             dayOfMonthText.setVisibility(View.VISIBLE);
             dayOfMonthText.setText(String.valueOf(i));
+            dayOfMonthText.setTextColor(context.getResources().getColor(R.color.roboto_calendar_day_of_month));
         }
 
         // If the last week row has no visible days, hide it or show it in case
@@ -356,7 +360,24 @@ public class RobotoCalendarView extends LinearLayout {
             Calendar currentCalendar = getCurrentCalendar();
             currentCalendar.setTime(currentDate);
             TextView dayOfMonth = getDayOfMonthText(currentCalendar);
-            dayOfMonth.setTextColor(context.getResources().getColor(R.color.roboto_calendar_current_day_of_month));
+
+            if(verificaMesIsCorrente(currentCalendar)) {
+                SpannableString spanString = new SpannableString(dayOfMonth.getText());
+                spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+                dayOfMonth.setTextColor(context.getResources().getColor(R.color.roboto_calendar_current_day_of_month));
+            }
+        }
+    }
+
+    public boolean verificaMesIsCorrente(Calendar calendar){
+        Calendar calendar1 = Calendar.getInstance(Locale.getDefault());
+        calendar1.setTime(new Date());
+        int mesVerificar = calendar.get(Calendar.MONTH);
+        int mesCorrent = calendar1.get(Calendar.MONTH);
+        if(mesCorrent <  mesVerificar || mesCorrent >  mesVerificar){
+            return false;
+        }else{
+            return true;
         }
     }
 
@@ -369,7 +390,7 @@ public class RobotoCalendarView extends LinearLayout {
         // Clear previous marks
         clearDayOfTheMonthStyle(lastSelectedDay);
 
-        markDayAsCurrentDay(lastCurrentDay);
+        markDayAsCurrentDay(lastSelectedDay);
 
         // Store current values as last values
         storeLastValues(currentDate);

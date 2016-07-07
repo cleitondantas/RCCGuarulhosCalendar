@@ -1,6 +1,7 @@
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -153,6 +154,8 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         drawer.closeDrawers();
     }
 
+
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -181,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         currentCalendar = Calendar.getInstance(Locale.getDefault());
         currentCalendar.add(Calendar.MONTH, currentMonthIndex);
         robotoCalendarView.initializeCalendar(currentCalendar);
+        robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
         listEventos = persistenceDao.recuperaEventosPorMes(currentCalendar.getTime());
         gerarListaMarcarCalendario();
     }
@@ -225,9 +229,11 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+            return;
         } else {
             super.finish();
         }
+
     }
 
     @Override

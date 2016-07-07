@@ -15,6 +15,6 @@
     <color name="roboto_calendar_date_title">#2A99BC</color>
     <color name="roboto_calendar_day_of_week">#161d20</color>
     <color name="roboto_calendar_day_of_month">#849ba9</color>
-    <color name="roboto_calendar_current_day_of_month">#33b5e5</color>
+    <color name="roboto_calendar_current_day_of_month">#ff0e1a</color>
 
 </resources>
