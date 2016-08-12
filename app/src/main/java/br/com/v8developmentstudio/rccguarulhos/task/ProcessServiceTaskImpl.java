@@ -67,10 +67,12 @@ public class ProcessServiceTaskImpl implements ProcessServiceTask{
                 input = conec.getInputStream();
                 //Depois de Baixar o aquivo é gravado um file temporario
                 inFile = fileUtil.criaArquivo(input,System.currentTimeMillis()+".ical");
-                Log.i("DEBUG", "Iniciado Gravacao");
-                final List<Evento> eventoList = new ConstrutorIcal(fileUtil.recuperaArquivos(inFile.getPath())).getEventos();
-                for (final Evento evento : eventoList) {
-                    persistenceDao.updateEvents(evento, calendario);
+                if(inFile.exists() && (inFile.length()/1024)>1 ){
+                    Log.i("DEBUG", "Iniciado Gravacao");
+                    final List<Evento> eventoList = new ConstrutorIcal(fileUtil.recuperaArquivos(inFile.getPath())).getEventos();
+                    for (final Evento evento : eventoList) {
+                        persistenceDao.updateEvents(evento, calendario);
+                    }
                 }
                 inFile.deleteOnExit();
             }

@@ -31,7 +31,7 @@
         <activity
             android:name=".activitys.MainActivity"
             android:label="@string/app_calendario"
-            android:noHistory="true"
+
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
