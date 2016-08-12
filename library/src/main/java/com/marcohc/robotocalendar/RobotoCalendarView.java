@@ -340,16 +340,12 @@ public class RobotoCalendarView extends LinearLayout {
 
         this.currentCalendar = currentCalendar;
         locale = context.getResources().getConfiguration().locale;
-
         // Set date title
         initializeTitleLayout();
-
         // Set weeks days titles
         initializeWeekDaysLayout();
-
         // Initialize days of the month
         initializeDaysOfMonthLayout();
-
         // Set days in calendar
         setDaysInCalendar();
     }
@@ -360,8 +356,7 @@ public class RobotoCalendarView extends LinearLayout {
             Calendar currentCalendar = getCurrentCalendar();
             currentCalendar.setTime(currentDate);
             TextView dayOfMonth = getDayOfMonthText(currentCalendar);
-
-            if(verificaMesIsCorrente(currentCalendar)) {
+            if(verificaMesIsCorrente(currentCalendar)){
                 SpannableString spanString = new SpannableString(dayOfMonth.getText());
                 spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
                 dayOfMonth.setTextColor(context.getResources().getColor(R.color.roboto_calendar_current_day_of_month));
@@ -374,11 +369,12 @@ public class RobotoCalendarView extends LinearLayout {
         calendar1.setTime(new Date());
         int mesVerificar = calendar.get(Calendar.MONTH);
         int mesCorrent = calendar1.get(Calendar.MONTH);
-        if(mesCorrent <  mesVerificar || mesCorrent >  mesVerificar){
-            return false;
-        }else{
+        int diaCorrent = calendar1.get(Calendar.DAY_OF_MONTH);
+        int diaVerificar =  calendar.get(Calendar.DAY_OF_MONTH);
+        if(mesCorrent ==  mesVerificar && diaCorrent ==diaVerificar){
             return true;
         }
+            return false;
     }
 
     public void markDayAsSelectedDay(Date currentDate) {
