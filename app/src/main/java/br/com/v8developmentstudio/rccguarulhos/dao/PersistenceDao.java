@@ -49,7 +49,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
     public static final String UID = "UID";
     public static final String ALARME = "ALARME";
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     private Cursor cursor;
     private Context context;
     public static SQLiteDatabase bancoDados = null;
@@ -57,10 +56,12 @@ public class PersistenceDao extends SQLiteOpenHelper {
     public PersistenceDao(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
+
     public PersistenceDao(Context context){
         super(context, DATABASE_NAME, null, version);
         this.context =context;
     }
+
 
     public void updateEvents(Evento evento,Calendario calendario){
         salvaNovoEvento(evento, calendario);
@@ -251,8 +252,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
         String dataFim = anoFormt+"-"+mesFormat+"-"+diaMax+" 23:59:59" ;
         String[] args = {dataInicio, dataFim};
         String[] coluns = new String[]{ID, DATAHORAINICIO, DATAHORAFIM, LOCAL, SUMARIO, DESCRICAO};
-
-
             try {
                 cursor = bancoDados.rawQuery("SELECT * FROM '" + TB_EVENTOS + "' WHERE " + DATAHORAINICIO + " BETWEEN '" + dataInicio + "' AND '" + dataFim + "'", null);
                 Evento evento;
@@ -280,8 +279,11 @@ public class PersistenceDao extends SQLiteOpenHelper {
 
     public Evento recuperaEventoPorID(final int id){
         Evento evento=null;
+
+
         try {
             cursor = bancoDados.rawQuery("SELECT * FROM '" + TB_EVENTOS + "' WHERE ID =" + id, null);
+            Log.i("INFO",cursor.toString());
             while (cursor.moveToNext()) {
                 evento = new Evento();
                 evento.setId(cursor.getInt(cursor.getColumnIndex(ID)));
@@ -297,7 +299,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
             }
         } catch (ParseException e) {
             Log.e("ERROR", "recuperaEventoPorID()--> "+ e);
-            e.printStackTrace();
         }
         return evento;
     }

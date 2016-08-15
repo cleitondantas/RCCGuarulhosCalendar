@@ -44,7 +44,7 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
         Log.i("Script", "-> Alarme");
 
         int numIdentificacao=0;
-        int[]p = {1,3,5,7,9,11,13,15,17,19,20,22};
+        int[]p = {1,2,4,3,5,6,7,8,9,10,11,12,13,15,17,19,20,22};
 
         for(int dia :p) {
             for (Evento evento : persistenceDao.recuperaEventosPorDia(getDatePreferences(dia))) {
@@ -85,6 +85,7 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID,evento.getId().intValue());
         dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
+        dados.putSerializable("OBJ_EVENTO",evento);
         intent.putExtras(dados);
        return intent;
     }

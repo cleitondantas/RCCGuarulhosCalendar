@@ -1,11 +1,13 @@
 package br.com.v8developmentstudio.rccguarulhos.modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by cleiton.dantas on 16/03/2016.
  */
-public class Evento {
+public class Evento implements Serializable{
+
     private Integer id;
     private String uid;
     private Integer idCalendario;

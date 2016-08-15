@@ -20,6 +20,7 @@ public class Constantes {
     public static int  LISTAEVENTOSACTIVITY = 2;
     public static String IMG_PATH_TEMP = "RCC_IMGTemp";
     public static String JPG = ".jpg";
+    public static String CALENDARIO_RCC_DISPARADO = "CALENDARIO_RCC_DISPARADO";
 
 
 }

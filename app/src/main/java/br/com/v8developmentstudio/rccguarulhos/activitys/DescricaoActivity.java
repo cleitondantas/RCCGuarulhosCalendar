@@ -20,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import br.com.v8developmentstudio.rccguarulhos.R;
@@ -55,6 +56,7 @@ public class DescricaoActivity extends AppCompatActivity {
     private FloatingActionButton fabMenu, fabShare,fabAddCalendar;
     private TextView textViewSumario,textViewDescricao,textViewDataHoraInicio,textViewDataHoraFim,textViewLocal;
     private ScaleImageView thumbnail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,11 @@ public class DescricaoActivity extends AppCompatActivity {
 
         int id = getIntent().getIntExtra(Constantes.ID, 1);
         activityHistory = getIntent().getIntExtra(Constantes.ACTIVITYHISTOTY, 0);
+
+        evento = (Evento) getIntent().getSerializableExtra("OBJ_EVENTO");
+
+        if(evento==null)
+        evento = persistenceDao.recuperaEventoPorID(id);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
@@ -122,7 +129,7 @@ public class DescricaoActivity extends AppCompatActivity {
             }
         });
 
-        evento = getEventoDao(id);
+
         calendario = persistenceDao.recuperaConfigCalendarPorID(evento.getIdCalendario());
         Display disply = getWindowManager().getDefaultDisplay();
 
@@ -189,9 +196,6 @@ public class DescricaoActivity extends AppCompatActivity {
         return msg;
     }
 
-    private Evento getEventoDao(int id) {
-        return persistenceDao.recuperaEventoPorID(id);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
