@@ -1,13 +1,19 @@
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,6 +35,7 @@ import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.modelo.EventoFavorito;
+import br.com.v8developmentstudio.rccguarulhos.permissions.PermissionService;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
 import br.com.v8developmentstudio.rccguarulhos.services.CalendarEventService;
@@ -42,7 +49,7 @@ import android.widget.Toast;
  */
 public class DescricaoActivity extends AppCompatActivity {
 
-    private PersistenceDao persistenceDao = new PersistenceDao(this);
+    private PersistenceDao persistenceDao= new PersistenceDao(this);
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy \n HH:mm");
     private Evento evento;
     private Calendario calendario;
@@ -56,18 +63,19 @@ public class DescricaoActivity extends AppCompatActivity {
     private FloatingActionButton fabMenu, fabShare,fabAddCalendar;
     private TextView textViewSumario,textViewDescricao,textViewDataHoraInicio,textViewDataHoraFim,textViewLocal;
     private ScaleImageView thumbnail;
+    public static final String TAG = "LOG";
+    public static final int REQUEST_PERMISSIONS_CODE = 128;
+    public boolean controler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.descricao_cards_activity);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+       final PermissionService permissionService = new PermissionService(this,this);
         int id = getIntent().getIntExtra(Constantes.ID, 1);
         activityHistory = getIntent().getIntExtra(Constantes.ACTIVITYHISTOTY, 0);
-
-        evento = (Evento) getIntent().getSerializableExtra("OBJ_EVENTO");
-
+        evento =(Evento) getIntent().getSerializableExtra(Constantes.OBJ_EVENTO);
         if(evento==null)
         evento = persistenceDao.recuperaEventoPorID(id);
 
@@ -95,9 +103,14 @@ public class DescricaoActivity extends AppCompatActivity {
         fabAddCalendar = (FloatingActionButton) findViewById(R.id.idFabAddCalendar);
         fabShare.hide();
         fabAddCalendar.hide();
+
         fabMenu.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
+               permissionService.callGetContatos(view);
+               permissionService.callCalendarioREAD(view);
+               permissionService.callCalendarioWRITE(view);
+
                if(View.GONE == fabShare.getVisibility()) {
                    fabMenu.startAnimation(animeFloating);
                    fabShare.show();
@@ -125,6 +138,7 @@ public class DescricaoActivity extends AppCompatActivity {
         fabAddCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 addEventoLocalCalendar();
             }
         });

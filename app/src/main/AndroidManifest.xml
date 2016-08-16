@@ -12,7 +12,61 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
     <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+
+    <!-- Used for runtime permissions related to user's contacts and profile. -->
+    <permission-group android:name="android.permission-group.CONTACTS"
+        android:label="@string/permis_acesso_conta"
+        android:description="@string/permis_acesso_conta"
+        android:priority="100" />
+
+    <!-- Allows an application to read the user's contacts data.
+        <p>Protection level: dangerous
+    -->
+    <permission android:name="android.permission.READ_CONTACTS"
+        android:permissionGroup="android.permission-group.CONTACTS"
+        android:label="@string/permis_acesso_conta"
+        android:description="@string/permis_acesso_conta"
+        android:protectionLevel="dangerous" />
+
+    <!-- Allows an application to write the user's contacts data.
+         <p>Protection level: dangerous
+    -->
+    <permission android:name="android.permission.WRITE_CONTACTS"
+        android:permissionGroup="android.permission-group.CONTACTS"
+        android:label="@string/permis_acesso_conta"
+        android:description="@string/permis_acesso_conta"
+        android:protectionLevel="dangerous" />
+
+    <!-- ====================================================================== -->
+    <!-- Permissions for accessing user's calendar                              -->
+    <!-- ====================================================================== -->
+    <eat-comment />
+
+    <!-- Used for runtime permissions related to user's calendar. -->
+    <permission-group android:name="android.permission-group.CALENDAR"
+        android:label="@string/app_calendario"
+        android:description="@string/app_calendario"
+        android:priority="200" />
+
+    <!-- Allows an application to read the user's calendar data.
+         <p>Protection level: dangerous
+    -->
+    <permission android:name="android.permission.READ_CALENDAR"
+        android:permissionGroup="android.permission-group.CALENDAR"
+        android:label="@string/app_calendario"
+        android:description="@string/app_calendario"
+        android:protectionLevel="dangerous" />
+
+    <!-- Allows an application to write the user's calendar data.
+         <p>Protection level: dangerous
+    -->
+    <permission android:name="android.permission.WRITE_CALENDAR"
+        android:permissionGroup="android.permission-group.CALENDAR"
+        android:label="@string/app_calendario"
+        android:description="@string/app_calendario"
+        android:protectionLevel="dangerous" />
+
 
     <application
         android:allowBackup="true"

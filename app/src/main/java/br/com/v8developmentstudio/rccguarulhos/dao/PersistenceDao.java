@@ -279,8 +279,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
 
     public Evento recuperaEventoPorID(final int id){
         Evento evento=null;
-
-
+        openDB(context);
         try {
             cursor = bancoDados.rawQuery("SELECT * FROM '" + TB_EVENTOS + "' WHERE ID =" + id, null);
             Log.i("INFO",cursor.toString());

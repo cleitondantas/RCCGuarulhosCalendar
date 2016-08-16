@@ -85,7 +85,7 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID,evento.getId().intValue());
         dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
-        dados.putSerializable("OBJ_EVENTO",evento);
+        dados.putSerializable(Constantes.OBJ_EVENTO,evento);
         intent.putExtras(dados);
        return intent;
     }
