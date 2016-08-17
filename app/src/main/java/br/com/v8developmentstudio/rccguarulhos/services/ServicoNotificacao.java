@@ -23,8 +23,6 @@ public class ServicoNotificacao {
         return (PendingIntent.getBroadcast(context, 0, new Intent(Constantes.CALENDARIO_RCC_DISPARADO), PendingIntent.FLAG_NO_CREATE) == null);
     }
 
-
-
     public void createAlarmNotification(Context context) {
         if (verificaExistencia(context)) {
             Calendar c = Calendar.getInstance();
@@ -35,7 +33,7 @@ public class ServicoNotificacao {
             Intent intent = new Intent(Constantes.CALENDARIO_RCC_DISPARADO);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
             AlarmManager alarme = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            alarme.setRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
+            alarme.setRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),9000, pendingIntent);
             //AlarmManager.INTERVAL_HALF_DAY
             //3000000
         } else {

@@ -11,6 +11,9 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.v8developmentstudio.rccguarulhos.activitys.DescricaoActivity;
 
 /**
@@ -19,83 +22,31 @@ import br.com.v8developmentstudio.rccguarulhos.activitys.DescricaoActivity;
 public class PermissionService {
     private Context context;
     private Activity activity;
-    public static final String TAG = "LOG";
     public static final int REQUEST_PERMISSIONS_CODE = 128;
-
+    List<String> permissoesList  = new ArrayList<>();
     public PermissionService(Context context,Activity activity){
         this.context = context;
         this.activity = activity;
     }
 
-
-
-    public void callGetContatos(View view) {
-        Log.i(TAG, "callGetContatos()");
-        if( ContextCompat.checkSelfPermission( activity, Manifest.permission.GET_ACCOUNTS ) != PackageManager.PERMISSION_GRANTED ){
-            if( ActivityCompat.shouldShowRequestPermissionRationale( activity, Manifest.permission.GET_ACCOUNTS ) ){
-                callDialog( "É preciso a permission GET_ACCOUNTS para apresentação do content.", new String[]{Manifest.permission.GET_ACCOUNTS} );
-            }
-            else{
-                ActivityCompat.requestPermissions( activity, new String[]{Manifest.permission.GET_ACCOUNTS}, REQUEST_PERMISSIONS_CODE );
-            }
+    public void callGetPermissions(View view) {
+        boolean controler =false;
+        int i=0;
+        if(ContextCompat.checkSelfPermission( activity, Manifest.permission.GET_ACCOUNTS ) != PackageManager.PERMISSION_GRANTED ){
+            controler=true;
+            permissoesList.add(Manifest.permission.GET_ACCOUNTS);
         }
-        else{
-
+        if(ContextCompat.checkSelfPermission( activity, Manifest.permission.WRITE_CALENDAR ) != PackageManager.PERMISSION_GRANTED ){
+            controler=true;
+            permissoesList.add(Manifest.permission.WRITE_CALENDAR);
+        }
+        if((!ActivityCompat.shouldShowRequestPermissionRationale( activity, Manifest.permission.GET_ACCOUNTS)) ||(!ActivityCompat.shouldShowRequestPermissionRationale( activity, Manifest.permission.WRITE_CALENDAR ) ) ){
+            if(controler){
+                String[] permiss = new String[permissoesList.size()];
+                permiss = permissoesList.toArray(permiss);
+                ActivityCompat.requestPermissions( activity,permiss,REQUEST_PERMISSIONS_CODE );
+            }
         }
 
     }
-
-    public void callCalendarioWRITE(View view) {
-        Log.i(TAG, "callCalendarioWRITE()");
-        if( ContextCompat.checkSelfPermission( activity, Manifest.permission.WRITE_CALENDAR ) != PackageManager.PERMISSION_GRANTED ){
-
-            if( ActivityCompat.shouldShowRequestPermissionRationale( activity, Manifest.permission.WRITE_CALENDAR ) ){
-                callDialog( "É preciso a permission WRITE_CALENDAR para apresentação do content.", new String[]{Manifest.permission.WRITE_CALENDAR} );
-            }
-            else{
-                ActivityCompat.requestPermissions( activity, new String[]{Manifest.permission.WRITE_CALENDAR}, REQUEST_PERMISSIONS_CODE );
-            }
-        }
-        else{
-
-        }
-    }
-
-    public void callCalendarioREAD(View view) {
-        Log.i(TAG, "READ_CALENDAR()");
-        if( ContextCompat.checkSelfPermission( activity, Manifest.permission.READ_CALENDAR ) != PackageManager.PERMISSION_GRANTED ){
-
-            if( ActivityCompat.shouldShowRequestPermissionRationale( activity, Manifest.permission.READ_CALENDAR ) ){
-                callDialog( "É preciso a permission READ_CALENDAR para apresentação do content.", new String[]{Manifest.permission.READ_CALENDAR} );
-            }
-            else{
-                ActivityCompat.requestPermissions( activity, new String[]{Manifest.permission.READ_CALENDAR}, REQUEST_PERMISSIONS_CODE );
-            }
-        }
-        else{
-
-        }
-    }
-
-    // UTIL
-    private void callDialog( String message, final String[] permissions ){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
-                ActivityCompat.requestPermissions(activity, permissions, REQUEST_PERMISSIONS_CODE);
-
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
-
-            }
-        });
-        AlertDialog dialog = builder.create();
-    }
-
-
-
 }

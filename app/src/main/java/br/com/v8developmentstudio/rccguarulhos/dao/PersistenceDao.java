@@ -48,10 +48,11 @@ public class PersistenceDao extends SQLiteOpenHelper {
     public static final String URI = "URI";//Imagens
     public static final String UID = "UID";
     public static final String ALARME = "ALARME";
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private Cursor cursor;
-    private Context context;
-    public static SQLiteDatabase bancoDados = null;
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static Cursor cursor;
+    private static Context context;
+    private static SQLiteDatabase bancoDados = null;
+    private static PersistenceDao persistenceDao;
 
     public PersistenceDao(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -62,6 +63,16 @@ public class PersistenceDao extends SQLiteOpenHelper {
         this.context =context;
     }
 
+    public static PersistenceDao getInstance(Context context){
+        if(persistenceDao == null) {
+            persistenceDao = new PersistenceDao(context);
+            persistenceDao.openDB();
+            return persistenceDao;
+        }else{
+            persistenceDao.openDB();
+            return persistenceDao;
+        }
+    }
 
     public void updateEvents(Evento evento,Calendario calendario){
         salvaNovoEvento(evento, calendario);
@@ -231,7 +242,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
      * @return
      */
     private List<Evento> recuperaEventosPor(Date date,boolean diaTrue_MesFalse){
-        openDB();
         List<Evento> eventoList = new ArrayList<Evento>();
         Calendar cal = new GregorianCalendar();
         DecimalFormat df = new DecimalFormat("00");
@@ -279,7 +289,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
 
     public Evento recuperaEventoPorID(final int id){
         Evento evento=null;
-        openDB(context);
         try {
             cursor = bancoDados.rawQuery("SELECT * FROM '" + TB_EVENTOS + "' WHERE ID =" + id, null);
             Log.i("INFO",cursor.toString());

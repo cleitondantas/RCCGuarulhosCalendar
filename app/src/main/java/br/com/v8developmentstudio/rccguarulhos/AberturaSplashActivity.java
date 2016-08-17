@@ -26,7 +26,7 @@ import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
  */
 public class AberturaSplashActivity  extends Activity {
 
-    private PersistenceDao persistenceDao = new PersistenceDao(this);
+    private PersistenceDao persistenceDao =  PersistenceDao.getInstance(this);
     private ServicoNotificacao servicoNotificacao = new ServicoNotificacao();
     private ActivityServices activityServices = new ActivityServicesImpl();
     public static Integer TIMESLEAP = 2000;

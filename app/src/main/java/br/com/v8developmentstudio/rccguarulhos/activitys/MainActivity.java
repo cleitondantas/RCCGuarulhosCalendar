@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     private List<String> listsumariodomes = new ArrayList<String>();
     private ActivityServices ac = new ActivityServicesImpl();
     private AssetsPropertyReader assetsPropertyReader = new AssetsPropertyReader(this);
-    private PersistenceDao persistenceDao = null;
+    private PersistenceDao persistenceDao = PersistenceDao.getInstance(this);
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private MyRecyclerViewAdapter myRecyclerViewAdapter;
@@ -71,8 +71,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        persistenceDao = new PersistenceDao(this);
 
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
         navigationView = (NavigationView) findViewById(R.id.nav_view);

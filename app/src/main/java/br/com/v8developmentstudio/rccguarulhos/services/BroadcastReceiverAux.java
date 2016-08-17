@@ -39,7 +39,7 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     @Override
     public void onReceive(Context context, Intent intent) {
-        persistenceDao= new PersistenceDao(context);
+        persistenceDao = PersistenceDao.getInstance(context);
         preferences = new Preferences(context);
         Log.i("Script", "-> Alarme");
 

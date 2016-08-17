@@ -49,7 +49,7 @@ import android.widget.Toast;
  */
 public class DescricaoActivity extends AppCompatActivity {
 
-    private PersistenceDao persistenceDao= new PersistenceDao(this);
+    private PersistenceDao persistenceDao = PersistenceDao.getInstance(this);
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy \n HH:mm");
     private Evento evento;
     private Calendario calendario;
@@ -72,12 +72,16 @@ public class DescricaoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.descricao_cards_activity);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-       final PermissionService permissionService = new PermissionService(this,this);
+        final PermissionService permissionService = new PermissionService(this,this);
+
         int id = getIntent().getIntExtra(Constantes.ID, 1);
         activityHistory = getIntent().getIntExtra(Constantes.ACTIVITYHISTOTY, 0);
         evento =(Evento) getIntent().getSerializableExtra(Constantes.OBJ_EVENTO);
+
         if(evento==null)
         evento = persistenceDao.recuperaEventoPorID(id);
+        calendario = persistenceDao.recuperaConfigCalendarPorID(evento.getIdCalendario());
+
 
         toolbar = (Toolbar) findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
@@ -107,9 +111,7 @@ public class DescricaoActivity extends AppCompatActivity {
         fabMenu.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               permissionService.callGetContatos(view);
-               permissionService.callCalendarioREAD(view);
-               permissionService.callCalendarioWRITE(view);
+               permissionService.callGetPermissions(view);
 
                if(View.GONE == fabShare.getVisibility()) {
                    fabMenu.startAnimation(animeFloating);
@@ -143,8 +145,6 @@ public class DescricaoActivity extends AppCompatActivity {
             }
         });
 
-
-        calendario = persistenceDao.recuperaConfigCalendarPorID(evento.getIdCalendario());
         Display disply = getWindowManager().getDefaultDisplay();
 
         Point size = new Point();

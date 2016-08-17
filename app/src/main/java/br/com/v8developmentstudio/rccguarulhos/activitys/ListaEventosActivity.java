@@ -31,7 +31,7 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
     private RecyclerView recyclerView;
     private MyRecyclerViewAdapter myRecyclerViewAdapter;
     private GestureDetectorCompat gestureDetector;
-    private PersistenceDao persistenceDao = new PersistenceDao(this);
+    private PersistenceDao persistenceDao = PersistenceDao.getInstance(this);
     private FiltroDatas filtroDatas = new FiltroDatas();
     private ActivityServices activityServices = new ActivityServicesImpl();
 
