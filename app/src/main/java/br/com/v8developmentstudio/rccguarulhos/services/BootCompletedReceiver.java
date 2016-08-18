@@ -17,6 +17,7 @@ public class BootCompletedReceiver  extends BroadcastReceiver {
             if (intent.getAction().equalsIgnoreCase(Intent.ACTION_BOOT_COMPLETED)) {
                 ServicoNotificacao servicoNotificacao = new ServicoNotificacao();
                 servicoNotificacao.createAlarmNotification(context);
+                servicoNotificacao.atualizacao(context);
             }
         }
     }

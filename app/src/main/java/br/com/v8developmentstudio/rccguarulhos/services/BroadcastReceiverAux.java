@@ -27,6 +27,7 @@ import java.util.List;
 
 import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.activitys.DescricaoActivity;
+import br.com.v8developmentstudio.rccguarulhos.activitys.MainActivity;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.task.TaskProcessBackground;
@@ -35,7 +36,6 @@ import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 public class BroadcastReceiverAux extends BroadcastReceiver {
     private PersistenceDao persistenceDao;
     private Preferences preferences;
-    private ActivityServices activityServices = new ActivityServicesImpl();
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -47,14 +47,16 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
         int[]p = {1,2,4,3,5,6,7,8,9,10,11,12,13,15,17,19,20,22};
 
         for(int dia :p) {
-            for (Evento evento : persistenceDao.recuperaEventosPorDia(getDatePreferences(dia))) {
+            for (Evento evento : persistenceDao.recuperaEventosPorDia(getDatePreferences(dia),persistenceDao.openDB(context))) {
                 numIdentificacao++;
-                if (persistenceDao.recuperaFavoritoPorUID(evento.getUid()).size() != 0) {
+                if (persistenceDao.recuperaFavoritoPorUID(evento.getUid(),persistenceDao.openDB()).size() != 0) {
+
                     gerarNotificacao(context, redirectDescricaoDoEvento(context, evento), context.getString(R.string.lembrete), evento.getSumario(), dateFormat.format(evento.getDataHoraInicio()), numIdentificacao);
                 }
             }
         }
-        atualizaBase(context);
+
+      //  atualizaBase(context);
     }
 
 
@@ -110,15 +112,6 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
         Log.i("Script", "-> gerarNotificacao");
     }
 
-
-    public void atualizaBase(Context context){
-        boolean isOnline = activityServices.isOnline(context);
-        if(isOnline){
-            TaskProcessBackground taskPross = new TaskProcessBackground(context);
-            taskPross.execute();
-            Log.i("Script", "-> Base Atualizado in BackGround");
-        }
-    }
 
 
     @NonNull

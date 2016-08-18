@@ -38,9 +38,8 @@ public class AberturaSplashActivity  extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.abertura_splashscreen);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        persistenceDao.onCreate(persistenceDao.openDB());
         servicoNotificacao.createAlarmNotification(this);
+        servicoNotificacao.atualizacao(this);
 
         Date date = new Date(preferences.preferencesTimeAtulizacao());
         boolean isOnline = activityServices.isOnline(this);

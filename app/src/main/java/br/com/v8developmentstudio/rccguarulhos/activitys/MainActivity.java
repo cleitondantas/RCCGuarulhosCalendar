@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        persistenceDao = PersistenceDao.getInstance(this);
 
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
         Menu menu = navigationView.getMenu();
         SubMenu subMenu = menu.addSubMenu(getString(R.string.ministerios));
-        for (Calendario calendario : persistenceDao.recuperaTodasConfiguracoesCalendar()) {
+        for (Calendario calendario : persistenceDao.recuperaTodasConfiguracoesCalendar(persistenceDao.openDB(this))) {
             subMenu.add(1, calendario.getId(), calendario.getId(), calendario.getNomeLabel());
         }
         navigationView.setNavigationItemSelectedListener(this);
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         gestureDetector = new GestureDetectorCompat(this, new RecyclerViewOnGestureListener());
 
-        listEventos = persistenceDao.recuperaTodosEventos();
+        listEventos = persistenceDao.recuperaTodosEventos(persistenceDao.openDB(this));
         myRecyclerViewAdapter = new MyRecyclerViewAdapter(filtroDatas.filtraEventosPorDataAtual(listEventos));
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     @Override
     public void onDateSelected(Date date) {
         robotoCalendarView.markDayAsSelectedDay(date);
-        listEventos = persistenceDao.recuperaEventosPorDia(date);
+        listEventos = persistenceDao.recuperaEventosPorDia(date,persistenceDao.openDB());
         gerarListaMarcarCalendario();
     }
 
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         currentCalendar.add(Calendar.MONTH, currentMonthIndex);
         robotoCalendarView.initializeCalendar(currentCalendar);
         robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
-        listEventos = persistenceDao.recuperaEventosPorMes(currentCalendar.getTime());
+        listEventos = persistenceDao.recuperaEventosPorMes(currentCalendar.getTime(),persistenceDao.openDB());
         gerarListaMarcarCalendario();
     }
 

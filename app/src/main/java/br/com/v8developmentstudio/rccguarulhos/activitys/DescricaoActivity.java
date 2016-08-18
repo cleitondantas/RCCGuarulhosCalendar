@@ -73,15 +73,16 @@ public class DescricaoActivity extends AppCompatActivity {
         setContentView(R.layout.descricao_cards_activity);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         final PermissionService permissionService = new PermissionService(this,this);
+        persistenceDao = PersistenceDao.getInstance(this);
 
         int id = getIntent().getIntExtra(Constantes.ID, 1);
         activityHistory = getIntent().getIntExtra(Constantes.ACTIVITYHISTOTY, 0);
-        evento =(Evento) getIntent().getSerializableExtra(Constantes.OBJ_EVENTO);
 
+
+        evento=(Evento) getIntent().getSerializableExtra(Constantes.OBJ_EVENTO);
         if(evento==null)
-        evento = persistenceDao.recuperaEventoPorID(id);
-        calendario = persistenceDao.recuperaConfigCalendarPorID(evento.getIdCalendario());
-
+        evento = persistenceDao.recuperaEventoPorID(id,persistenceDao.openDB(this));
+        calendario = persistenceDao.recuperaConfigCalendarPorID(evento.getIdCalendario(),persistenceDao.openDB(this));
 
         toolbar = (Toolbar) findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
@@ -140,7 +141,6 @@ public class DescricaoActivity extends AppCompatActivity {
         fabAddCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 addEventoLocalCalendar();
             }
         });
@@ -178,7 +178,7 @@ public class DescricaoActivity extends AppCompatActivity {
         textViewDataHoraInicio.setText(dateFormat.format(evento.getDataHoraInicio()));
         textViewDataHoraFim.setText(dateFormat.format(evento.getDataHoraFim()));
         textViewLocal.setText(evento.getLocal());
-        eventoFavoritos = persistenceDao.recuperaFavoritoPorUID(evento.getUid());
+        eventoFavoritos = persistenceDao.recuperaFavoritoPorUID(evento.getUid(),persistenceDao.openDB(this));
 
     }
 
@@ -269,13 +269,13 @@ public class DescricaoActivity extends AppCompatActivity {
 
 
     private void pressFavorito(MenuItem item) {
-        eventoFavoritos = persistenceDao.recuperaFavoritoPorUID(evento.getUid());
+        eventoFavoritos = persistenceDao.recuperaFavoritoPorUID(evento.getUid(),persistenceDao.openDB(this));
         if (eventoFavoritos != null && eventoFavoritos.size() > 0) {
-            persistenceDao.deletaEventoFavoritoPorUID(evento.getUid());
+            persistenceDao.deletaEventoFavoritoPorUID(evento.getUid(),persistenceDao.openDB(this));
             item.setIcon(android.R.drawable.btn_star_big_off);
             Log.i("DEBUG", "CHECK FALSE");
         } else {
-            persistenceDao.salvaEventoFavorito(evento, calendario, false);
+            persistenceDao.salvaEventoFavorito(evento, calendario, false,persistenceDao.openDB(this));
             item.setIcon(android.R.drawable.btn_star_big_on);
             Log.i("DEBUG", "CHECK TRUE");
         }

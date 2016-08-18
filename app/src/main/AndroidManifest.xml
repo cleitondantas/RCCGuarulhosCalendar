@@ -117,6 +117,14 @@
             </intent-filter>
         </receiver>
         <receiver
+            android:name=".services.BroadcastReceiverAtualizacao"
+            android:label="BroadcastReceiverAtualizacao">
+            <intent-filter>
+                <action android:name="CALENDARIO_RCC_ATUALIZACAO" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver
             android:name=".services.BootCompletedReceiver"
             android:label="BootCompletedReceiver">
             <intent-filter>

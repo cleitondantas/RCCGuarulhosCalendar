@@ -32,9 +32,11 @@ public class ProcessServiceTaskImpl implements ProcessServiceTask{
     private Preferences preferences;
     private File inFile;
     private FileUtil fileUtil = new FileUtil();
+    private Context context;
 
     public ProcessServiceTaskImpl(Context context) {
-        persistenceDao = new PersistenceDao(context);
+        this.context = context;
+        persistenceDao = PersistenceDao.getInstance(context);
         calendariosDao = new CalendariosDao(context);
         assetsPropertyReader = new AssetsPropertyReader(context);
         preferences = new Preferences(context);
@@ -44,7 +46,7 @@ public class ProcessServiceTaskImpl implements ProcessServiceTask{
     public void preProcess() {
         persistenceDao.onDropTabelaEventos(persistenceDao.openDB());
         persistenceDao.onCreate(persistenceDao.openDB());
-        calendarioList = persistenceDao.recuperaTodasConfiguracoesCalendar();
+        calendarioList = persistenceDao.recuperaTodasConfiguracoesCalendar(persistenceDao.openDB(context));
         calendariosAssets = assetsPropertyReader.processaCalendariosProperties();
     }
 
@@ -52,7 +54,7 @@ public class ProcessServiceTaskImpl implements ProcessServiceTask{
     public void runProcessBackgrund() {
         //Salva os dados do Properties na TB_CONFIG_CALENDAR
         for (Calendario calendarios : calendariosDao.verificaListaCalendarios(calendarioList,calendariosAssets) ) {
-            persistenceDao.salvaConfiguracaoCalendario(calendarios);
+            persistenceDao.salvaConfiguracaoCalendario(calendarios,persistenceDao.openDB());
             Log.i("DEBUG", "PERSISTINDO TABELAS DE CALENDARIOS");
         }
 
@@ -60,7 +62,7 @@ public class ProcessServiceTaskImpl implements ProcessServiceTask{
             Log.i("DEBUG", "Iniciado");
             InputStream input = null;
             Log.i("DEBUG", "Abrindo Connecxao");
-            for (Calendario calendario : persistenceDao.recuperaTodasConfiguracoesCalendar()) {
+            for (Calendario calendario : persistenceDao.recuperaTodasConfiguracoesCalendar(persistenceDao.openDB(context))) {
                 URL url = new URL(calendario.getUrl());
                 URLConnection conec = url.openConnection();
                 Log.i("DEBUG", "URL CALENDAR : -->" + calendario.getUrl());
@@ -71,7 +73,7 @@ public class ProcessServiceTaskImpl implements ProcessServiceTask{
                     Log.i("DEBUG", "Iniciado Gravacao");
                     final List<Evento> eventoList = new ConstrutorIcal(fileUtil.recuperaArquivos(inFile.getPath())).getEventos();
                     for (final Evento evento : eventoList) {
-                        persistenceDao.updateEvents(evento, calendario);
+                        persistenceDao.updateEvents(evento, calendario,persistenceDao.openDB(context));
                     }
                 }
                 inFile.deleteOnExit();

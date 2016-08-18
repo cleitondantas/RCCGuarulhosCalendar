@@ -21,6 +21,7 @@ public class Constantes {
     public static String IMG_PATH_TEMP = "RCC_IMGTemp";
     public static String JPG = ".jpg";
     public static String CALENDARIO_RCC_DISPARADO = "CALENDARIO_RCC_DISPARADO";
+    public static String CALENDARIO_RCC_ATUALIZACAO = "CALENDARIO_RCC_ATUALIZACAO";
     public static String OBJ_EVENTO = "OBJ_EVENTO";
 
 

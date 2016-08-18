@@ -43,6 +43,7 @@ public class ListaEventosFavoritosActivity extends AppCompatActivity implements 
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        persistenceDao = PersistenceDao.getInstance(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.lista_eventos_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -51,7 +52,7 @@ public class ListaEventosFavoritosActivity extends AppCompatActivity implements 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         gestureDetector = new GestureDetectorCompat(this, new RecyclerViewOnGestureListener());
 
-        listEventos = persistenceDao.recuperaTodosEventosFavoritos();
+        listEventos = persistenceDao.recuperaTodosEventosFavoritos(persistenceDao.openDB(this));
         listEventos = filtroDatas.filtraEventosPorDataAtual(listEventos);
         myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos);
         recyclerView.setAdapter(myRecyclerViewAdapter);
