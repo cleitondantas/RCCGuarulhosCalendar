@@ -16,14 +16,10 @@ import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
  * Created by cleiton.dantas on 01/04/2016.
  */
 public class ServicoNotificacao {
-    private Preferences preferences;
-
     private boolean verificaExistencia(Context context){
-        preferences = new Preferences(context);
         return (PendingIntent.getBroadcast(context, 0, new Intent(Constantes.CALENDARIO_RCC_DISPARADO), PendingIntent.FLAG_NO_CREATE) == null);
     }
     private boolean verificaExistenciaAtualizacao(Context context){
-        preferences = new Preferences(context);
         return (PendingIntent.getBroadcast(context, 0, new Intent(Constantes.CALENDARIO_RCC_ATUALIZACAO), PendingIntent.FLAG_NO_CREATE) == null);
     }
 
@@ -32,12 +28,12 @@ public class ServicoNotificacao {
             Calendar c = Calendar.getInstance();
             c.setTimeInMillis(System.currentTimeMillis());
             c.add(Calendar.SECOND,5);
-            Log.i("Script", "Novo alarme");
+            Log.i("Script", "Novo alarme CALENDARIO_RCC_DISPARADO");
             Intent intent = new Intent(Constantes.CALENDARIO_RCC_DISPARADO);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
             AlarmManager alarme = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            alarme.setRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),90000, pendingIntent);
-            //AlarmManager.INTERVAL_HALF_DAY
+            alarme.setRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
+            //AlarmManager.INTERVAL_FIFTEEN_MINUTES
             //3000000
         } else {
             Log.i("Script", "Alarme já ativo");
@@ -48,8 +44,8 @@ public class ServicoNotificacao {
         if (verificaExistenciaAtualizacao(context)) {
             Calendar c = Calendar.getInstance();
             c.setTimeInMillis(System.currentTimeMillis());
-            c.add(Calendar.SECOND,5);
-            Log.i("Script", "Novo alarme");
+            c.add(Calendar.SECOND,10);
+            Log.i("Script", "Novo alarme CALENDARIO_RCC_ATUALIZACAO");
             Intent intent = new Intent(Constantes.CALENDARIO_RCC_ATUALIZACAO);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
             AlarmManager alarme = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);

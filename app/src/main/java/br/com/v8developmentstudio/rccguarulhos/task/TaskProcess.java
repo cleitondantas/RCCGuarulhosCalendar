@@ -39,7 +39,7 @@ public class TaskProcess extends AsyncTask<String, Object, String> {
     @Override
     protected void onPreExecute() {
         progress = new ProgressDialog(context);
-        postMensagem("Garregando...");
+        postMensagem("Carregando...");
         processServiceTask.preProcess();
     }
 

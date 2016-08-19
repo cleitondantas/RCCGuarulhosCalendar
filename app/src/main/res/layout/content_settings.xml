@@ -11,7 +11,11 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="br.com.v8developmentstudio.rccguarulhos.activitys.SettingsActivity"
     tools:showIn="@layout/activity_settings">
-
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
     <TextView
         android:id="@+id/textView1"
         android:textSize="20dp"
@@ -31,8 +35,36 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:layout_below="@+id/textView1"
-        android:text="Calendario RCC Guarulhos \n Desenvolvido por \n V8 Development Studio" />
+        android:text="Calendario RCC Guarulhos" />
+    <TextView
+        android:id="@+id/textView3"
+        android:textSize="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textView2"
+        android:text="Desenvolvido por: V8 Development Studio" />
 
-
-
+    <TextView
+        android:id="@+id/textAtualizacao"
+        android:textSize="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textView3"
+        android:text="Ultima atulização dos registros" />
+    <TextView
+        android:id="@+id/atualizacaoView"
+        android:textSize="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textAtualizacao"
+        android:layout_marginTop="30dp" />
+    </LinearLayout>
 </RelativeLayout>

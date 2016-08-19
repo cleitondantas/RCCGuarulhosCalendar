@@ -65,10 +65,8 @@ public class PersistenceDao extends SQLiteOpenHelper {
     public static PersistenceDao getInstance(Context context){
         if(persistenceDao == null) {
             persistenceDao = new PersistenceDao(context);
-            persistenceDao.openDB();
             return persistenceDao;
         }else{
-            persistenceDao.openDB();
             return persistenceDao;
         }
     }
@@ -89,16 +87,21 @@ public class PersistenceDao extends SQLiteOpenHelper {
         contentValues.put(DESCRICAO, evento.getDescricao());
         contentValues.put(URI, evento.getUri());
         bancoDados.insert(TB_EVENTOS, null, contentValues);
+        if(bancoDados.isOpen()){
+            bancoDados.close();
+        }
     }
 
     public void salvaEventoFavorito(Evento evento,Calendario calendario,Boolean isAlarme,SQLiteDatabase bancoDados){
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(ID_CALENDARIO, calendario.getId());
         contentValues.put(ID_EVENTO, evento.getId());
         contentValues.put(UID, evento.getUid());
         contentValues.put(ALARME,isAlarme);
         bancoDados.insert(TB_FAVORITOS, null, contentValues);
+        if(bancoDados.isOpen()){
+            bancoDados.close();
+        }
     }
 
     public void deletaEventoFavoritoPorUID(String UID,SQLiteDatabase bancoDados){
@@ -106,14 +109,16 @@ public class PersistenceDao extends SQLiteOpenHelper {
         String whereClause ="UID=?";
         String[] whereArgs={UID};
         bancoDados.delete(TB_FAVORITOS, whereClause, whereArgs);
+        if(bancoDados.isOpen()){
+            bancoDados.close();
+        }
     }
 
     public List<EventoFavorito> recuperaFavoritoPorUID(String uid,SQLiteDatabase bancoDados){
-
         ArrayList<EventoFavorito> eventoFavoritos = new ArrayList<EventoFavorito>();
         String whereClause ="UID = ?";
         String[] whereArgs={uid};
-        cursor = getWritableDatabase().query(TB_FAVORITOS, new String[]{ID, ID_CALENDARIO, ID_EVENTO, UID, ALARME}, whereClause, whereArgs, null, null, null);
+        cursor = bancoDados.query(TB_FAVORITOS, new String[]{ID, ID_CALENDARIO, ID_EVENTO, UID, ALARME}, whereClause, whereArgs, null, null, null);
         EventoFavorito eventoFavorito;
         try {
             while (cursor.moveToNext()) {
@@ -124,10 +129,14 @@ public class PersistenceDao extends SQLiteOpenHelper {
                 eventoFavorito.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME)) > 0);
                 eventoFavoritos.add(eventoFavorito);
             }
+            if(bancoDados.isOpen()){
+                bancoDados.close();
+            }
         } catch (Exception e) {
             Log.e("ERROR", "recuperaListEventosFavoritos()-->"+ e);
             e.printStackTrace();
         }
+
         return eventoFavoritos;
     }
     public List<EventoFavorito> recuperaTodosFavoritos(SQLiteDatabase bancoDados){
@@ -145,10 +154,14 @@ public class PersistenceDao extends SQLiteOpenHelper {
                     eventoFavorito.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME)) > 0);
                     eventoFavoritos.add(eventoFavorito);
                 }
+                if(bancoDados.isOpen()){
+                    bancoDados.close();
+                }
             } catch (Exception e) {
                 Log.e("ERROR", "recuperaListEventosFavoritos()-->"+ e);
                 e.printStackTrace();
             }
+
         return eventoFavoritos;
     }
 
@@ -158,6 +171,9 @@ public class PersistenceDao extends SQLiteOpenHelper {
         for(EventoFavorito favoritos : eventoFavoritos){
             List<Evento>  eventoList1 =  recuperaEventoPorUID(favoritos.getUid(),bancoDados);
             eventoList.addAll(eventoList1);
+        }
+        if(bancoDados.isOpen()){
+            bancoDados.close();
         }
         return eventoList;
     }
@@ -187,15 +203,18 @@ public class PersistenceDao extends SQLiteOpenHelper {
                     evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
                     eventoList.add(evento);
                 }
+                if(bancoDados.isOpen()){
+                    bancoDados.close();
+                }
             } catch (ParseException e) {
                 Log.e("ERROR", "recuperaTodosEventos()--> "+ e);
                 e.printStackTrace();
         }
+
         return eventoList;
     }
 
     public List<Evento> recuperaTodosEventosPorCalendario(final int idCalendario,SQLiteDatabase bancoDados) {
-        openDB();
         List<Evento> eventoList = new ArrayList<Evento>();
         String whereClause ="ID_CALENDARIO = ?";
         String[] whereArgs={""+idCalendario};
@@ -216,10 +235,14 @@ public class PersistenceDao extends SQLiteOpenHelper {
                         evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
                         eventoList.add(evento);
                     }
+                    if(bancoDados.isOpen()){
+                        bancoDados.close();
+                    }
                 } catch (ParseException e) {
                     Log.e("ERROR", "recuperaTodosEventosPorCalendario()-->"+ e);
                     e.printStackTrace();
                 }
+
         return eventoList;
     }
 
@@ -291,6 +314,9 @@ public class PersistenceDao extends SQLiteOpenHelper {
                 Log.e("ERROR", "recuperaEventosPor()--> " + e);
                 e.printStackTrace();
             }
+        if(bancoDados.isOpen()){
+            bancoDados.close();
+        }
         return eventoList;
     }
 
@@ -312,6 +338,9 @@ public class PersistenceDao extends SQLiteOpenHelper {
                 evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                 evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
                 evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
+            }
+            if(bancoDados.isOpen()){
+                bancoDados.close();
             }
         } catch (ParseException e) {
             Log.e("ERROR", "recuperaEventoPorID()--> "+ e);
@@ -342,6 +371,9 @@ public class PersistenceDao extends SQLiteOpenHelper {
                 evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
                 eventoList.add(evento);
             }
+            if(bancoDados.isOpen()){
+                bancoDados.close();
+            }
         } catch (ParseException e) {
             Log.e("ERROR", "recuperaEventoPorID()--> "+ e);
             e.printStackTrace();
@@ -353,6 +385,9 @@ public class PersistenceDao extends SQLiteOpenHelper {
         String whereClause ="ID=?";
         String[] whereArgs={""+id};
         bancoDados.delete(calendario, whereClause, whereArgs);
+        if(bancoDados.isOpen()){
+            bancoDados.close();
+        }
     }
 
     /**
@@ -365,6 +400,9 @@ public class PersistenceDao extends SQLiteOpenHelper {
         contentValues.put(NOME_LABEL, calendario.getNomeLabel());
         contentValues.put(URL,calendario.getUrl());
         bancoDados.insert(TB_CONFIG_CALENDAR, null, contentValues);
+        if(bancoDados.isOpen()){
+            bancoDados.close();
+        }
     }
 
     public List<Calendario> recuperaTodasConfiguracoesCalendar(SQLiteDatabase bancoDados) {
@@ -380,6 +418,9 @@ public class PersistenceDao extends SQLiteOpenHelper {
                 calendario.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME)) > 0);
                 calendarios.add(calendario);
             }
+        if(bancoDados.isOpen()){
+            bancoDados.close();
+        }
         return calendarios;
     }
 
@@ -393,6 +434,9 @@ public class PersistenceDao extends SQLiteOpenHelper {
             calendario.setNomeLabel(cursor.getString(cursor.getColumnIndex(NOME_LABEL)));
             calendario.setUrl(cursor.getString(cursor.getColumnIndex(URL)));
             calendario.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME)) > 0);
+        }
+        if(bancoDados.isOpen()){
+            bancoDados.close();
         }
         return calendario;
     }
@@ -419,17 +463,26 @@ public class PersistenceDao extends SQLiteOpenHelper {
 
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_CONFIG_CALENDAR +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+NOME_CALENDARIO+" VARCHAR NOT NULL UNIQUE,"+NOME_LABEL+" VARCHAR NOT NULL,"+URL+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
-        db.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_FAVORITOS +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+ID_CALENDARIO+" INTEGER NOT NULL,"+ID_EVENTO+" INTEGER NOT NULL,"+UID+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TB_EVENTOS + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+UID+" VARCHAR NOT NULL, " +ID_CALENDARIO+" INTEGER NOT NULL," + DATAHORAINICIO + " DATETIME NOT NULL, " + DATAHORAFIM + " DATETIME, " + DATAHORAMODIFICADO + " DATETIME, " + LOCAL + " VARCHAR (200),"+ SUMARIO + " VARCHAR (200) NOT NULL, "+ DESCRICAO +" TEXT,"+ URI +" VARCHAR (300));");
+    public void onCreate(SQLiteDatabase bancoDados) {
+        bancoDados.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_CONFIG_CALENDAR +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+NOME_CALENDARIO+" VARCHAR NOT NULL UNIQUE,"+NOME_LABEL+" VARCHAR NOT NULL,"+URL+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
+        bancoDados.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_FAVORITOS +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+ID_CALENDARIO+" INTEGER NOT NULL,"+ID_EVENTO+" INTEGER NOT NULL,"+UID+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
+        bancoDados.execSQL("CREATE TABLE IF NOT EXISTS " + TB_EVENTOS + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+UID+" VARCHAR NOT NULL, " +ID_CALENDARIO+" INTEGER NOT NULL," + DATAHORAINICIO + " DATETIME NOT NULL, " + DATAHORAFIM + " DATETIME, " + DATAHORAMODIFICADO + " DATETIME, " + LOCAL + " VARCHAR (200),"+ SUMARIO + " VARCHAR (200) NOT NULL, "+ DESCRICAO +" TEXT,"+ URI +" VARCHAR (300));");
+        if(bancoDados.isOpen()){
+            bancoDados.close();
+        }
     }
 
-    public void onDrop(SQLiteDatabase db){
-        db.execSQL("DROP TABLE IF EXISTS "+ TB_CONFIG_CALENDAR);
+    public void onDrop(SQLiteDatabase bancoDados){
+        bancoDados.execSQL("DROP TABLE IF EXISTS "+ TB_CONFIG_CALENDAR);
+        if(bancoDados.isOpen()){
+            bancoDados.close();
+        }
     }
-    public void onDropTabelaEventos(SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS "+TB_EVENTOS);
+    public void onDropTabelaEventos(SQLiteDatabase bancoDados) {
+        bancoDados.execSQL("DROP TABLE IF EXISTS "+TB_EVENTOS);
+        if(bancoDados.isOpen()){
+            bancoDados.close();
+        }
     }
 
 
@@ -438,8 +491,11 @@ public class PersistenceDao extends SQLiteOpenHelper {
 
     }
 
-    public boolean isTBContemRegistro(SQLiteDatabase db,String nomeTabela){
-       int i = db.rawQuery("SELECT * FROM " + nomeTabela,null).getCount();
+    public boolean isTBContemRegistro(SQLiteDatabase bancoDados,String nomeTabela){
+       int i = bancoDados.rawQuery("SELECT * FROM " + nomeTabela,null).getCount();
+        if(bancoDados.isOpen()){
+            bancoDados.close();
+        }
         return i>0;
     }
 }

@@ -35,28 +35,22 @@ import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 
 public class BroadcastReceiverAux extends BroadcastReceiver {
     private PersistenceDao persistenceDao;
-    private Preferences preferences;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     @Override
     public void onReceive(Context context, Intent intent) {
         persistenceDao = PersistenceDao.getInstance(context);
-        preferences = new Preferences(context);
-        Log.i("Script", "-> Alarme");
-
+        Log.i("Script", "-> Alarme onReceive");
         int numIdentificacao=0;
-        int[]p = {1,2,4,3,5,6,7,8,9,10,11,12,13,15,17,19,20,22};
-
+        int[]p = {1,3,5};
         for(int dia :p) {
             for (Evento evento : persistenceDao.recuperaEventosPorDia(getDatePreferences(dia),persistenceDao.openDB(context))) {
                 numIdentificacao++;
                 if (persistenceDao.recuperaFavoritoPorUID(evento.getUid(),persistenceDao.openDB()).size() != 0) {
-
                     gerarNotificacao(context, redirectDescricaoDoEvento(context, evento), context.getString(R.string.lembrete), evento.getSumario(), dateFormat.format(evento.getDataHoraInicio()), numIdentificacao);
                 }
             }
         }
 
-      //  atualizaBase(context);
     }
 
 
@@ -89,6 +83,7 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
         dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
         dados.putSerializable(Constantes.OBJ_EVENTO,evento);
         intent.putExtras(dados);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
        return intent;
     }
 
