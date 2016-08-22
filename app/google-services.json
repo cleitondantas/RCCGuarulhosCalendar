@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1073948431525",
+    "firebase_url": "https://rccguarulhoscalendar.firebaseio.com",
+    "project_id": "rccguarulhoscalendar",
+    "storage_bucket": "rccguarulhoscalendar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073948431525:android:8fcd72b1a6572363",
+        "android_client_info": {
+          "package_name": "br.com.v8developmentstudio.rccguarulhos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1073948431525-i1v5bnqbqurgs748acflvo3de3rm8h78.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeTG-aUI5h9qH-g-A2xw2coRxx0hKJ9Z0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

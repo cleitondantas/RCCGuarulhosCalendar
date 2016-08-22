@@ -12,11 +12,9 @@ import br.com.v8developmentstudio.rccguarulhos.task.TaskProcessBackground;
  * Created by cleiton.dantas on 18/08/2016.
  */
 public class BroadcastReceiverAtualizacao extends BroadcastReceiver {
-    private PersistenceDao persistenceDao;
     private ActivityServices activityServices = new ActivityServicesImpl();
     @Override
     public void onReceive(Context context, Intent intent) {
-        persistenceDao = PersistenceDao.getInstance(context);
         atualizaBase(context);
     }
 

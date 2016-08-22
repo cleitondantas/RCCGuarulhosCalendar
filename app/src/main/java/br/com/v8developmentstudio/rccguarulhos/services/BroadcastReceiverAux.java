@@ -4,6 +4,7 @@ package br.com.v8developmentstudio.rccguarulhos.services;
  * Created by cleiton.dantas on 01/04/2016.
  */
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -41,7 +42,7 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
         persistenceDao = PersistenceDao.getInstance(context);
         Log.i("Script", "-> Alarme onReceive");
         int numIdentificacao=0;
-        int[]p = {1,3,5};
+        int[]p = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
         for(int dia :p) {
             for (Evento evento : persistenceDao.recuperaEventosPorDia(getDatePreferences(dia),persistenceDao.openDB(context))) {
                 numIdentificacao++;
@@ -50,7 +51,6 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
                 }
             }
         }
-
     }
 
 

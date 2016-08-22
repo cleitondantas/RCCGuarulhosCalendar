@@ -32,7 +32,7 @@ public class ServicoNotificacao {
             Intent intent = new Intent(Constantes.CALENDARIO_RCC_DISPARADO);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
             AlarmManager alarme = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            alarme.setRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
+            alarme.setRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),120000, pendingIntent);
             //AlarmManager.INTERVAL_FIFTEEN_MINUTES
             //3000000
         } else {

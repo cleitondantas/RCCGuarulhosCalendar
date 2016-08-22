@@ -6,7 +6,6 @@ buildscript {
     }
 
     dependencies {
-
         classpath 'com.android.tools.build:gradle:2.1.2'
     }
 }
@@ -18,8 +17,8 @@ allprojects {
         androidMinSdkVersion = 15
         androidTargetSdkVersion = 23
         androidCompileSdkVersion = 23
-        androidVersionCode = 3
-        androidVersionName = "1.2.2"
+        androidVersionCode = 5
+        androidVersionName = "1.5"
     }
 
     repositories {
