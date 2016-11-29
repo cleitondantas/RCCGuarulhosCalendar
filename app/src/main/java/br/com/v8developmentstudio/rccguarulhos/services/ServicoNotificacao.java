@@ -16,6 +16,9 @@ import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
  * Created by cleiton.dantas on 01/04/2016.
  */
 public class ServicoNotificacao {
+    private long interval30Minuts = (AlarmManager.INTERVAL_FIFTEEN_MINUTES+ AlarmManager.INTERVAL_FIFTEEN_MINUTES);
+    private long interval45Minuts = (AlarmManager.INTERVAL_FIFTEEN_MINUTES+ AlarmManager.INTERVAL_FIFTEEN_MINUTES +AlarmManager.INTERVAL_FIFTEEN_MINUTES );
+
     private boolean verificaExistencia(Context context){
         return (PendingIntent.getBroadcast(context, 0, new Intent(Constantes.CALENDARIO_RCC_DISPARADO), PendingIntent.FLAG_NO_CREATE) == null);
     }
@@ -32,7 +35,7 @@ public class ServicoNotificacao {
             Intent intent = new Intent(Constantes.CALENDARIO_RCC_DISPARADO);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
             AlarmManager alarme = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            alarme.setRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),120000, pendingIntent);
+            alarme.setRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
             //AlarmManager.INTERVAL_FIFTEEN_MINUTES
             //3000000
         } else {
@@ -49,7 +52,7 @@ public class ServicoNotificacao {
             Intent intent = new Intent(Constantes.CALENDARIO_RCC_ATUALIZACAO);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
             AlarmManager alarme = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            alarme.setRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
+            alarme.setRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent);
             //AlarmManager.INTERVAL_HALF_DAY
             //3000000
         } else {

@@ -62,13 +62,16 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     private RecyclerView recyclerView;
     private GestureDetectorCompat gestureDetector;
     private FiltroDatas filtroDatas = new FiltroDatas();
+    private Menu menu;
+    private ActionBarDrawerToggle toggle;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         persistenceDao = PersistenceDao.getInstance(this);
@@ -77,11 +80,11 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        Menu menu = navigationView.getMenu();
+        menu = navigationView.getMenu();
         SubMenu subMenu = menu.addSubMenu(getString(R.string.ministerios));
         for (Calendario calendario : persistenceDao.recuperaTodasConfiguracoesCalendar(persistenceDao.openDB(this))) {
             subMenu.add(1, calendario.getId(), calendario.getId(), calendario.getNomeLabel());
@@ -232,7 +235,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         } else {
             Intent startMain = new Intent(Intent.ACTION_MAIN);
             startMain.addCategory(Intent.CATEGORY_HOME);
-            //startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(startMain);
 
         }
