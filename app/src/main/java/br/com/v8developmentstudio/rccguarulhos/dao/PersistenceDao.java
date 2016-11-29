@@ -169,7 +169,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         List<EventoFavorito> eventoFavoritos = recuperaTodosFavoritos(bancoDados);
         List<Evento> eventoList = new ArrayList<Evento>();
         for(EventoFavorito favoritos : eventoFavoritos){
-            List<Evento>  eventoList1 =  recuperaEventoPorUID(favoritos.getUid(),bancoDados);
+            List<Evento>  eventoList1 =  recuperaEventoPorUID(favoritos.getUid(),persistenceDao.openDB(persistenceDao.context));
             eventoList.addAll(eventoList1);
         }
         if(bancoDados.isOpen()){
@@ -177,7 +177,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
         }
         return eventoList;
     }
-
 
 
     public List<Evento> recuperaTodosEventos(SQLiteDatabase bancoDados) {
@@ -354,8 +353,8 @@ public class PersistenceDao extends SQLiteOpenHelper {
         try {
             String sqlcoluns[] ={ID,ID_CALENDARIO,UID,DATAHORAINICIO,DATAHORAFIM,DATAHORAMODIFICADO,LOCAL,SUMARIO,DESCRICAO,URI,ALARME};
             String[] query = {"'"+uid +"'"};
-            cursor = bancoDados.rawQuery("SELECT * FROM '" + TB_EVENTOS + "' WHERE UID ='" + uid + "'", null);
-           // cursor = bancoDados.query(TB_EVENTOS, sqlcoluns, "UID=? ", new String[]{uid}, null, null, null);
+            cursor = bancoDados.rawQuery("SELECT * FROM " + TB_EVENTOS + " WHERE UID ='" + uid + "'", null);
+           //cursor = bancoDados.query(TB_EVENTOS, sqlcoluns, "UID=? ", new String[]{uid}, null, null, null);
 
             while (cursor.moveToNext()) {
                 evento = new Evento();
