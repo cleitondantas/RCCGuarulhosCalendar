@@ -111,6 +111,11 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;

@@ -85,7 +85,7 @@
         <activity
             android:name=".activitys.MainActivity"
             android:label="@string/app_calendario"
-
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity

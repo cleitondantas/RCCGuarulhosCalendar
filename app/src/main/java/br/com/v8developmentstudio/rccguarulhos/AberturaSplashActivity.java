@@ -62,4 +62,10 @@ public class AberturaSplashActivity  extends Activity {
             }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
 }
