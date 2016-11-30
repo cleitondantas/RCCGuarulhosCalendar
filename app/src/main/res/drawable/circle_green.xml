@@ -5,5 +5,5 @@
     <size
         android:height="35dp"
         android:width="35dp" />
-    <solid android:color="@color/roboto_calendar_circle" />
+    <solid android:color="@color/green" />
 </shape>

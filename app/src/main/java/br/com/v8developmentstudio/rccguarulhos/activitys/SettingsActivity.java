@@ -1,5 +1,6 @@
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -49,6 +50,10 @@ public class SettingsActivity extends AppCompatActivity {
         activityServices.redirect(this, MainActivity.class, null);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
 
 }

@@ -1,5 +1,6 @@
 package br.com.v8developmentstudio.rccguarulhos.activitys;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -61,7 +62,11 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

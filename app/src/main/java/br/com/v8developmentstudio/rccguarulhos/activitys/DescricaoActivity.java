@@ -181,7 +181,11 @@ public class DescricaoActivity extends AppCompatActivity {
         eventoFavoritos = persistenceDao.recuperaFavoritoPorUID(evento.getUid(),persistenceDao.openDB(this));
 
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
     private void addEventoLocalCalendar(){
         calendarEventService.addEventoAoCalendarioLocal(evento);
         Toast.makeText(this,"EVENTO ADD NO CALENDARIO LOCAL", Toast.LENGTH_SHORT).show();
@@ -221,7 +225,7 @@ public class DescricaoActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem someMenuItem = menu.findItem(R.id.action_star);
-        if (eventoFavoritos.size() > 0) {
+        if (eventoFavoritos!=null && eventoFavoritos.size() > 0) {
             someMenuItem.setIcon(android.R.drawable.btn_star_big_on);
         } else {
             someMenuItem.setIcon(android.R.drawable.btn_star_big_off);

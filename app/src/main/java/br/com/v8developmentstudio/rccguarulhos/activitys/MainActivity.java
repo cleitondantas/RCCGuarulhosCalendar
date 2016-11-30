@@ -3,6 +3,9 @@ package br.com.v8developmentstudio.rccguarulhos.activitys;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GestureDetectorCompat;
@@ -85,9 +88,10 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         toggle.syncState();
 
         menu = navigationView.getMenu();
+        navigationView.setItemIconTintList(null);
         SubMenu subMenu = menu.addSubMenu(getString(R.string.ministerios));
         for (Calendario calendario : persistenceDao.recuperaTodasConfiguracoesCalendar(persistenceDao.openDB(this))) {
-            subMenu.add(1, calendario.getId(), calendario.getId(), calendario.getNomeLabel());
+            subMenu.add(1, calendario.getId(), calendario.getId(), calendario.getNomeLabel()).setIcon(R.drawable.circle_red);
         }
         navigationView.setNavigationItemSelectedListener(this);
         setupDrawerContent(navigationView);
@@ -108,6 +112,13 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
 
         updateCalendar();
+    }
+    public Drawable customView(int backgroundColor) {
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.OVAL);
+        shape.setColor(backgroundColor);
+        shape.setSize(35,35);
+        return shape;
     }
 
     @Override

@@ -35,7 +35,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:layout_below="@+id/textView1"
-        android:text="Calendario RCC Guarulhos" />
+        android:text="@string/title_setings" />
     <TextView
         android:id="@+id/textView3"
         android:textSize="15dp"
@@ -45,7 +45,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:layout_below="@+id/textView2"
-        android:text="Desenvolvido por: V8 Development Studio" />
+        android:text="@string/development" />
 
     <TextView
         android:id="@+id/textAtualizacao"
@@ -56,7 +56,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:layout_below="@+id/textView3"
-        android:text="Ultima atulização dos registros" />
+        android:text="@string/ultima_atulizacao" />
     <TextView
         android:id="@+id/atualizacaoView"
         android:textSize="15dp"
