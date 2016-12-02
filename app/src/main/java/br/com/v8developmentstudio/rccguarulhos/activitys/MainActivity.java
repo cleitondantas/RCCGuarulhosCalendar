@@ -43,6 +43,7 @@ import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
 import br.com.v8developmentstudio.rccguarulhos.util.AssetsPropertyReader;
+import br.com.v8developmentstudio.rccguarulhos.util.CircleColorDrawable;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         navigationView.setItemIconTintList(null);
         SubMenu subMenu = menu.addSubMenu(getString(R.string.ministerios));
         for (Calendario calendario : persistenceDao.recuperaTodasConfiguracoesCalendar(persistenceDao.openDB(this))) {
-            subMenu.add(1, calendario.getId(), calendario.getId(), calendario.getNomeLabel()).setIcon(R.drawable.circle_red);
+            subMenu.add(1, calendario.getId(), calendario.getId(), calendario.getNomeLabel()).setIcon(CircleColorDrawable.CirclesColor(calendario.getId()));
         }
         navigationView.setNavigationItemSelectedListener(this);
         setupDrawerContent(navigationView);

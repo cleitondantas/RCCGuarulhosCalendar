@@ -7,9 +7,12 @@
     <color name="blue">#33b5e5</color>
     <color name="silver">#C0C0C0</color>
     <color name="black">#3b4144</color>
+    <color name="yelow">#ffd622</color>
     <color name="white">#FFFFFF</color>
     <color name="pink">#FF4081</color>
-
+    <color name="dark_blue">#014dff</color>
+    <color name="dark_green">#385400</color>
+    <color name="dark_red">#910002</color>
     <!-- Fonts -->
     <color name="monthTitleColor">#161d20</color>
     <color name="dayOfWeekColor">#161d20</color>
