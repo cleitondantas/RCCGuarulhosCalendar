@@ -168,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
             Toast.makeText(this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
             redirectListEventos(menuItem.getItemId(), String.valueOf(menuItem.getTitle()));
         }
-
         // Close the navigation drawers
         drawer.closeDrawers();
     }

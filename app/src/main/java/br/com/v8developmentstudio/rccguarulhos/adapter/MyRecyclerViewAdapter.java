@@ -37,6 +37,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.label.setText(eventoList.get(position).getSumario());
         holder.dateTime.setText(dateFormat.format(eventoList.get(position).getDataHoraInicio()));
+
     }
 
     public void addItem(Evento dataObj, int index) {
