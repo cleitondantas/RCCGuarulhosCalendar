@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.GravityCompat;
@@ -35,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import br.com.v8developmentstudio.rccguarulhos.AberturaSplashActivity;
 import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.adapter.MyRecyclerViewAdapter;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
