@@ -58,7 +58,7 @@ public class ListaEventosActivity extends AppCompatActivity implements RecyclerV
 
         listEventos = persistenceDao.recuperaTodosEventosPorCalendario(idCalendario,persistenceDao.openDB(this));
         listEventos = filtroDatas.filtraEventosPorDataAtual(listEventos);
-        myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos);
+        myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos,this);
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
     }

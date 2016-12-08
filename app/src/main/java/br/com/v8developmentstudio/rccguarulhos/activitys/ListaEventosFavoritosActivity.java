@@ -55,7 +55,7 @@ public class ListaEventosFavoritosActivity extends AppCompatActivity implements 
 
         listEventos = persistenceDao.recuperaTodosEventosFavoritos(persistenceDao.openDB(this));
         listEventos = filtroDatas.filtraEventosPorDataAtual(listEventos);
-        myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos);
+        myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos,this);
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
     }

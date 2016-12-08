@@ -35,6 +35,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_below="@+id/tvtitulo"/>
+
+            <ImageView
+                android:id="@+id/colorrowcardview"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

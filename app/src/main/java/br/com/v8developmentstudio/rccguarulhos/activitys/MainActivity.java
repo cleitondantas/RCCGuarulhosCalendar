@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         gestureDetector = new GestureDetectorCompat(this, new RecyclerViewOnGestureListener());
 
         listEventos = persistenceDao.recuperaTodosEventos(persistenceDao.openDB(this));
-        myRecyclerViewAdapter = new MyRecyclerViewAdapter(filtroDatas.filtraEventosPorDataAtual(listEventos));
+        myRecyclerViewAdapter = new MyRecyclerViewAdapter(filtroDatas.filtraEventosPorDataAtual(listEventos),this);
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
         currentCalendar = Calendar.getInstance(Locale.getDefault());
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
     public void construtorAdapter() {
         filtroDatas.comparatorData(listEventos);
-        myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos);
+        myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventos,this);
         recyclerView.setAdapter(myRecyclerViewAdapter);
     }
 
