@@ -3,11 +3,9 @@ package br.com.v8developmentstudio.rccguarulhos.activitys;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.GravityCompat;
@@ -36,7 +34,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import br.com.v8developmentstudio.rccguarulhos.AberturaSplashActivity;
 import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.adapter.MyRecyclerViewAdapter;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
@@ -45,7 +42,7 @@ import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
 import br.com.v8developmentstudio.rccguarulhos.util.AssetsPropertyReader;
-import br.com.v8developmentstudio.rccguarulhos.util.CircleColorDrawable;
+import br.com.v8developmentstudio.rccguarulhos.util.ColorDrawables;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 import br.com.v8developmentstudio.rccguarulhos.util.FiltroDatas;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -71,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     private Menu menu;
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
-
+    private ColorDrawables drawablecolor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         persistenceDao = PersistenceDao.getInstance(this);
-
+        drawablecolor = new ColorDrawables(this);
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -93,8 +90,10 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         menu = navigationView.getMenu();
         navigationView.setItemIconTintList(null);
         SubMenu subMenu = menu.addSubMenu(getString(R.string.ministerios));
+
         for (Calendario calendario : persistenceDao.recuperaTodasConfiguracoesCalendar(persistenceDao.openDB(this))) {
-            subMenu.add(1, calendario.getId(), calendario.getId(), calendario.getNomeLabel()).setIcon(CircleColorDrawable.CirclesColor(calendario.getId()));
+            Drawable drawer = drawablecolor.customView(GradientDrawable.OVAL,35,35,calendario.getId());
+            subMenu.add(1, calendario.getId(), calendario.getId(), calendario.getNomeLabel()).setIcon(drawer);
         }
         navigationView.setNavigationItemSelectedListener(this);
         setupDrawerContent(navigationView);
@@ -116,13 +115,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
         updateCalendar();
     }
-    public Drawable customView(int backgroundColor) {
-        GradientDrawable shape = new GradientDrawable();
-        shape.setShape(GradientDrawable.OVAL);
-        shape.setColor(backgroundColor);
-        shape.setSize(35,35);
-        return shape;
-    }
+
 
     @Override
     protected void onResume() {

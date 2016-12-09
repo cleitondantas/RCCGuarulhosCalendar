@@ -2,6 +2,7 @@ package br.com.v8developmentstudio.rccguarulhos.adapter;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,7 @@ import java.util.List;
 
 import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
-import br.com.v8developmentstudio.rccguarulhos.util.CircleColorDrawable;
+import br.com.v8developmentstudio.rccguarulhos.util.ColorDrawables;
 
 /**
  * Created by cleiton.dantas on 28/03/2016.
@@ -23,11 +24,12 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     private List<Evento> eventoList;
     private Activity activity;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-
+    private ColorDrawables dra ;
 
     public MyRecyclerViewAdapter(List<Evento> eventos, Activity activity) {
         this.activity = activity;
         eventoList = eventos;
+        dra = new ColorDrawables(activity);
     }
 
 
@@ -43,7 +45,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.label.setText(eventoList.get(position).getSumario());
         holder.dateTime.setText(dateFormat.format(eventoList.get(position).getDataHoraInicio()));
-        holder.imagedrawr.setImageDrawable(activity.getResources().getDrawable(CircleColorDrawable.CirclesColor(eventoList.get(position).getIdCalendario())));
+
+        Drawable drawer = dra.customView(GradientDrawable.RECTANGLE,15,90,eventoList.get(position).getIdCalendario());
+        holder.imagedrawr.setImageDrawable(drawer);
     }
 
     public void addItem(Evento dataObj, int index) {

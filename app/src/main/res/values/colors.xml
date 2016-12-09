@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- newColors -->
 
     <!-- General -->
+    <string name="roxo">#CC0EEE</string>
+    <string name="red">#CC0000</string>
+    <string name="green">#669900</string>
+    <string name="blue">#33b5e5</string>
+    <string name="silver">#C0C0C0</string>
+    <string name="black">#3b4144</string>
+    <string name="yelow">#ffd622</string>
+    <string name="white">#FFFFFF</string>
+    <string name="pink">#FF4081</string>
+    <string name="dark_blue">#014dff</string>
+    <string name="dark_green">#385400</string>
+    <string name="dark_red">#910002</string>
+
+
+    <color name="roxo">#CC0EEE</color>
     <color name="red">#CC0000</color>
     <color name="green">#669900</color>
     <color name="blue">#33b5e5</color>
@@ -13,13 +29,14 @@
     <color name="dark_blue">#014dff</color>
     <color name="dark_green">#385400</color>
     <color name="dark_red">#910002</color>
+
+
     <!-- Fonts -->
     <color name="monthTitleColor">#161d20</color>
     <color name="dayOfWeekColor">#161d20</color>
     <color name="dayOfMonthColor">#808080</color>
     <color name="currentDayOfMonthColor">#33b5e5</color>
     <color name="textTistviewColor">#707070</color>
-
 
 
     <color name="colorPrimary">#4CAF50</color>
