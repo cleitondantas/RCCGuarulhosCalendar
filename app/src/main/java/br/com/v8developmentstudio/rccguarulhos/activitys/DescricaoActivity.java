@@ -33,6 +33,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -120,6 +121,9 @@ public class DescricaoActivity extends AppCompatActivity {
         textViewLocal = (TextView) findViewById(R.id.idLocal);
         thumbnail = (ScaleImageView) findViewById(R.id.thumbnail);
 
+        final ProgressBar viewProgressBar = (ProgressBar) findViewById(R.id.pbHeaderProgress);
+        viewProgressBar.setVisibility(View.GONE);
+
         final Animation animeFloating = AnimationUtils.loadAnimation(this, R.anim.rotate);
         final Animation animeFloating2 = AnimationUtils.loadAnimation(this, R.anim.rotate2);
         fabMenu = (FloatingActionButton) findViewById(R.id.idFabMenu);
@@ -136,7 +140,6 @@ public class DescricaoActivity extends AppCompatActivity {
            @Override
            public void onClick(View view) {
                permissionService.callGetPermissions(view);
-
                if(View.GONE == fabShare.getVisibility()) {
                    fabMenu.startAnimation(animeFloating);
                    fabShare.show();
@@ -174,6 +177,7 @@ public class DescricaoActivity extends AppCompatActivity {
         disply.getSize(size);
 
         if (evento.getUri() != null) {
+            viewProgressBar.setVisibility(View.VISIBLE);
             thumbnail.setTag(evento.getUri());
             Object[] obj = {thumbnail, evento.getUid()};
             new DownloadImagesTask().execute(obj);
@@ -184,12 +188,11 @@ public class DescricaoActivity extends AppCompatActivity {
             thumbnail.setMaxWidth(width);
             thumbnail.setMinimumWidth(width);
             appBarLayout.setExpanded(true);
-
-
             thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     zoomImageFromThumb(thumbnail,thumbnail.getDrawable());
+                    viewProgressBar.setVisibility(View.GONE);
                 }
             });
 
@@ -381,12 +384,9 @@ public class DescricaoActivity extends AppCompatActivity {
         // Construct and run the parallel animation of the four translation and
         // scale properties (X, Y, SCALE_X, and SCALE_Y).
         AnimatorSet set = new AnimatorSet();
-        set.play(ObjectAnimator.ofFloat(expandedImageView, View.X,
-                        startBounds.left, finalBounds.left))
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.Y,
-                        startBounds.top, finalBounds.top))
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X,
-                        startScale, 1f)).with(ObjectAnimator.ofFloat(expandedImageView,
+        set.play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left, finalBounds.left))
+                .with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top, finalBounds.top))
+                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X, startScale, 1f)).with(ObjectAnimator.ofFloat(expandedImageView,
                 View.SCALE_Y, startScale, 1f));
         set.setDuration(mShortAnimationDuration);
         set.setInterpolator(new DecelerateInterpolator());
@@ -403,7 +403,6 @@ public class DescricaoActivity extends AppCompatActivity {
         });
         set.start();
         mCurrentAnimator = set;
-
         // Upon clicking the zoomed-in image, it should zoom back down
         // to the original bounds and show the thumbnail instead of
         // the expanded image.
@@ -418,17 +417,10 @@ public class DescricaoActivity extends AppCompatActivity {
                 // Animate the four positioning/sizing properties in parallel,
                 // back to their original values.
                 AnimatorSet set = new AnimatorSet();
-                set.play(ObjectAnimator
-                        .ofFloat(expandedImageView, View.X, startBounds.left))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.Y,startBounds.top))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.SCALE_X, startScaleFinal))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.SCALE_Y, startScaleFinal));
+                set.play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left))
+                        .with(ObjectAnimator.ofFloat(expandedImageView,View.Y,startBounds.top))
+                        .with(ObjectAnimator.ofFloat(expandedImageView,View.SCALE_X, startScaleFinal))
+                        .with(ObjectAnimator .ofFloat(expandedImageView,  View.SCALE_Y, startScaleFinal));
                 set.setDuration(mShortAnimationDuration);
                 set.setInterpolator(new DecelerateInterpolator());
                 set.addListener(new AnimatorListenerAdapter() {
