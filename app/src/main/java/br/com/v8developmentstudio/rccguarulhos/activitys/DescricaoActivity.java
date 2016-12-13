@@ -77,14 +77,7 @@ public class DescricaoActivity extends AppCompatActivity {
     public static final int REQUEST_PERMISSIONS_CODE = 128;
     public boolean controler;
 
-
-    // Hold a reference to the current animator,
-    // so that it can be canceled mid-way.
     private Animator mCurrentAnimator;
-
-    // The system "short" animation time duration, in milliseconds. This
-    // duration is ideal for subtle animations or animations that occur
-    // very frequently.
     private int mShortAnimationDuration;
 
     @Override
@@ -120,7 +113,6 @@ public class DescricaoActivity extends AppCompatActivity {
         textViewDataHoraFim = (TextView) findViewById(R.id.idDataHoraFim);
         textViewLocal = (TextView) findViewById(R.id.idLocal);
         thumbnail = (ScaleImageView) findViewById(R.id.thumbnail);
-
         final ProgressBar viewProgressBar = (ProgressBar) findViewById(R.id.pbHeaderProgress);
         viewProgressBar.setVisibility(View.GONE);
 
@@ -131,7 +123,6 @@ public class DescricaoActivity extends AppCompatActivity {
         fabAddCalendar = (FloatingActionButton) findViewById(R.id.idFabAddCalendar);
         fabShare.hide();
         fabAddCalendar.hide();
-
 
         // Retrieve and cache the system's default "short" animation time.
         mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
@@ -172,7 +163,6 @@ public class DescricaoActivity extends AppCompatActivity {
         });
 
         Display disply = getWindowManager().getDefaultDisplay();
-
         Point size = new Point();
         disply.getSize(size);
 

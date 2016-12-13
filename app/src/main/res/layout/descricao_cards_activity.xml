@@ -28,7 +28,6 @@
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp">
 
-
             <ProgressBar
                 android:id="@+id/pbHeaderProgress"
                 android:progressDrawable="@drawable/circular_progress_bar"
