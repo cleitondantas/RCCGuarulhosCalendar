@@ -14,17 +14,19 @@ buildscript {
 allprojects {
     ext {
         androidApplicationId = 'br.com.v8developmentstudio.rccguarulhos'
-        androidBuildToolsVersion = "23.0.2"
+        androidBuildToolsVersion = "25.0.0"
         androidMinSdkVersion = 15
         androidTargetSdkVersion = 23
-        androidCompileSdkVersion = 23
+        androidCompileSdkVersion = 24
         androidVersionCode = 5
         androidVersionName = "1.5"
     }
 
     repositories {
-        jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
     }
+}
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
