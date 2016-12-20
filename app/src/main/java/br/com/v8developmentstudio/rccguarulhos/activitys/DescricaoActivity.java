@@ -300,10 +300,11 @@ public class DescricaoActivity extends AppCompatActivity {
     private void pressFavorito(MenuItem item) {
         eventoFavoritos = persistenceDao.recuperaFavoritoPorUID(evento.getUid(),persistenceDao.openDB(this));
         if (eventoFavoritos != null && eventoFavoritos.size() > 0) {
-            persistenceDao.deletaEventoFavoritoPorUID(evento.getUid(),persistenceDao.openDB(this));
+             persistenceDao.deletaEventoFavoritoPorUID(evento.getUid(),persistenceDao.openDB(this));
             item.setIcon(android.R.drawable.btn_star_big_off);
             Log.i("DEBUG", "CHECK FALSE");
         } else {
+            Log.i("UID",evento.getUid());
             persistenceDao.salvaEventoFavorito(evento, calendario, false,persistenceDao.openDB(this));
             item.setIcon(android.R.drawable.btn_star_big_on);
             Log.i("DEBUG", "CHECK TRUE");

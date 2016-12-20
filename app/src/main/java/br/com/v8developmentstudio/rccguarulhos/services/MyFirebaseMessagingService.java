@@ -8,14 +8,21 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.List;
+
 import br.com.v8developmentstudio.rccguarulhos.R;
+import br.com.v8developmentstudio.rccguarulhos.activitys.DescricaoActivity;
 import br.com.v8developmentstudio.rccguarulhos.activitys.MainActivity;
+import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
+import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
+import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 
 /**
  * Created by cleiton.dantas on 13/12/2016.
@@ -23,7 +30,8 @@ import br.com.v8developmentstudio.rccguarulhos.activitys.MainActivity;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
-
+    private PersistenceDao persistenceDao;
+    private NotificationService notificationService;
     /**
      * Called when message is received.
      *
@@ -32,6 +40,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        persistenceDao = new PersistenceDao(getApplicationContext());
+        notificationService = new NotificationService();
         // TODO(developer): Handle FCM messages here.
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
@@ -46,32 +56,43 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
             texto = remoteMessage.getNotification().getBody();
         }
-        sendNotification(titulo,texto,getApplicationContext());
-    }
 
-    private void sendNotification(String title,String messageBody,Context context) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,  PendingIntent.FLAG_ONE_SHOT);
-        Log.d(TAG,messageBody);
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.rcc)
-                .setTicker(title)
-                .setContentTitle(title)
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.rcc));
-
-        notificationBuilder.setContentIntent(pendingIntent);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            notificationBuilder.setFullScreenIntent(pendingIntent, true);
+        if(!remoteMessage.getData().isEmpty()) {
+            String uid = remoteMessage.getData().get("UID");
+            String ticker = remoteMessage.getData().get("TICKER");
+            String title = remoteMessage.getData().get("TITLE");
+            String descricao = remoteMessage.getData().get("DESCRICAO");
+            List<Evento> events = persistenceDao.recuperaEventoPorUID(uid, persistenceDao.openDB());
+            if (events != null && events.size() > 0) {
+                notificationService.gerarNotificacao(getApplicationContext(), notificationService.redirectDescricaoDoEvento(getApplicationContext(), events.get(0), DescricaoActivity.class), ticker, title, descricao, 0);
+            }
         }
 
-        NotificationManager notificationManager =  (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notificationBuilder.build());
     }
+//
+//    private void sendNotification(String title,String messageBody,Context context) {
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,  PendingIntent.FLAG_ONE_SHOT);
+//        Log.d(TAG,messageBody);
+//        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+//                .setSmallIcon(R.drawable.rcc)
+//                .setTicker(title)
+//                .setContentTitle(title)
+//                .setContentText(messageBody)
+//                .setAutoCancel(true)
+//                .setSound(defaultSoundUri)
+//                .setContentIntent(pendingIntent)
+//                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.rcc));
+//
+//        notificationBuilder.setContentIntent(pendingIntent);
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            notificationBuilder.setFullScreenIntent(pendingIntent, true);
+//        }
+//
+//        NotificationManager notificationManager =  (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        notificationManager.notify(0, notificationBuilder.build());
+//    }
 
 }

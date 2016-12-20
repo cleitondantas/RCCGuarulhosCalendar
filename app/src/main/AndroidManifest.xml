@@ -133,7 +133,6 @@
         </receiver>
 
 
-
         <service
             android:name=".services.MyFirebaseInstanceIdService">
             <intent-filter>
@@ -145,6 +144,7 @@
             android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
 

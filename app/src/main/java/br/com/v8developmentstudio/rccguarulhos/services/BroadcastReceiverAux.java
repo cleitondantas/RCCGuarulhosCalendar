@@ -37,6 +37,8 @@ import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 public class BroadcastReceiverAux extends BroadcastReceiver {
     private PersistenceDao persistenceDao;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private NotificationService notificationService  = new NotificationService();
+
     @Override
     public void onReceive(Context context, Intent intent) {
         persistenceDao = PersistenceDao.getInstance(context);
@@ -47,66 +49,11 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
             for (Evento evento : persistenceDao.recuperaEventosPorDia(getDatePreferences(dia),persistenceDao.openDB(context))) {
                 numIdentificacao++;
                 if (persistenceDao.recuperaFavoritoPorUID(evento.getUid(),persistenceDao.openDB()).size() != 0) {
-                    gerarNotificacao(context, redirectDescricaoDoEvento(context, evento), context.getString(R.string.lembrete), evento.getSumario(), dateFormat.format(evento.getDataHoraInicio()), numIdentificacao);
+                    notificationService.gerarNotificacao(context, notificationService.redirectDescricaoDoEvento(context, evento,DescricaoActivity.class), context.getString(R.string.lembrete), evento.getSumario(), dateFormat.format(evento.getDataHoraInicio()), numIdentificacao);
                 }
             }
         }
     }
-
-
-    public void gerarNotificacao(Context context, Intent intent, CharSequence ticker, CharSequence titulo, CharSequence descricao,int numerodaNotificacao) {
-        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, numerodaNotificacao, intent, 0);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setTicker(ticker);
-        builder.setContentTitle(titulo);
-        builder.setContentText(descricao);
-        builder.setSmallIcon(R.drawable.rcc);
-        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.rcc));
-
-        builder.setContentIntent(pendingIntent);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setFullScreenIntent(pendingIntent, true);
-        }
-
-        Notification n = builder.build();
-        n.vibrate = new long[]{150, 300, 150, 600};
-        n.flags = Notification.FLAG_AUTO_CANCEL;
-        nm.notify(numerodaNotificacao, n);
-
-        emitirNotificacaoSonora(context);
-    }
-    private Intent redirectDescricaoDoEvento(final Context context ,final Evento evento) {
-        Intent intent = new Intent(context, DescricaoActivity.class);
-        Bundle dados = new Bundle();
-        dados.putInt(Constantes.ID,evento.getId().intValue());
-        dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
-        dados.putSerializable(Constantes.OBJ_EVENTO,evento);
-        intent.putExtras(dados);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-       return intent;
-    }
-
-    private void emitirNotificacaoSonora(Context context){
-        try{
-            Uri som = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            Ringtone toque = RingtoneManager.getRingtone(context, som);
-
-            if(toque.isPlaying()){
-                toque.play();
-            }else{
-                toque.stop();
-                toque.play();
-            }
-
-        }
-        catch(Exception e){
-            Log.e("ERROR", "EMITIR SOM ()--> " + e);
-            e.printStackTrace();
-        }
-        Log.i("Script", "-> gerarNotificacao");
-    }
-
 
 
     @NonNull
