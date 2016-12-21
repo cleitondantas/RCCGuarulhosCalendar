@@ -91,10 +91,20 @@ public class DescricaoActivity extends AppCompatActivity {
         int id = getIntent().getIntExtra(Constantes.ID, 1);
         activityHistory = getIntent().getIntExtra(Constantes.ACTIVITYHISTOTY, 0);
 
-
         evento=(Evento) getIntent().getSerializableExtra(Constantes.OBJ_EVENTO);
-        if(evento==null)
-        evento = persistenceDao.recuperaEventoPorID(id,persistenceDao.openDB(this));
+        if(evento==null){
+            String uid =  getIntent().getStringExtra(Constantes.UID);
+            if(uid!=null && uid.length()>0){
+                List<Evento> events = persistenceDao.recuperaEventoPorUID(uid, persistenceDao.openDB());
+                for(Evento item : events){
+                    evento = item;
+                }
+            }
+        }
+        if(evento==null){
+            evento = persistenceDao.recuperaEventoPorID(id,persistenceDao.openDB(this));
+        }
+
         calendario = persistenceDao.recuperaConfigCalendarPorID(evento.getIdCalendario(),persistenceDao.openDB(this));
 
         toolbar = (Toolbar) findViewById(R.id.toolbar3);

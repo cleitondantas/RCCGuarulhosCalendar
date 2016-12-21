@@ -11,10 +11,12 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import br.com.v8developmentstudio.rccguarulhos.activitys.DescricaoActivity;
 import br.com.v8developmentstudio.rccguarulhos.activitys.MainActivity;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
+import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
 import br.com.v8developmentstudio.rccguarulhos.services.Preferences;

@@ -76,6 +76,7 @@ public class NotificationService {
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID,evento.getId().intValue());
         dados.putInt(Constantes.CALENDARIO, evento.getIdCalendario());
+        dados.putString(Constantes.UID,evento.getUid());
         dados.putSerializable(Constantes.OBJ_EVENTO,evento);
         intent.putExtras(dados);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
