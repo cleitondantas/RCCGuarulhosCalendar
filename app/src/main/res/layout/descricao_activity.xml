@@ -114,6 +114,24 @@
             android:paddingBottom="20dip" android:background="@color/backgroundCards"
             android:textColor="@color/textTistviewColor"/>
     </TableRow>
+    <TableRow
+        android:id="@+id/idTbButtonLink"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/buttonlink"
+            android:layout_span="3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/verdercc"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:text="Inscreva-se" />
+    </TableRow>
 
 
 </TableLayout>

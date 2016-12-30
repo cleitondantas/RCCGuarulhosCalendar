@@ -32,8 +32,10 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TableRow;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,6 +75,7 @@ public class DescricaoActivity extends AppCompatActivity {
     private FloatingActionButton fabMenu, fabShare,fabAddCalendar;
     private TextView textViewSumario,textViewDescricao,textViewDataHoraInicio,textViewDataHoraFim,textViewLocal;
     private ScaleImageView thumbnail;
+    private Button buttonLink;
     public static final String TAG = "LOG";
     public static final int REQUEST_PERMISSIONS_CODE = 128;
     public boolean controler;
@@ -116,7 +119,8 @@ public class DescricaoActivity extends AppCompatActivity {
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         mCollapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT); // transperent color = #00000000
-
+        TableRow tbRow = (TableRow) findViewById(R.id.idTbButtonLink);
+        buttonLink = (Button) findViewById(R.id.buttonlink);
         textViewSumario = (TextView) findViewById(R.id.idsumario);
         textViewDescricao = (TextView) findViewById(R.id.idDescricao);
         textViewDataHoraInicio = (TextView) findViewById(R.id.idDataHoraInicio);
@@ -195,7 +199,7 @@ public class DescricaoActivity extends AppCompatActivity {
                     viewProgressBar.setVisibility(View.GONE);
                 }
             });
-
+            tbRow.setVisibility(View.VISIBLE);
         }else{
             int width = size.x/4;
             int height = size.y/4;
@@ -215,6 +219,15 @@ public class DescricaoActivity extends AppCompatActivity {
         textViewLocal.setText(evento.getLocal());
         eventoFavoritos = persistenceDao.recuperaFavoritoPorUID(evento.getUid(),persistenceDao.openDB(this));
 
+
+        buttonLink.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                onWevView();
+            }
+        });
+
     }
     @Override
     protected void onResume() {
@@ -225,6 +238,10 @@ public class DescricaoActivity extends AppCompatActivity {
         calendarEventService.addEventoAoCalendarioLocal(evento);
         Toast.makeText(this,"EVENTO ADD NO CALENDARIO LOCAL", Toast.LENGTH_SHORT).show();
 
+    }
+
+    private void onWevView(){
+        ac.redirect(this, WebViewActivity.class, null);
     }
 
     private String prepereShare(Evento evento){
