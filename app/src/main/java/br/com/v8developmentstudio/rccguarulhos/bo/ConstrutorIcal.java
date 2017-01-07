@@ -44,10 +44,19 @@ public List<Evento> getEventos(){
             if(descriccao.contains("<img>") && descriccao.contains("</img>")){
                 String uri =  descriccao.substring(descriccao.indexOf("<img>") + 5, descriccao.indexOf("</img>", descriccao.indexOf("<img>")));
                 if(!uri.isEmpty()){
-                    evento.setUri(uri);
+                    evento.setUrlImg(uri);
                     descriccao = descriccao.replace("<img>"+uri+"</img>","");
                 }
             }
+            //<link>http://www.rccguarulhos.com.br </link>
+            if(descriccao.contains("<link>") && descriccao.contains("</link>")){
+                String uri =  descriccao.substring(descriccao.indexOf("<link>") + 6, descriccao.indexOf("</link>", descriccao.indexOf("<link>")));
+                if(!uri.isEmpty()){
+                    evento.setUri(uri);
+                    descriccao = descriccao.replace("<link>"+uri+"</link>","");
+                }
+            }
+
 
             evento.setDescricao(descriccao);
             evento.setUid(event.getUid().getValue());

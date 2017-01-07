@@ -8,6 +8,7 @@ public class Calendario {
         private String nomeCalendario;
         private String nomeLabel;
         private String url;
+        private String urlImg;
         private Boolean alarme;
 
 
@@ -51,6 +52,13 @@ public class Calendario {
         this.alarme = alarme;
     }
 
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
+    }
 
     @Override
     public boolean equals(Object o) {

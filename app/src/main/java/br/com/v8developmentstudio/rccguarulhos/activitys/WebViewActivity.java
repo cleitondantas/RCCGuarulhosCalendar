@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServicesImpl;
+import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
 
 public class WebViewActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -24,11 +25,11 @@ public class WebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+        String url  = getIntent().getStringExtra(Constantes.URI);
         wv = (WebView) findViewById(R.id.idwebview);
        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressweb);
 
-         wv.loadUrl("https://www.google.com.br/");
+        wv.loadUrl(url);
         WebSettings ws = wv.getSettings();
         ws.setJavaScriptEnabled(true);
         ws.setSupportZoom(false);

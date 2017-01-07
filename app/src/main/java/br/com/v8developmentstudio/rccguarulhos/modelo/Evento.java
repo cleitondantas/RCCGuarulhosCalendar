@@ -19,6 +19,7 @@ public class Evento implements Serializable{
     private String sumario;
     private String descricao;
     private String uri;
+    private String urlImg;
     private Boolean alarme;
 
 
@@ -107,4 +108,12 @@ public class Evento implements Serializable{
     public Boolean getAlarme() {return alarme;}
 
     public void setAlarme(Boolean alarme) {this.alarme = alarme;}
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
+    }
+
+    public String getUrlImg() {
+        return urlImg;
+    }
 }

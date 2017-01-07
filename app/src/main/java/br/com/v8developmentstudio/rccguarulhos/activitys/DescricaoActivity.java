@@ -180,10 +180,16 @@ public class DescricaoActivity extends AppCompatActivity {
         Point size = new Point();
         disply.getSize(size);
 
-        if (evento.getUri() != null) {
+        if(evento.getUri()!=null){
+            tbRow.setVisibility(View.VISIBLE);
+        }else{
+            tbRow.setVisibility(View.GONE);
+        }
+
+        if (evento.getUrlImg() != null) {
             viewProgressBar.setVisibility(View.VISIBLE);
-            thumbnail.setTag(evento.getUri());
-            Object[] obj = {thumbnail, evento.getUid()};
+            thumbnail.setTag(evento.getUrlImg());
+            Object[] obj = {thumbnail, evento.getUrlImg()};
             new DownloadImagesTask().execute(obj);
             int width = size.x;
             int height = size.y/2;
@@ -199,7 +205,7 @@ public class DescricaoActivity extends AppCompatActivity {
                     viewProgressBar.setVisibility(View.GONE);
                 }
             });
-            tbRow.setVisibility(View.VISIBLE);
+
         }else{
             int width = size.x/4;
             int height = size.y/4;
@@ -241,7 +247,9 @@ public class DescricaoActivity extends AppCompatActivity {
     }
 
     private void onWevView(){
-        ac.redirect(this, WebViewActivity.class, null);
+        Bundle dados = new Bundle();
+        dados.putString(Constantes.CALENDARIO, evento.getUri());
+        ac.redirect(this, WebViewActivity.class, dados);
     }
 
     private String prepereShare(Evento evento){

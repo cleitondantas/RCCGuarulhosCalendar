@@ -24,6 +24,7 @@ public class Constantes {
     public static String CALENDARIO_RCC_ATUALIZACAO = "CALENDARIO_RCC_ATUALIZACAO";
     public static String OBJ_EVENTO = "OBJ_EVENTO";
     public static String UID ="UID";
+    public static String URI ="URI";
 
 
 }
