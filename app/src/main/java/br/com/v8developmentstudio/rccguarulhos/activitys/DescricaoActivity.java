@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -33,6 +34,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TableRow;
@@ -79,7 +81,7 @@ public class DescricaoActivity extends AppCompatActivity {
     public static final String TAG = "LOG";
     public static final int REQUEST_PERMISSIONS_CODE = 128;
     public boolean controler;
-
+    private ImageButton imageButton;
     private Animator mCurrentAnimator;
     private int mShortAnimationDuration;
 
@@ -127,6 +129,7 @@ public class DescricaoActivity extends AppCompatActivity {
         textViewDataHoraFim = (TextView) findViewById(R.id.idDataHoraFim);
         textViewLocal = (TextView) findViewById(R.id.idLocal);
         thumbnail = (ScaleImageView) findViewById(R.id.thumbnail);
+        imageButton =  (ImageButton) findViewById(R.id.imagemaps);
         final ProgressBar viewProgressBar = (ProgressBar) findViewById(R.id.pbHeaderProgress);
         viewProgressBar.setVisibility(View.GONE);
 
@@ -169,12 +172,22 @@ public class DescricaoActivity extends AppCompatActivity {
             }
         });
 
+
+
         fabAddCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addEventoLocalCalendar();
             }
         });
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareLocation();
+            }
+        });
+
 
         Display disply = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -248,7 +261,7 @@ public class DescricaoActivity extends AppCompatActivity {
 
     private void onWevView(){
         Bundle dados = new Bundle();
-        dados.putString(Constantes.CALENDARIO, evento.getUri());
+        dados.putString(Constantes.URI, evento.getUri());
         ac.redirect(this, WebViewActivity.class, dados);
     }
 
@@ -329,6 +342,22 @@ public class DescricaoActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    private boolean shareLocation(){
+        if(evento.getLocal()!=null && !evento.getLocal().contains("A Definir")) {
+            Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + evento.getLocal());
+            // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        // Make the Intent explicit by setting the Google Maps package
+            mapIntent.setPackage("com.google.android.apps.maps");
+
+        // Attempt to start an activity that can handle the Intent
+            startActivity(mapIntent);
+            return true;
+        }else{
+            return false;
+        }
     }
 
 

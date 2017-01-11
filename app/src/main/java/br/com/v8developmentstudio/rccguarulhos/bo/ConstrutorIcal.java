@@ -42,10 +42,10 @@ public List<Evento> getEventos(){
 
             String descriccao = event.getDescription().getValue();
             if(descriccao.contains("<img>") && descriccao.contains("</img>")){
-                String uri =  descriccao.substring(descriccao.indexOf("<img>") + 5, descriccao.indexOf("</img>", descriccao.indexOf("<img>")));
-                if(!uri.isEmpty()){
-                    evento.setUrlImg(uri);
-                    descriccao = descriccao.replace("<img>"+uri+"</img>","");
+                String urlimage =  descriccao.substring(descriccao.indexOf("<img>") + 5, descriccao.indexOf("</img>", descriccao.indexOf("<img>")));
+                if(!urlimage.isEmpty()){
+                    evento.setUrlImg(urlimage);
+                    descriccao = descriccao.replace("<img>"+urlimage+"</img>","");
                 }
             }
             //<link>http://www.rccguarulhos.com.br </link>

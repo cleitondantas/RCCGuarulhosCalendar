@@ -26,7 +26,9 @@ dependencies {
     compile 'com.github.wangjiegulu:RapidFloatingActionButton:1.0.3'
     compile 'com.google.firebase:firebase-messaging:10.0.1'
     compile 'com.google.firebase:firebase-crash:10.0.1'
+    compile 'com.google.android.gms:play-services:10.0.1'
 }
+
 
 
 
