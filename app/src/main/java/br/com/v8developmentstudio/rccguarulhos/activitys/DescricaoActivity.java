@@ -81,7 +81,6 @@ public class DescricaoActivity extends AppCompatActivity {
     public static final String TAG = "LOG";
     public static final int REQUEST_PERMISSIONS_CODE = 128;
     public boolean controler;
-    private ImageButton imageButton;
     private Animator mCurrentAnimator;
     private int mShortAnimationDuration;
 
@@ -129,7 +128,6 @@ public class DescricaoActivity extends AppCompatActivity {
         textViewDataHoraFim = (TextView) findViewById(R.id.idDataHoraFim);
         textViewLocal = (TextView) findViewById(R.id.idLocal);
         thumbnail = (ScaleImageView) findViewById(R.id.thumbnail);
-        imageButton =  (ImageButton) findViewById(R.id.imagemaps);
         final ProgressBar viewProgressBar = (ProgressBar) findViewById(R.id.pbHeaderProgress);
         viewProgressBar.setVisibility(View.GONE);
 
@@ -181,12 +179,6 @@ public class DescricaoActivity extends AppCompatActivity {
             }
         });
 
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareLocation();
-            }
-        });
 
 
         Display disply = getWindowManager().getDefaultDisplay();
