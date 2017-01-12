@@ -27,7 +27,7 @@ public class ColorDrawables {
             case 2:
                 return R.color.green;
             case 3:
-                return R.color.pink;
+                return R.color.dark_blue;
             case 4:
                 return R.color.silver;
             case 5:
@@ -39,7 +39,19 @@ public class ColorDrawables {
             case 8:
                 return R.color.dark_red;
             case 9:
-                return R.color.dark_blue;
+                return R.color.pink;
+            case 10:
+                return R.color.sky;
+            case 11:
+                return R.color.verde_agua;
+            case 12:
+                return R.color.laranja;
+            case 13:
+                return R.color.marron;
+            case 14:
+                return R.color.verde_musgo;
+            case 15:
+                return R.color.verde_folha;
         }
         return R.color.red;
     }
@@ -51,7 +63,7 @@ public class ColorDrawables {
             case 2:
                 return R.string.green;
             case 3:
-                return R.string.pink;
+                return R.string.dark_blue;
             case 4:
                 return R.string.silver;
             case 5:
@@ -63,7 +75,20 @@ public class ColorDrawables {
             case 8:
                 return R.string.dark_red;
             case 9:
-                return R.string.dark_blue;
+                return R.string.pink;
+            case 10:
+                return R.string.sky;
+            case 11:
+                return R.string.verde_agua;
+            case 12:
+                return R.string.laranja;
+            case 13:
+                return R.string.marron;
+            case 14:
+                return R.string.verde_musgo;
+            case 15:
+                return R.string.verde_folha;
+
         }
         return R.string.red;
     }

@@ -74,7 +74,16 @@
 
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
-
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabMaps"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_anchor="@+id/card_view"
+        android:src="@drawable/maps_icon"
+        app:layout_anchorGravity="right|end|bottom"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/colorPrimaryDark"
+        android:clickable="true"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/idFabMenu"

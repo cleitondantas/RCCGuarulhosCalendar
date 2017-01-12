@@ -3,32 +3,43 @@
     <!-- newColors -->
 
     <!-- General -->
-    <string name="roxo">#CC0EEE</string>
-    <string name="red">#CC0000</string>
-    <string name="green">#669900</string>
-    <string name="blue">#33b5e5</string>
-    <string name="silver">#C0C0C0</string>
+    <string name="roxo">#CE93D8</string>
+    <string name="red">#ef9a9a</string>
+    <string name="green">#A5D6A7</string>
+    <string name="blue">#90CAF9</string>
+    <string name="silver">#B0BEC5</string>
     <string name="black">#3b4144</string>
-    <string name="yelow">#ffd622</string>
+    <string name="yelow">#FFF59D</string>
     <string name="white">#FFFFFF</string>
-    <string name="pink">#FF4081</string>
-    <string name="dark_blue">#014dff</string>
-    <string name="dark_green">#385400</string>
-    <string name="dark_red">#910002</string>
+    <string name="dark_blue">#7986CB</string>
+    <string name="dark_green">#4DB6AC</string>
+    <string name="dark_red">#e53935</string>
+    <string name="pink">#F48FB1</string>
+    <string name="sky">#81D4FA</string>
+    <string name="verde_agua">#80DEEA</string>
+    <string name="laranja">#FFAB91</string>
+    <string name="marron">#BCAAA4</string>
+    <string name="verde_musgo">#26A69A</string>
+    <string name="verde_folha">#43A047</string>
 
-
-    <color name="roxo">#CC0EEE</color>
-    <color name="red">#CC0000</color>
-    <color name="green">#669900</color>
-    <color name="blue">#33b5e5</color>
-    <color name="silver">#C0C0C0</color>
+    <color name="roxo">#CE93D8</color>
+    <color name="red">#ef9a9a</color>
+    <color name="green">#A5D6A7</color>
+    <color name="blue">#90CAF9</color>
+    <color name="silver">#B0BEC5</color>
     <color name="black">#3b4144</color>
-    <color name="yelow">#ffd622</color>
+    <color name="yelow">#FFF59D</color>
     <color name="white">#FFFFFF</color>
-    <color name="pink">#FF4081</color>
-    <color name="dark_blue">#014dff</color>
-    <color name="dark_green">#385400</color>
-    <color name="dark_red">#910002</color>
+    <color name="dark_blue">#7986CB</color>
+    <color name="dark_green">#4DB6AC</color>
+    <color name="dark_red">#e53935</color>
+    <color name="pink">#F48FB1</color>
+    <color name="sky">#81D4FA</color>
+    <color name="verde_agua">#80DEEA</color>
+    <color name="laranja">#FFAB91</color>
+    <color name="marron">#BCAAA4</color>
+    <color name="verde_musgo">#26A69A</color>
+    <color name="verde_folha">#43A047</color>
 
 
     <!-- Fonts -->

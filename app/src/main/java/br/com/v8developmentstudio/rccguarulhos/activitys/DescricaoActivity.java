@@ -74,7 +74,7 @@ public class DescricaoActivity extends AppCompatActivity {
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private AppBarLayout appBarLayout;
     private CalendarEventService calendarEventService;
-    private FloatingActionButton fabMenu, fabShare,fabAddCalendar;
+    private FloatingActionButton fabMenu, fabShare,fabAddCalendar,fabMaps;
     private TextView textViewSumario,textViewDescricao,textViewDataHoraInicio,textViewDataHoraFim,textViewLocal;
     private ScaleImageView thumbnail;
     private Button buttonLink;
@@ -133,6 +133,8 @@ public class DescricaoActivity extends AppCompatActivity {
 
         final Animation animeFloating = AnimationUtils.loadAnimation(this, R.anim.rotate);
         final Animation animeFloating2 = AnimationUtils.loadAnimation(this, R.anim.rotate2);
+
+        fabMaps = (FloatingActionButton) findViewById(R.id.fabMaps);
         fabMenu = (FloatingActionButton) findViewById(R.id.idFabMenu);
         fabShare = (FloatingActionButton) findViewById(R.id.idFabShare);
         fabAddCalendar = (FloatingActionButton) findViewById(R.id.idFabAddCalendar);
@@ -179,6 +181,12 @@ public class DescricaoActivity extends AppCompatActivity {
             }
         });
 
+        fabMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareLocation();
+            }
+        });
 
 
         Display disply = getWindowManager().getDefaultDisplay();
