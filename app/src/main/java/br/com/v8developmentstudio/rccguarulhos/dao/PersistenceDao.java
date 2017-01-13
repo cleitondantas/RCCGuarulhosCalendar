@@ -45,7 +45,8 @@ public class PersistenceDao extends SQLiteOpenHelper {
     public static final String NOME_CALENDARIO = "NOME_CALENDARIO";
     public static final String NOME_LABEL = "NOME_LABEL";
     public static final String URL = "URL";
-    public static final String URI = "URI";//Imagens
+    public static final String URI = "URI";//LINK
+    public static final String URLIMAGEM = "URLIMAGEM";//Imagens
     public static final String UID = "UID";
     public static final String ALARME = "ALARME";
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -86,6 +87,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         contentValues.put(SUMARIO, evento.getSumario());
         contentValues.put(DESCRICAO, evento.getDescricao());
         contentValues.put(URI, evento.getUri());
+        contentValues.put(URLIMAGEM,evento.getUrlImg());
         bancoDados.insert(TB_EVENTOS, null, contentValues);
         if(bancoDados.isOpen()){
             bancoDados.close();
@@ -195,7 +197,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
             Log.i("BANCO_DE_DADOS"," Passou -> openDB() ");
             Log.i("BANCO_DE_DADOS",""+bancoDados.isOpen());
         try {
-            cursor = bancoDados.query(TB_EVENTOS, new String[]{ID, UID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM, DATAHORAMODIFICADO, LOCAL, SUMARIO, DESCRICAO, URI}, null, null, null, null, null);
+            cursor = bancoDados.query(TB_EVENTOS, new String[]{ID, UID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM, DATAHORAMODIFICADO, LOCAL, SUMARIO, DESCRICAO, URI,URLIMAGEM}, null, null, null, null, null);
             Evento evento;
 
                 while (cursor.moveToNext()) {
@@ -210,6 +212,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
                     evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                     evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
                     evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
+                    evento.setUrlImg(cursor.getString(cursor.getColumnIndex(URLIMAGEM)));
                     eventoList.add(evento);
                 }
             } catch (ParseException e) {
@@ -229,7 +232,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         String whereClause ="ID_CALENDARIO = ?";
         String[] whereArgs={""+idCalendario};
         try {
-                cursor = bancoDados.query(TB_EVENTOS, new String[]{ID,UID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM,DATAHORAMODIFICADO, LOCAL, SUMARIO, DESCRICAO,URI}, whereClause, whereArgs, null, null, null);
+                cursor = bancoDados.query(TB_EVENTOS, new String[]{ID,UID, ID_CALENDARIO, DATAHORAINICIO, DATAHORAFIM,DATAHORAMODIFICADO, LOCAL, SUMARIO, DESCRICAO,URI,URLIMAGEM}, whereClause, whereArgs, null, null, null);
                 Evento evento;
 
                     while (cursor.moveToNext()) {
@@ -244,6 +247,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
                         evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                         evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
                         evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
+                        evento.setUrlImg(cursor.getString(cursor.getColumnIndex(URLIMAGEM)));
                         eventoList.add(evento);
                     }
                 } catch (ParseException e) {
@@ -320,6 +324,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
                     evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                     evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
                     evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
+                    evento.setUrlImg(cursor.getString(cursor.getColumnIndex(URLIMAGEM)));
                     eventoList.add(evento);
                 }
             } catch (ParseException e) {
@@ -352,6 +357,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
                 evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                 evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
                 evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
+                evento.setUrlImg(cursor.getString(cursor.getColumnIndex(URLIMAGEM)));
             }
         } catch (ParseException e) {
             Log.e("ERROR", "recuperaEventoPorID()--> "+ e);
@@ -367,7 +373,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         Evento evento=null;
         List<Evento> eventoList = new ArrayList<Evento>();
         try {
-            String sqlcoluns[] ={ID,ID_CALENDARIO,UID,DATAHORAINICIO,DATAHORAFIM,DATAHORAMODIFICADO,LOCAL,SUMARIO,DESCRICAO,URI,ALARME};
+            String sqlcoluns[] ={ID,ID_CALENDARIO,UID,DATAHORAINICIO,DATAHORAFIM,DATAHORAMODIFICADO,LOCAL,SUMARIO,DESCRICAO,URI,ALARME,URLIMAGEM};
             String[] query = {"'"+uid +"'"};
             cursor = bancoDados.rawQuery("SELECT * FROM " + TB_EVENTOS + " WHERE UID ='" + uid + "'", null);
            //cursor = bancoDados.query(TB_EVENTOS, sqlcoluns, "UID=? ", new String[]{uid}, null, null, null);
@@ -384,6 +390,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
                 evento.setSumario(cursor.getString(cursor.getColumnIndex(SUMARIO)));
                 evento.setDescricao(cursor.getString(cursor.getColumnIndex(DESCRICAO)));
                 evento.setUri(cursor.getString(cursor.getColumnIndex(URI)));
+                evento.setUrlImg(cursor.getString(cursor.getColumnIndex(URLIMAGEM)));
                 eventoList.add(evento);
             }
         } catch (ParseException e) {
@@ -494,7 +501,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase bancoDados) {
         bancoDados.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_CONFIG_CALENDAR +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+NOME_CALENDARIO+" VARCHAR NOT NULL UNIQUE,"+NOME_LABEL+" VARCHAR NOT NULL,"+URL+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
         bancoDados.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_FAVORITOS +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+ID_CALENDARIO+" INTEGER NOT NULL,"+ID_EVENTO+" INTEGER NOT NULL,"+UID+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
-        bancoDados.execSQL("CREATE TABLE IF NOT EXISTS " + TB_EVENTOS + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+UID+" VARCHAR NOT NULL, " +ID_CALENDARIO+" INTEGER NOT NULL," + DATAHORAINICIO + " DATETIME NOT NULL, " + DATAHORAFIM + " DATETIME, " + DATAHORAMODIFICADO + " DATETIME, " + LOCAL + " VARCHAR (200),"+ SUMARIO + " VARCHAR (200) NOT NULL, "+ DESCRICAO +" TEXT,"+ URI +" VARCHAR (300));");
+        bancoDados.execSQL("CREATE TABLE IF NOT EXISTS " + TB_EVENTOS + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+UID+" VARCHAR NOT NULL, " +ID_CALENDARIO+" INTEGER NOT NULL," + DATAHORAINICIO + " DATETIME NOT NULL, " + DATAHORAFIM + " DATETIME, " + DATAHORAMODIFICADO + " DATETIME, " + LOCAL + " VARCHAR (200),"+ SUMARIO + " VARCHAR (200) NOT NULL, "+ DESCRICAO +" TEXT,"+ URI +" VARCHAR (300),"+URLIMAGEM+" VARCHAR (300));");
         if(bancoDados.isOpen()){
             bancoDados.close();
         }

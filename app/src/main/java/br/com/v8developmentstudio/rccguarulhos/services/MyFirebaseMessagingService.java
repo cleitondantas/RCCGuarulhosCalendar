@@ -20,6 +20,7 @@ import java.util.List;
 import br.com.v8developmentstudio.rccguarulhos.R;
 import br.com.v8developmentstudio.rccguarulhos.activitys.DescricaoActivity;
 import br.com.v8developmentstudio.rccguarulhos.activitys.MainActivity;
+import br.com.v8developmentstudio.rccguarulhos.activitys.WebViewActivity;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.util.Constantes;
@@ -58,14 +59,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         if(!remoteMessage.getData().isEmpty()) {
-            String uid = remoteMessage.getData().get("UID");
+
             String ticker = remoteMessage.getData().get("TICKER");
             String title = remoteMessage.getData().get("TITLE");
             String descricao = remoteMessage.getData().get("DESCRICAO");
-            List<Evento> events = persistenceDao.recuperaEventoPorUID(uid, persistenceDao.openDB());
-            if (events != null && events.size() > 0) {
-                notificationService.gerarNotificacao(getApplicationContext(), notificationService.redirectDescricaoDoEvento(getApplicationContext(), events.get(0), DescricaoActivity.class), ticker, title, descricao, 0);
+
+            if(remoteMessage.getData().get("UID")!=null) {
+                String uid = remoteMessage.getData().get("UID");
+                List<Evento> events = persistenceDao.recuperaEventoPorUID(uid, persistenceDao.openDB());
+                if (events != null && events.size() > 0) {
+                    notificationService.gerarNotificacao(getApplicationContext(), notificationService.redirectDescricaoDoEvento(getApplicationContext(), events.get(0), DescricaoActivity.class), ticker, title, descricao, 0);
+                }
             }
+            if(remoteMessage.getData().get("URL")!=null){
+                String url = remoteMessage.getData().get("URL");
+                notificationService.gerarNotificacao(getApplicationContext(),notificationService.redirectURL(getApplicationContext(),url, WebViewActivity.class),ticker,title,descricao,0);
+            }
+
         }
 
     }

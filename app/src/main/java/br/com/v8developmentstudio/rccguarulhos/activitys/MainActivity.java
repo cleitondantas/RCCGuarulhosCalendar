@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            ac.redirect(this, WebViewActivity.class, null);
+            ac.redirect(this, SettingsActivity.class, null);
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -82,4 +82,13 @@ public class NotificationService {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         return intent;
     }
+
+    public Intent redirectURL(final Context context ,final String url,final Class<?> clazz) {
+        Intent intent = new Intent(context, clazz);
+        Bundle dados = new Bundle();
+        dados.putString(Constantes.URI,url);
+        intent.putExtras(dados);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return intent;
+    }
 }

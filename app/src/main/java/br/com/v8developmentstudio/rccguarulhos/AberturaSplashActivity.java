@@ -15,6 +15,7 @@ import java.util.List;
 
 import br.com.v8developmentstudio.rccguarulhos.activitys.DescricaoActivity;
 import br.com.v8developmentstudio.rccguarulhos.activitys.MainActivity;
+import br.com.v8developmentstudio.rccguarulhos.activitys.WebViewActivity;
 import br.com.v8developmentstudio.rccguarulhos.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.services.ActivityServices;
@@ -46,16 +47,30 @@ public class AberturaSplashActivity  extends Activity {
         servicoNotificacao.atualizacao(this);
 
         final Bundle bundle = getIntent().getExtras();
-        if(bundle!=null && bundle.get("UID")!=null) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent minhaintent = new Intent(getApplicationContext(), DescricaoActivity.class);
-                    minhaintent.putExtras(bundle);
-                    AberturaSplashActivity.this.startActivity(minhaintent);
-                    AberturaSplashActivity.this.finish();
-                }
-            }, TIMESLEAP);
+
+        if(bundle!=null) {
+            if(bundle.get("UID")!=null) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent minhaintent = new Intent(getApplicationContext(), DescricaoActivity.class);
+                        minhaintent.putExtras(bundle);
+                        AberturaSplashActivity.this.startActivity(minhaintent);
+                        AberturaSplashActivity.this.finish();
+                    }
+                }, TIMESLEAP);
+            }
+            if(bundle.get("URL")!=null){
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent minhaintent = new Intent(getApplicationContext(), WebViewActivity.class);
+                        minhaintent.putExtra(Constantes.URI,bundle.getString("URL"));
+                        AberturaSplashActivity.this.startActivity(minhaintent);
+                        AberturaSplashActivity.this.finish();
+                    }
+                }, TIMESLEAP);
+            }
         }else{
             Date date = new Date(preferences.preferencesTimeAtulizacao());
             boolean isOnline = activityServices.isOnline(this);
