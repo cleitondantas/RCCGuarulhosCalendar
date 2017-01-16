@@ -2,6 +2,7 @@ package br.com.v8developmentstudio.rccguarulhos.task;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -101,5 +102,7 @@ public class ProcessServiceTaskImpl implements ProcessServiceTask {
     @Override
     public void posProcess() {
         preferences.salvarPrefTimeAtulizacao(System.currentTimeMillis());
+        Toast toast = Toast.makeText(this.context, "REALIZADO ATUALIZAÇÃO!", Toast.LENGTH_LONG);
+        toast.show();
     }
 }

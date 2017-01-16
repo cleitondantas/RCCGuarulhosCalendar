@@ -128,6 +128,8 @@ public class DescricaoActivity extends AppCompatActivity {
         textViewDataHoraFim = (TextView) findViewById(R.id.idDataHoraFim);
         textViewLocal = (TextView) findViewById(R.id.idLocal);
         thumbnail = (ScaleImageView) findViewById(R.id.thumbnail);
+
+
         final ProgressBar viewProgressBar = (ProgressBar) findViewById(R.id.pbHeaderProgress);
         viewProgressBar.setVisibility(View.GONE);
 

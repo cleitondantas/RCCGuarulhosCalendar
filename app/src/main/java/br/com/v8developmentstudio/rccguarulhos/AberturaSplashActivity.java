@@ -46,53 +46,55 @@ public class AberturaSplashActivity  extends Activity {
         servicoNotificacao.createAlarmNotification(this);
         servicoNotificacao.atualizacao(this);
 
+        boolean controlaFluxo = true;
         final Bundle bundle = getIntent().getExtras();
-
-        if(bundle!=null) {
-            if(bundle.get("UID")!=null) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent minhaintent = new Intent(getApplicationContext(), DescricaoActivity.class);
-                        minhaintent.putExtras(bundle);
-                        AberturaSplashActivity.this.startActivity(minhaintent);
-                        AberturaSplashActivity.this.finish();
-                    }
-                }, TIMESLEAP);
-            }
-            if(bundle.get("URL")!=null){
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent minhaintent = new Intent(getApplicationContext(), WebViewActivity.class);
-                        minhaintent.putExtra(Constantes.URI,bundle.getString("URL"));
-                        AberturaSplashActivity.this.startActivity(minhaintent);
-                        AberturaSplashActivity.this.finish();
-                    }
-                }, TIMESLEAP);
-            }
-        }else{
-            Date date = new Date(preferences.preferencesTimeAtulizacao());
-            boolean isOnline = activityServices.isOnline(this);
-            if (isOnline && filtroDatas.verificaDataUltimaAtualizacao(date)) {
-                TaskProcess taskPross = new TaskProcess(this);
-                taskPross.execute();
-            } else {
-                if (!isOnline) {
-                    Toast toast = Toast.makeText(this, "SEM CONEXÂO!", Toast.LENGTH_LONG);
-                    toast.show();
-
+        if(bundle!=null && bundle.get("UID")!=null) {
+            controlaFluxo = false;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent minhaintent = new Intent(getApplicationContext(), DescricaoActivity.class);
+                    minhaintent.putExtras(bundle);
+                    AberturaSplashActivity.this.startActivity(minhaintent);
+                    AberturaSplashActivity.this.finish();
                 }
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent minhaintent = new Intent(getApplicationContext(), MainActivity.class);
-                        AberturaSplashActivity.this.startActivity(minhaintent);
-                        AberturaSplashActivity.this.finish();
-                    }
-                }, TIMESLEAP);
-            }
+            }, TIMESLEAP);
         }
+        if(bundle!=null &&  bundle.get("URL")!=null){
+            controlaFluxo = false;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent minhaintent = new Intent(getApplicationContext(), WebViewActivity.class);
+                    minhaintent.putExtra(Constantes.URI,bundle.getString("URL"));
+                    AberturaSplashActivity.this.startActivity(minhaintent);
+                    AberturaSplashActivity.this.finish();
+                }
+            }, TIMESLEAP);
+        }
+
+            if(controlaFluxo) {
+                Date date = new Date(preferences.preferencesTimeAtulizacao());
+                boolean isOnline = activityServices.isOnline(this);
+                if (isOnline && filtroDatas.verificaDataUltimaAtualizacao(date)) {
+                    TaskProcess taskPross = new TaskProcess(this);
+                    taskPross.execute();
+                } else {
+                    if (!isOnline) {
+                        Toast toast = Toast.makeText(this, "SEM CONEXÂO!", Toast.LENGTH_LONG);
+                        toast.show();
+
+                    }
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent minhaintent = new Intent(getApplicationContext(), MainActivity.class);
+                            AberturaSplashActivity.this.startActivity(minhaintent);
+                            AberturaSplashActivity.this.finish();
+                        }
+                    }, TIMESLEAP);
+                }
+            }
     }
 
     @Override
