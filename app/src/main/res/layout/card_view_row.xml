@@ -23,10 +23,10 @@
         <RelativeLayout
             android:id="@+id/relative_info_list_cardview"
             android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:paddingBottom="10dp"
+            android:layout_height="65dp"
+            android:paddingBottom="8dp"
             android:paddingLeft="15dp"
-            android:paddingTop="10dp"
+            android:paddingTop="8dp"
             android:paddingRight="10dp">
 
             <TextView
