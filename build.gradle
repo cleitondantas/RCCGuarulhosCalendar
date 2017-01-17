@@ -1,7 +1,6 @@
 buildscript {
 
     repositories {
-
         mavenCentral()
     }
 
@@ -13,13 +12,13 @@ buildscript {
 
 allprojects {
     ext {
-        androidApplicationId = 'br.com.v8developmentstudio.rccguarulhos'
+        androidApplicationId = 'br.com.v8developmentstudio.rccguarulhos.calendar'
         androidBuildToolsVersion = "25.0.0"
         androidMinSdkVersion = 16
         androidTargetSdkVersion = 23
         androidCompileSdkVersion = 24
-        androidVersionCode = 5
-        androidVersionName = "1.5"
+        androidVersionCode = 6
+        androidVersionName = "2.0"
     }
 
     repositories {
