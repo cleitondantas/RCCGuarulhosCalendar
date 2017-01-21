@@ -3,6 +3,7 @@ package br.com.v8developmentstudio.rccguarulhos.calendar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
@@ -61,9 +62,9 @@ public class AberturaSplashActivity  extends Activity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent minhaintent = new Intent(getApplicationContext(), WebViewActivity.class);
-                    minhaintent.putExtra(Constantes.URI,bundle.getString("URL"));
-                    AberturaSplashActivity.this.startActivity(minhaintent);
+                    Intent intentSite = new Intent(Intent.ACTION_VIEW);
+                    intentSite.setData(Uri.parse(bundle.getString("URL")));
+                    AberturaSplashActivity.this.startActivity(intentSite);
                     AberturaSplashActivity.this.finish();
                 }
             }, TIMESLEAP);

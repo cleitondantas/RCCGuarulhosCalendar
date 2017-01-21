@@ -1,10 +1,14 @@
 package br.com.v8developmentstudio.rccguarulhos.calendar.activitys;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -19,13 +23,17 @@ import br.com.v8developmentstudio.rccguarulhos.calendar.util.Constantes;
 public class WebViewActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private WebView wv;
+    private String url;
     private ActivityServices ac = new ActivityServicesImpl();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        String url  = getIntent().getStringExtra(Constantes.URI);
+
+        url  = getIntent().getStringExtra(Constantes.URI);
+
+
         wv = (WebView) findViewById(R.id.idwebview);
        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressweb);
 
@@ -49,9 +57,25 @@ public class WebViewActivity extends AppCompatActivity {
                 super.onPageFinished(view, url);
             }
         });
-
-
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_webview, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_open_browser) {
+            Intent intentSite = new Intent(Intent.ACTION_VIEW);
+            intentSite.setData(Uri.parse(url));
+            startActivity(intentSite);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onBackPressed() {
         if(wv.canGoBack()){

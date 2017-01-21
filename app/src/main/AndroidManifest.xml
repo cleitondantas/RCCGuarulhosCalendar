@@ -124,10 +124,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activitys.WebViewActivity"
-            android:label="@string/title_cadastro_online"
-            android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:noHistory="true" />
         <receiver
             android:name=".services.BroadcastReceiverAux"
             android:label="BroadcastReceiverAux">
