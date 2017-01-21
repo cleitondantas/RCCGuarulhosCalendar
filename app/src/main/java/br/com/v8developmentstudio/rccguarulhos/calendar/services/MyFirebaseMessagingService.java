@@ -60,7 +60,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
             if(remoteMessage.getData().get("URL")!=null){
                 String url = remoteMessage.getData().get("URL");
-                notificationService.gerarNotificacao(getApplicationContext(),notificationService.redirectURL(getApplicationContext(),url, WebViewActivity.class),ticker,title,descricao,0);
+                notificationService.gerarNotificacao(getApplicationContext(),notificationService.redirectURL(getApplicationContext(),url),ticker,title,descricao,0);
             }
 
         }

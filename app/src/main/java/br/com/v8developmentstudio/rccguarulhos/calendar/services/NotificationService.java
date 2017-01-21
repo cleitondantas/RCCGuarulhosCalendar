@@ -21,10 +21,7 @@ import br.com.v8developmentstudio.rccguarulhos.calendar.util.Constantes;
 /**
  * Created by cleiton.dantas on 19/12/2016.
  */
-
 public class NotificationService {
-
-
 
     public void gerarNotificacao(Context context, Intent intent, CharSequence ticker, CharSequence titulo, CharSequence descricao, int numerodaNotificacao) {
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -82,12 +79,9 @@ public class NotificationService {
         return intent;
     }
 
-    public Intent redirectURL(final Context context ,final String url,final Class<?> clazz) {
-        Intent intent = new Intent(context, clazz);
-        Bundle dados = new Bundle();
-        dados.putString(Constantes.URI,url);
-        intent.putExtras(dados);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        return intent;
+    public Intent redirectURL(final Context context ,final String url) {
+        Intent intentSite = new Intent(Intent.ACTION_VIEW);
+        intentSite.setData(Uri.parse(url));
+        return intentSite;
     }
 }
