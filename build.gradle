@@ -17,8 +17,8 @@ allprojects {
         androidMinSdkVersion = 16
         androidTargetSdkVersion = 23
         androidCompileSdkVersion = 24
-        androidVersionCode = 6
-        androidVersionName = "2.0"
+        androidVersionCode = 8
+        androidVersionName = "2.2"
     }
 
     repositories {
