@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +23,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -35,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.com.v8developmentstudio.rccguarulhos.calendar.R;
+import br.com.v8developmentstudio.rccguarulhos.calendar.adapter.MyRecyclerScroll;
 import br.com.v8developmentstudio.rccguarulhos.calendar.adapter.MyRecyclerViewAdapter;
 import br.com.v8developmentstudio.rccguarulhos.calendar.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.Calendario;
@@ -114,8 +118,9 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
 
         updateCalendar();
-    }
 
+
+    }
 
     @Override
     protected void onResume() {

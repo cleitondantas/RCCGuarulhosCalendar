@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
@@ -35,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import br.com.v8developmentstudio.rccguarulhos.calendar.R;
+import br.com.v8developmentstudio.rccguarulhos.calendar.adapter.MyRecyclerScroll;
 import br.com.v8developmentstudio.rccguarulhos.calendar.adapter.ScaleImageView;
 import br.com.v8developmentstudio.rccguarulhos.calendar.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.Calendario;
@@ -239,6 +241,8 @@ public class DescricaoActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
     @Override
     protected void onResume() {
@@ -334,6 +338,16 @@ public class DescricaoActivity extends AppCompatActivity {
 
         }
 
+    }
+    private void showAllAnimateFab(FloatingActionButton... fabsArray){
+        for (int i=0;i<fabsArray.length;i++){
+            fabsArray[i].animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+        }
+    }
+    private void hideAllAnimateFab(FloatingActionButton... fabsArray){
+        for (int i=0;i<fabsArray.length;i++){
+            fabsArray[i].animate().translationY(fabMenu.getHeight() + 200).setInterpolator(new AccelerateInterpolator(2)).start();
+        }
     }
 
     private boolean shareLocation(){
