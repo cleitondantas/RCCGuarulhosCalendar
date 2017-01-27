@@ -87,6 +87,7 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/idFabMenu"
+        app:layout_behavior="br.com.v8developmentstudio.rccguarulhos.calendar.adapter.ScrollingFABBehavior"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -95,6 +96,7 @@
         app:backgroundTint="@color/colorPrimaryDark"
         app:borderWidth="0dp"
         app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
         app:fabSize="mini" />
 
     <android.support.design.widget.FloatingActionButton
