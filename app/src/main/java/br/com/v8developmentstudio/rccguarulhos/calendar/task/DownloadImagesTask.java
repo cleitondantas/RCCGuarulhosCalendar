@@ -23,7 +23,7 @@ public class DownloadImagesTask extends AsyncTask<Object, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(Object... imageViews) {
         this.imageView = (ImageView)imageViews[0];
-        nomeFile = (String) imageViews[1]+".jpg";
+        nomeFile = new File((String) imageViews[1]).getName();
         return download_Image((String)imageView.getTag());
     }
 

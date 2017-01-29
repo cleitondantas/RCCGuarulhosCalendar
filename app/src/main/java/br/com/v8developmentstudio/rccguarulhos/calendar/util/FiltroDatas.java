@@ -27,7 +27,7 @@ public class FiltroDatas {
         c.add(Calendar.DATE, -1);
         hoje = c.getTime();
         for(Evento evento :eventos){
-            if(evento.getDataHoraInicio().after(hoje)  ){
+            if(evento.getDataHoraFim().after(hoje)){
                 eventoList.add(evento);
             }
         }
@@ -81,4 +81,17 @@ public class FiltroDatas {
             }
         return false;
     }
+
+    public List<Date> retornaIntervalosDeData(Date datainicio, Date dataFim){
+        List<Date> list = new ArrayList<>();
+        Calendar inicio  = Calendar.getInstance();
+        inicio.setTime(datainicio);
+        Calendar fim =  Calendar.getInstance();
+        fim.setTime(dataFim);
+        for (Calendar c = (Calendar) inicio.clone(); c.compareTo (fim) <= 0; c.add (Calendar.DATE, +1)) {
+             list.add(c.getTime());
+        }
+        return list;
+    }
+
 }

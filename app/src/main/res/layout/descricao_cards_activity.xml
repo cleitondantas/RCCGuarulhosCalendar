@@ -76,7 +76,6 @@
     </android.support.v4.widget.NestedScrollView>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabMaps"
-        app:layout_behavior="br.com.v8developmentstudio.rccguarulhos.calendar.adapter.ScrollingFABBehavior"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         app:layout_anchor="@+id/card_view"

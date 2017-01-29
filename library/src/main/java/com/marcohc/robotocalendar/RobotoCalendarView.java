@@ -411,6 +411,7 @@ public class RobotoCalendarView extends LinearLayout {
         underline.setBackgroundResource(style);
     }
 
+
     public void markSecondUnderlineWithStyle(int style, Date currentDate) {
         Locale locale = context.getResources().getConfiguration().locale;
         Calendar currentCalendar = Calendar.getInstance(locale);

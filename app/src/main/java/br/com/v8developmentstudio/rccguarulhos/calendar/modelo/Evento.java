@@ -1,7 +1,10 @@
 package br.com.v8developmentstudio.rccguarulhos.calendar.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by cleiton.dantas on 16/03/2016.
@@ -21,7 +24,7 @@ public class Evento implements Serializable{
     private String uri;
     private String urlImg;
     private Boolean alarme;
-
+    private List<Date> datasEntreInicioEoFim;
 
     public Integer getIdCalendario() {
         return idCalendario;
@@ -115,5 +118,21 @@ public class Evento implements Serializable{
 
     public String getUrlImg() {
         return urlImg;
+    }
+
+    public List<Date> getDatasEntreInicioEoFim() {
+        return retornaIntervalosDeData(getDataHoraInicio(),getDataHoraFim());
+    }
+
+    private List<Date> retornaIntervalosDeData(Date datainicio, Date dataFim){
+        List<Date> list = new ArrayList<>();
+        Calendar inicio  = Calendar.getInstance();
+        inicio.setTime(datainicio);
+        Calendar fim =  Calendar.getInstance();
+        fim.setTime(dataFim);
+        for (Calendar c = (Calendar) inicio.clone(); c.compareTo (fim) <= 0; c.add (Calendar.DATE, +1)) {
+            list.add(c.getTime());
+        }
+        return list;
     }
 }

@@ -2,6 +2,7 @@ package br.com.v8developmentstudio.rccguarulhos.calendar.permissions;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
@@ -24,7 +25,7 @@ public class PermissionService {
         this.activity = activity;
     }
 
-    public void callGetPermissions(View view) {
+    public void callGetPermissions() {
         boolean controler =false;
         int i=0;
         if(ContextCompat.checkSelfPermission( activity, Manifest.permission.GET_ACCOUNTS ) != PackageManager.PERMISSION_GRANTED ){
@@ -43,5 +44,16 @@ public class PermissionService {
             }
         }
 
+    }
+
+    public boolean getPermission(){
+        boolean controler =true;
+        if(ContextCompat.checkSelfPermission( activity, Manifest.permission.GET_ACCOUNTS ) != PackageManager.PERMISSION_GRANTED ) {
+            controler = false;
+        }
+        if(ContextCompat.checkSelfPermission( activity, Manifest.permission.WRITE_CALENDAR ) != PackageManager.PERMISSION_GRANTED ) {
+            controler = false;
+        }
+        return controler;
     }
 }

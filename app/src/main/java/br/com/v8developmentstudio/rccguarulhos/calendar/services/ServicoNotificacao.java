@@ -42,7 +42,7 @@ public class ServicoNotificacao {
         if (verificaExistenciaAtualizacao(context)) {
             Calendar c = Calendar.getInstance();
             c.setTimeInMillis(System.currentTimeMillis());
-            c.add(Calendar.SECOND,120);
+            c.add(Calendar.HOUR,1);
             Log.i("Script", "Novo alarme CALENDARIO_RCC_ATUALIZACAO");
             Intent intent = new Intent(Constantes.CALENDARIO_RCC_ATUALIZACAO);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);

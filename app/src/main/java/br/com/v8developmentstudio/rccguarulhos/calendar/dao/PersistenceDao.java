@@ -148,7 +148,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         return eventoFavoritos;
     }
     public List<EventoFavorito> recuperaTodosFavoritos(SQLiteDatabase bancoDados){
-        ArrayList<EventoFavorito> eventoFavoritos = new ArrayList<EventoFavorito>();
+        List<EventoFavorito> eventoFavoritos = new ArrayList<EventoFavorito>();
         openDB();
         cursor = bancoDados.query(TB_FAVORITOS, new String[]{ID, ID_CALENDARIO, ID_EVENTO, UID, ALARME}, null, null, null, null, null);
         EventoFavorito eventoFavorito;
@@ -159,7 +159,11 @@ public class PersistenceDao extends SQLiteOpenHelper {
                     eventoFavorito.setIdEvento(cursor.getInt(cursor.getColumnIndex(ID_EVENTO)));
                     eventoFavorito.setIdCalendario(cursor.getInt(cursor.getColumnIndex(ID_CALENDARIO)));
                     eventoFavorito.setUid(cursor.getString(cursor.getColumnIndex(UID)));
-                    eventoFavorito.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME)) > 0);
+                    Boolean alarme =false;
+                    if(cursor.getInt(cursor.getColumnIndex(ALARME))>0){
+                     alarme  =    true;
+                    }
+                    eventoFavorito.setAlarme(alarme);
                     eventoFavoritos.add(eventoFavorito);
                 }
             } catch (Exception e) {
@@ -310,7 +314,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         String[] args = {dataInicio, dataFim};
         String[] coluns = new String[]{ID, DATAHORAINICIO, DATAHORAFIM, LOCAL, SUMARIO, DESCRICAO};
             try {
-                cursor = bancoDados.rawQuery("SELECT * FROM '" + TB_EVENTOS + "' WHERE " + DATAHORAINICIO + " BETWEEN '" + dataInicio + "' AND '" + dataFim + "'", null);
+                cursor = bancoDados.rawQuery("SELECT * FROM '" + TB_EVENTOS + "' WHERE (" + DATAHORAINICIO + " BETWEEN '" + dataInicio + "' AND '" + dataFim + "') OR (" + DATAHORAFIM +" BETWEEN '" + dataInicio +"' AND '" + dataFim +"') ", null);
                 Evento evento;
                 while (cursor.moveToNext()) {
                     evento = new Evento();

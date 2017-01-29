@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -76,15 +78,17 @@ public class DescricaoActivity extends AppCompatActivity {
     public boolean controler;
     private Animator mCurrentAnimator;
     private int mShortAnimationDuration;
+    private  PermissionService permissionService;
+    private int currentMonthIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.descricao_cards_activity);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        final PermissionService permissionService = new PermissionService(this,this);
+        permissionService = new PermissionService(this,this);
         persistenceDao = PersistenceDao.getInstance(this);
-
+        currentMonthIndex = getIntent().getIntExtra(Constantes.CURRENT_MONTH,0);
         int id = getIntent().getIntExtra(Constantes.ID, 1);
         activityHistory = getIntent().getIntExtra(Constantes.ACTIVITYHISTOTY, 0);
 
@@ -141,7 +145,6 @@ public class DescricaoActivity extends AppCompatActivity {
         fabMenu.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               permissionService.callGetPermissions(view);
                if(View.GONE == fabShare.getVisibility()) {
                    fabMenu.startAnimation(animeFloating);
                    fabShare.show();
@@ -171,7 +174,12 @@ public class DescricaoActivity extends AppCompatActivity {
         fabAddCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addEventoLocalCalendar();
+
+                if(permissionService.getPermission()){
+                    addEventoLocalCalendar();
+                }else{
+                    mensagemAviso();
+                }
             }
         });
 
@@ -255,6 +263,21 @@ public class DescricaoActivity extends AppCompatActivity {
 
     }
 
+    private void mensagemAviso(){
+        String loremIpsum = "Para utilizar o recurso de salvar e evento na sua agenda é necessario que o usuário conseda as permissões de leitura de Agenda e Escrita em Calendario";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(DescricaoActivity.this);
+        builder.setTitle("Aviso");
+        builder.setMessage(loremIpsum);
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                permissionService.callGetPermissions();
+            }
+        });
+        builder.show();
+    }
+
     private void onWevView(){
         Bundle dados = new Bundle();
         dados.putString(Constantes.URI, evento.getUri());
@@ -319,9 +342,11 @@ public class DescricaoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        Bundle dados = new Bundle();
         switch (activityHistory) {
             case 0:
-                ac.redirect(this, MainActivity.class, null);
+                dados.putInt(Constantes.CURRENT_MONTH,currentMonthIndex);
+                ac.redirect(this, MainActivity.class, dados);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
             case 1:
@@ -329,7 +354,7 @@ public class DescricaoActivity extends AppCompatActivity {
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
             case 2:
-                Bundle dados = new Bundle();
+
                 dados.putInt(Constantes.ID, calendario.getId());
                 dados.putString(Constantes.CALENDARIO, calendario.getNomeLabel());
                 ac.redirect(this, ListaEventosActivity.class, dados);

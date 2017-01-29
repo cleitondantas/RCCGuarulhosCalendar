@@ -23,6 +23,7 @@ public class Constantes {
     public static String OBJ_EVENTO = "OBJ_EVENTO";
     public static String UID ="UID";
     public static String URI ="URI";
+    public static String CURRENT_MONTH ="CURRENT_MONTH";
 
 
 }

@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     private Calendar currentCalendar;
     private ArrayAdapter<Evento> eventoArrayAdapter;
     private List<Evento> listEventos;
+    private List<Evento> listEventosFiltrados;
     private List<String> listsumariodomes = new ArrayList<String>();
     private ActivityServices ac = new ActivityServicesImpl();
     private AssetsPropertyReader assetsPropertyReader = new AssetsPropertyReader(this);
@@ -78,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        currentMonthIndex = getIntent().getIntExtra(Constantes.CURRENT_MONTH, 0);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -110,7 +113,8 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         gestureDetector = new GestureDetectorCompat(this, new RecyclerViewOnGestureListener());
 
         listEventos = persistenceDao.recuperaTodosEventos(persistenceDao.openDB(this));
-        myRecyclerViewAdapter = new MyRecyclerViewAdapter(filtroDatas.filtraEventosPorDataAtual(listEventos),this);
+        listEventosFiltrados = filtroDatas.filtraEventosPorDataAtual(listEventos);
+        myRecyclerViewAdapter = new MyRecyclerViewAdapter(listEventosFiltrados,this);
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
         currentCalendar = Calendar.getInstance(Locale.getDefault());
@@ -161,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
     public void selectDrawerItem(MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.favoritos) {
-
             Toast.makeText(this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
             redirectListFavoritos();
         } else {
@@ -209,8 +212,11 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
     private void gerarListaMarcarCalendario() {
         listsumariodomes.clear();
+        List<Date> datas = new ArrayList<>();
         for (Evento evento : listEventos) {
-            robotoCalendarView.markFirstUnderlineWithStyle(RobotoCalendarView.RED_COLOR, evento.getDataHoraInicio());
+               for(Date item: evento.getDatasEntreInicioEoFim()){
+                robotoCalendarView.markSecondUnderlineWithStyle(RobotoCalendarView.RED_COLOR,item);
+            }
             listsumariodomes.add(evento.getSumario());
         }
         construtorAdapter();
@@ -226,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         Bundle dados = new Bundle();
         dados.putInt(Constantes.ID, evento.getId().intValue());
         dados.putInt(Constantes.ACTIVITYHISTOTY, Constantes.MAINACTIVITY);
+        dados.putInt(Constantes.CURRENT_MONTH,currentMonthIndex);
         ac.redirect(this, DescricaoActivity.class, dados);
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
