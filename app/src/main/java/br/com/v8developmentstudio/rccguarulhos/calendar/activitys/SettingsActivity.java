@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import br.com.v8developmentstudio.rccguarulhos.calendar.BuildConfig;
 import br.com.v8developmentstudio.rccguarulhos.calendar.R;
 import br.com.v8developmentstudio.rccguarulhos.calendar.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.calendar.services.ActivityServicesImpl;
@@ -27,6 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
     private NumberPicker dayForAlarm;
     private ActivityServices activityServices = new ActivityServicesImpl();
     private FloatingActionButton fabRefresh;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,9 +37,14 @@ public class SettingsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final Preferences preferences = new Preferences(this);
         TextView dataAtulizcao = (TextView) findViewById(R.id.atualizacaoView);
+        TextView versao =(TextView) findViewById(R.id.idVersionApp);
+
         Date date = new Date(preferences.preferencesTimeAtulizacao());
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy  HH:mm");
         dataAtulizcao.setText(dateFormat.format(date));
+        String version = BuildConfig.VERSION_NAME;
+        versao.setText("Versão: "+version);
+
         fabRefresh = (FloatingActionButton) findViewById(R.id.fb_refresh);
 //        dayForAlarm = (NumberPicker) findViewById(R.id.diasparaalarme);
 
@@ -50,18 +57,6 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
 
-
-
-//        dayForAlarm.setMinValue(1);
-//        dayForAlarm.setMaxValue(120);
-//        dayForAlarm.setValue(preferences.getPreferencesDiaAlarm());
-//        dayForAlarm.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-//            @Override
-//            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-//                Log.i("DEBUG", "-->  Dia" + newVal);
-//                preferences.salvarPrefDiaAlarm(newVal);
-//            }
-//        });
     }
 
     public void atualizaBase(Context context){
