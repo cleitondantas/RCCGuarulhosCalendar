@@ -5,6 +5,7 @@ package br.com.v8developmentstudio.rccguarulhos.calendar.util;
  */
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -64,7 +65,12 @@ public class AssetsPropertyReader {
              break;
             }
             calendario.setNomeCalendario(properties.getProperty("TB.CALENDARIO.NOME_TB." + i)) ;
-            calendario.setNomeLabel(properties.getProperty("TB.CALENDARIO.NOME_LABEL." + i));
+            String label  =  properties.getProperty("TB.CALENDARIO.NOME_LABEL." + i);
+            try {
+                calendario.setNomeLabel(new String(label.getBytes("ISO-8859-1"), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             calendario.setUrl(properties.getProperty("TB.CALENDARIO.URL." + i));
             i++;
             calendarios.add(calendario);

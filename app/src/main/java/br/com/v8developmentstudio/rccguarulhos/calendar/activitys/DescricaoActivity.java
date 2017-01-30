@@ -231,6 +231,7 @@ public class DescricaoActivity extends AppCompatActivity {
             appBarLayout.setExpanded(false);
             appBarLayout.setActivated(false);
 
+
         }
 
         textViewSumario.setText(evento.getSumario());

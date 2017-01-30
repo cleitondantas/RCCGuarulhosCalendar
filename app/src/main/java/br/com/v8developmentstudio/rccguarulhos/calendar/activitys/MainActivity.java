@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         for (Calendario calendario : persistenceDao.recuperaTodasConfiguracoesCalendar(persistenceDao.openDB(this))) {
             Drawable drawer = drawablecolor.customView(GradientDrawable.OVAL,35,35,calendario.getId());
             subMenu.add(1, calendario.getId(), calendario.getId(), calendario.getNomeLabel()).setIcon(drawer);
+
         }
         navigationView.setNavigationItemSelectedListener(this);
         setupDrawerContent(navigationView);
