@@ -71,7 +71,6 @@
             android:layout_height="-80dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
              <include layout="@layout/cardview_descricao"/>
-
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
     <android.support.design.widget.FloatingActionButton

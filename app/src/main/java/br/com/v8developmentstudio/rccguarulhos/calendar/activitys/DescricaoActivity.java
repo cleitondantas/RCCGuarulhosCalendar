@@ -220,18 +220,14 @@ public class DescricaoActivity extends AppCompatActivity {
                     viewProgressBar.setVisibility(View.GONE);
                 }
             });
-
         }else{
-            int width = size.x/4;
-            int height = size.y/4;
+            int width = size.x/9;
+            int height = size.y/9;
             thumbnail.setMaxHeight(height);
             thumbnail.setMinimumHeight(height);
             thumbnail.setMaxWidth(width);
             thumbnail.setMinimumWidth(width);
             appBarLayout.setExpanded(false);
-            appBarLayout.setActivated(false);
-
-
         }
 
         textViewSumario.setText(evento.getSumario());
@@ -382,10 +378,14 @@ public class DescricaoActivity extends AppCompatActivity {
             // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         // Make the Intent explicit by setting the Google Maps package
-            mapIntent.setPackage("com.google.android.apps.maps");
 
+            mapIntent.setPackage("com.google.android.apps.maps");
+            if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(mapIntent);
+            }else{
+            Toast.makeText(this,"Não foi possivel abrir Google Maps", Toast.LENGTH_SHORT).show();
+            }
         // Attempt to start an activity that can handle the Intent
-            startActivity(mapIntent);
             return true;
         }else{
             return false;

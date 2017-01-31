@@ -42,12 +42,12 @@ public class ServicoNotificacao {
         if (verificaExistenciaAtualizacao(context)) {
             Calendar c = Calendar.getInstance();
             c.setTimeInMillis(System.currentTimeMillis());
-            c.add(Calendar.HOUR,1);
+            c.add(Calendar.HOUR,12);
             Log.i("Script", "Novo alarme CALENDARIO_RCC_ATUALIZACAO");
             Intent intent = new Intent(Constantes.CALENDARIO_RCC_ATUALIZACAO);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
             AlarmManager alarme = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            alarme.setRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),(AlarmManager.INTERVAL_DAY), pendingIntent);
+            alarme.setRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent);
         } else {
             Log.i("Script", "Alarme já ativo");
         }
