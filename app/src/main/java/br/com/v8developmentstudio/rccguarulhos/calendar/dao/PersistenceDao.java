@@ -496,6 +496,24 @@ public class PersistenceDao extends SQLiteOpenHelper {
     }
 
 
+    public void salvaNotificacao(Notificacao notificacao,SQLiteDatabase bancoDados){
+        try {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(NOTIFICATION_TITLE,notificacao.getTitulo() );
+            contentValues.put(NOTIFICATION_TICKER, notificacao.getTituloTicker());
+            contentValues.put(NOTIFICATION_DESCRICAO,notificacao.getTexto());
+            contentValues.put(NOTIFICATION_KEY,notificacao.getKey());
+            contentValues.put(NOTIFICATION_VALUE,notificacao.getValue());
+            contentValues.put(NOTIFICATION_ISATIVO,notificacao.getAtivo());
+            bancoDados.insert(TB_NOTIFICACAO, null, contentValues);
+        } finally {
+            if(bancoDados.isOpen()){
+                bancoDados.close();
+            }
+        }
+
+    }
+
 
     public Calendario recuperaConfigCalendarPorID(int id,SQLiteDatabase bancoDados) {
         Calendario calendario = null;

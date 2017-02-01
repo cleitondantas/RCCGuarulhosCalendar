@@ -142,7 +142,9 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         getMenuInflater().inflate(R.menu.menu, menu);
         notificationItemMenu = menu.findItem(R.id.action_notification);
         LayerDrawable icon = (LayerDrawable) notificationItemMenu.getIcon();
-        setCounting(this, icon,"9");
+
+        int qtd =  persistenceDao.recuperaTodasNotificaoes(persistenceDao.openDB()).size();
+        setCounting(this, icon,""+qtd);
        // ShortcutBadger.applyCount(this, 2);
         return true;
     }

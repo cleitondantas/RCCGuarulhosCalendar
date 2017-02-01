@@ -49,17 +49,7 @@ public class ListaNotificacoesActivity extends AppCompatActivity implements Recy
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         gestureDetector = new GestureDetectorCompat(this, new ListaNotificacoesActivity.RecyclerViewOnGestureListener());
 
-
-        //notificaoes = persistenceDao.recuperaTodasNotificaoes(persistenceDao.openDB(this));
-        notificaoes = new ArrayList<>();
-        Notificacao notif = new Notificacao();
-        notif.setAtivo(true);
-        notif.setTitulo("NOVO");
-        notif.setTexto("DESCRICAO");
-        notif.setTituloTicker("TICKET");
-        notif.setKey("URL");
-        notif.setValue("http://www.rccguarulhos.com.br");
-        notificaoes.add(notif);
+        notificaoes = persistenceDao.recuperaTodasNotificaoes(persistenceDao.openDB(this));
 
         myRecyclerViewAdapterListNotifications = new MyRecyclerViewAdapterListNotifications(notificaoes,this);
         recyclerView.setAdapter(myRecyclerViewAdapterListNotifications);
