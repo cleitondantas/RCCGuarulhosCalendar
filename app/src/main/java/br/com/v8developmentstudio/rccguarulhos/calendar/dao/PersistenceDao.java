@@ -40,6 +40,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
     public static final String TB_CONFIG_CALENDAR = "TB_CONFIG_CALENDAR";
     public static final String TB_FAVORITOS = "TB_FAVORITOS";
     public static final String TB_EVENTOS = "TB_EVENTOS";
+    public static final String TB_NOTIFICACAO = "TB_NOTIFICACAO";
 
     public static final String ID_CALENDARIO = "ID_CALENDARIO";
     public static final String NOME_CALENDARIO = "NOME_CALENDARIO";
@@ -49,6 +50,15 @@ public class PersistenceDao extends SQLiteOpenHelper {
     public static final String URLIMAGEM = "URLIMAGEM";//Imagens
     public static final String UID = "UID";
     public static final String ALARME = "ALARME";
+
+    public static final String NOTIFICATION_TITLE ="TITLE";
+    public static final String NOTIFICATION_TICKER ="TICKER";
+    public static final String NOTIFICATION_DESCRICAO ="DESCRICAO";
+    public static final String NOTIFICATION_KEY ="KEY";
+    public static final String NOTIFICATION_VALUE ="VALUE";
+    public static final String NOTIFICATION_ISATIVO ="ISATIVO";
+
+
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static Cursor cursor;
     private static Context context;
@@ -460,6 +470,30 @@ public class PersistenceDao extends SQLiteOpenHelper {
         return calendarios;
     }
 
+    public List<Calendario> recuperaTodasNotificaoes(SQLiteDatabase bancoDados) {
+        Calendario calendario;
+        List<Calendario> calendarios = new ArrayList<Calendario>();
+        try {
+            cursor = bancoDados.query(TB_CONFIG_CALENDAR, new String[]{ID, NOME_CALENDARIO, NOME_LABEL, URL, ALARME}, null, null, null, null, null);
+            while (cursor.moveToNext()) {
+                calendario = new Calendario();
+                calendario.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+                calendario.setNomeCalendario(cursor.getString(cursor.getColumnIndex(NOME_CALENDARIO)));
+                calendario.setNomeLabel(cursor.getString(cursor.getColumnIndex(NOME_LABEL)));
+                calendario.setUrl(cursor.getString(cursor.getColumnIndex(URL)));
+                calendario.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME)) > 0);
+                calendarios.add(calendario);
+            }
+        } finally {
+            if(bancoDados.isOpen()){
+                bancoDados.close();
+            }
+        }
+        return calendarios;
+    }
+
+
+
     public Calendario recuperaConfigCalendarPorID(int id,SQLiteDatabase bancoDados) {
         Calendario calendario = null;
         try {
@@ -506,6 +540,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         bancoDados.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_CONFIG_CALENDAR +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+NOME_CALENDARIO+" VARCHAR NOT NULL UNIQUE,"+NOME_LABEL+" VARCHAR NOT NULL,"+URL+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
         bancoDados.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_FAVORITOS +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+ID_CALENDARIO+" INTEGER NOT NULL,"+ID_EVENTO+" INTEGER NOT NULL,"+UID+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
         bancoDados.execSQL("CREATE TABLE IF NOT EXISTS " + TB_EVENTOS + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+UID+" VARCHAR NOT NULL, " +ID_CALENDARIO+" INTEGER NOT NULL," + DATAHORAINICIO + " DATETIME NOT NULL, " + DATAHORAFIM + " DATETIME, " + DATAHORAMODIFICADO + " DATETIME, " + LOCAL + " VARCHAR (200),"+ SUMARIO + " VARCHAR (200) NOT NULL, "+ DESCRICAO +" TEXT,"+ URI +" VARCHAR (300),"+URLIMAGEM+" VARCHAR (300));");
+        bancoDados.execSQL("CREATE TABLE IF NOT EXISTS " + TB_NOTIFICACAO + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+NOTIFICATION_TITLE+ " VARCHAR (200),"+NOTIFICATION_TICKER+" VARCHAR (200),"+NOTIFICATION_DESCRICAO+" TEXT,"+NOTIFICATION_KEY+" VARCHAR (50)," +NOTIFICATION_VALUE+" TEXT,"+NOTIFICATION_ISATIVO+" BOOLEAN);");
         if(bancoDados.isOpen()){
             bancoDados.close();
         }

@@ -109,7 +109,6 @@ public class ListaEventosFavoritosActivity extends AppCompatActivity implements 
         dados.putInt(Constantes.ACTIVITYHISTOTY, Constantes.EVENTOSFAVORITOSACTIVITY);
         activityServices.redirect(this, DescricaoActivity.class, dados);
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-
     }
 
     private class RecyclerViewOnGestureListener extends GestureDetector.SimpleOnGestureListener {
