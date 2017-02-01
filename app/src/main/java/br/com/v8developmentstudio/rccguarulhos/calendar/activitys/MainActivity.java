@@ -156,11 +156,11 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         }
 
         if (id == R.id.action_notification) {
-            LayerDrawable icon2 = (LayerDrawable) notificationItemMenu.getIcon();
-            setCounting(this, icon2,"0");
-            invalidateOptionsMenu();//for refreshing menu
+//            LayerDrawable icon2 = (LayerDrawable) notificationItemMenu.getIcon();
+//            setCounting(this, icon2,"0");
+//            invalidateOptionsMenu();//for refreshing menu
 
-            Toast.makeText(this, "Abrindo Notificaçoes", Toast.LENGTH_SHORT).show();
+            ac.redirect(this, ListaNotificacoesActivity.class, null);
             return true;
         }
         return super.onOptionsItemSelected(item);

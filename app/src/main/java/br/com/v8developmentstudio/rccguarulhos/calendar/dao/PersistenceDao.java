@@ -19,6 +19,7 @@ import java.util.List;
 import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.Calendario;
 import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.Evento;
 import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.EventoFavorito;
+import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.Notificacao;
 
 /**
  * Created by cleiton.dantas on 17/03/2016.
@@ -470,26 +471,28 @@ public class PersistenceDao extends SQLiteOpenHelper {
         return calendarios;
     }
 
-    public List<Calendario> recuperaTodasNotificaoes(SQLiteDatabase bancoDados) {
-        Calendario calendario;
-        List<Calendario> calendarios = new ArrayList<Calendario>();
+    public List<Notificacao> recuperaTodasNotificaoes(SQLiteDatabase bancoDados) {
+        Notificacao notificacao;
+        List<Notificacao> notificacaos = new ArrayList<Notificacao>();
         try {
-            cursor = bancoDados.query(TB_CONFIG_CALENDAR, new String[]{ID, NOME_CALENDARIO, NOME_LABEL, URL, ALARME}, null, null, null, null, null);
+            cursor = bancoDados.query(TB_NOTIFICACAO, new String[]{ID, NOTIFICATION_TITLE, NOTIFICATION_TICKER, NOTIFICATION_DESCRICAO, NOTIFICATION_KEY,NOTIFICATION_VALUE,NOTIFICATION_ISATIVO}, null, null, null, null, null);
             while (cursor.moveToNext()) {
-                calendario = new Calendario();
-                calendario.setId(cursor.getInt(cursor.getColumnIndex(ID)));
-                calendario.setNomeCalendario(cursor.getString(cursor.getColumnIndex(NOME_CALENDARIO)));
-                calendario.setNomeLabel(cursor.getString(cursor.getColumnIndex(NOME_LABEL)));
-                calendario.setUrl(cursor.getString(cursor.getColumnIndex(URL)));
-                calendario.setAlarme(cursor.getInt(cursor.getColumnIndex(ALARME)) > 0);
-                calendarios.add(calendario);
+                notificacao = new Notificacao();
+                notificacao.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+                notificacao.setTitulo(cursor.getString(cursor.getColumnIndex(NOTIFICATION_TITLE)));
+                notificacao.setTituloTicker(cursor.getString(cursor.getColumnIndex(NOTIFICATION_TICKER)));
+                notificacao.setTexto(cursor.getString(cursor.getColumnIndex(NOTIFICATION_DESCRICAO)));
+                notificacao.setKey(cursor.getString(cursor.getColumnIndex(NOTIFICATION_KEY)));
+                notificacao.setValue(cursor.getString(cursor.getColumnIndex(NOTIFICATION_VALUE)));
+                notificacao.setAtivo(cursor.getInt(cursor.getColumnIndex(NOTIFICATION_ISATIVO))>0);
+                notificacaos.add(notificacao);
             }
         } finally {
             if(bancoDados.isOpen()){
                 bancoDados.close();
             }
         }
-        return calendarios;
+        return notificacaos;
     }
 
 

@@ -5,16 +5,25 @@ package br.com.v8developmentstudio.rccguarulhos.calendar.modelo;
  */
 public class Notificacao {
 
-
+    private Integer id;
     private String tituloTicker;
     private String titulo;
     private String texto;
     private String key;
     private String value;
-
+    private Boolean isAtivo;
 
     private int drawableSmallIcon;
     private int drawableLargeIcon;
+
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
 
     public String getTituloTicker() {
         return tituloTicker;
@@ -72,4 +81,11 @@ public class Notificacao {
         return value;
     }
 
+    public Boolean getAtivo() {
+        return isAtivo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        isAtivo = ativo;
+    }
 }

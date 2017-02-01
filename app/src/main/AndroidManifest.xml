@@ -123,6 +123,12 @@
             android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activitys.ListaNotificacoesActivity"
+            android:label="@string/title_notification"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name=".activitys.WebViewActivity"
             android:noHistory="true" />
         <receiver
