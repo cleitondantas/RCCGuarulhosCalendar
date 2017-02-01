@@ -21,6 +21,7 @@ android {
 
 dependencies {
     compile project(':library')
+    compile 'me.leolin:ShortcutBadger:1.1.8'
     compile 'net.sf.biweekly:biweekly:0.4.5'
     compile 'com.android.support:design:25.0.1'
     compile 'com.android.support:appcompat-v7:25.0.1'

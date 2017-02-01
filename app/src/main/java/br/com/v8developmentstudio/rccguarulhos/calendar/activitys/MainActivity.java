@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -49,7 +50,10 @@ import br.com.v8developmentstudio.rccguarulhos.calendar.util.AssetsPropertyReade
 import br.com.v8developmentstudio.rccguarulhos.calendar.util.ColorDrawables;
 import br.com.v8developmentstudio.rccguarulhos.calendar.util.Constantes;
 import br.com.v8developmentstudio.rccguarulhos.calendar.util.FiltroDatas;
+import me.leolin.shortcutbadger.ShortcutBadger;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static br.com.v8developmentstudio.rccguarulhos.calendar.adapter.Count.setCounting;
 
 
 public class MainActivity extends AppCompatActivity implements RobotoCalendarListener, NavigationView.OnNavigationItemSelectedListener, RecyclerView.OnItemTouchListener, View.OnClickListener {
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
     private ColorDrawables drawablecolor;
+    private MenuItem notificationItemMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +140,10 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        notificationItemMenu = menu.findItem(R.id.action_notification);
+        LayerDrawable icon = (LayerDrawable) notificationItemMenu.getIcon();
+        setCounting(this, icon,"9");
+       // ShortcutBadger.applyCount(this, 2);
         return true;
     }
 
@@ -143,6 +152,15 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
         if (id == R.id.action_settings) {
             ac.redirect(this, SettingsActivity.class, null);
+            return true;
+        }
+
+        if (id == R.id.action_notification) {
+            LayerDrawable icon2 = (LayerDrawable) notificationItemMenu.getIcon();
+            setCounting(this, icon2,"0");
+            invalidateOptionsMenu();//for refreshing menu
+
+            Toast.makeText(this, "Abrindo Notificaçoes", Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);

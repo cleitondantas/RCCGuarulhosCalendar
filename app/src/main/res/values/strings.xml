@@ -12,6 +12,7 @@
     <string name="novoevento">Novo Evento</string>
     <string name="lembrete">Lembrete</string>
     <string name="title_activity_settings">Sobre</string>
+    <string name="title_notification">Notificações</string>
     <string name="app_favoritos">Favoritos</string>
     <string name="permis_acesso_conta">Conta</string>
     <string name="development">Desenvolvido por: V8 Development Studio</string>
