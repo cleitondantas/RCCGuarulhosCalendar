@@ -32,11 +32,12 @@ public class NotificationService {
         builder.setContentText(descricao);
         builder.setSmallIcon(R.drawable.rcc);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.rcc));
-
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         builder.setContentIntent(pendingIntent);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setFullScreenIntent(pendingIntent, true);
-        }
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            builder.setFullScreenIntent(pendingIntent, true);
+//
+//        }
 
         Notification n = builder.build();
         n.vibrate = new long[]{150, 300, 150, 600};

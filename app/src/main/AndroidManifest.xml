@@ -13,6 +13,10 @@
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+
     <!-- Used for runtime permissions related to user's contacts and profile. -->
     <permission-group
         android:name="android.permission-group.CONTACTS"
@@ -140,6 +144,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
         <receiver
             android:name=".services.BroadcastReceiverAtualizacao"
             android:label="BroadcastReceiverAtualizacao">
@@ -159,6 +164,17 @@
             </intent-filter>
         </receiver>
 
+
+        <receiver
+            android:name=".services.FirebaseDataReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </receiver>
+
+
         <service android:name=".services.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -167,8 +183,6 @@
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
 

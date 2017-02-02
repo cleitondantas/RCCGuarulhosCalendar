@@ -1,5 +1,14 @@
 package br.com.v8developmentstudio.rccguarulhos.calendar.services;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -7,7 +16,9 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.List;
 
+import br.com.v8developmentstudio.rccguarulhos.calendar.R;
 import br.com.v8developmentstudio.rccguarulhos.calendar.activitys.DescricaoActivity;
+import br.com.v8developmentstudio.rccguarulhos.calendar.activitys.MainActivity;
 import br.com.v8developmentstudio.rccguarulhos.calendar.activitys.WebViewActivity;
 import br.com.v8developmentstudio.rccguarulhos.calendar.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.Evento;
@@ -58,50 +69,55 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificacao.setAtivo(true);
             notificacao.setTexto(descricao);
 
+
             if(remoteMessage.getData().get("UID")!=null) {
                 String uid = remoteMessage.getData().get("UID");
                 notificacao.setKey("UID");
                 notificacao.setValue(uid);
+                persistenceDao.salvaNotificacao(notificacao,persistenceDao.openDB(this));
                 List<Evento> events = persistenceDao.recuperaEventoPorUID(uid, persistenceDao.openDB());
                 if (events != null && events.size() > 0) {
-                    notificationService.gerarNotificacao(this, notificationService.redirectDescricaoDoEvento(getApplicationContext(), events.get(0), DescricaoActivity.class), ticker, title, descricao, 0);
+                    sendNotification("BEM NOVA NOTIFICAAO","TEST",this);
+                    //notificationService.gerarNotificacao(this, notificationService.redirectDescricaoDoEvento(getApplicationContext(), events.get(0), DescricaoActivity.class), ticker, title, descricao, 0);
                 }
             }
             if(remoteMessage.getData().get("URL")!=null){
                 String url = remoteMessage.getData().get("URL");
                 notificacao.setKey("URL");
                 notificacao.setValue(url);
+                persistenceDao.salvaNotificacao(notificacao,persistenceDao.openDB(this));
                 notificationService.gerarNotificacao(this,notificationService.redirectURL(getApplicationContext(),url),ticker,title,descricao,0);
             }
 
-            persistenceDao.salvaNotificacao(notificacao,persistenceDao.openDB(this));
+
         }
 
     }
 //
-//    private void sendNotification(String title,String messageBody,Context context) {
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,  PendingIntent.FLAG_ONE_SHOT);
-//        Log.d(TAG,messageBody);
-//        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-//                .setSmallIcon(R.drawable.rcc)
-//                .setTicker(title)
-//                .setContentTitle(title)
-//                .setContentText(messageBody)
-//                .setAutoCancel(true)
-//                .setSound(defaultSoundUri)
-//                .setContentIntent(pendingIntent)
-//                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.rcc));
-//
-//        notificationBuilder.setContentIntent(pendingIntent);
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            notificationBuilder.setFullScreenIntent(pendingIntent, true);
-//        }
-//
-//        NotificationManager notificationManager =  (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//        notificationManager.notify(0, notificationBuilder.build());
-//    }
+    private void sendNotification(String title,String messageBody,Context context) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,  PendingIntent.FLAG_ONE_SHOT);
+        Log.d(TAG,messageBody);
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.rcc)
+                .setTicker(title)
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.rcc));
+        notificationBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
+
+        notificationBuilder.setContentIntent(pendingIntent);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            notificationBuilder.setFullScreenIntent(pendingIntent, true);
+        }
+
+        NotificationManager notificationManager =  (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(0, notificationBuilder.build());
+    }
 
 }
