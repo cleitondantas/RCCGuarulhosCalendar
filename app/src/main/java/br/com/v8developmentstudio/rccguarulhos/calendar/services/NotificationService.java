@@ -23,21 +23,21 @@ import br.com.v8developmentstudio.rccguarulhos.calendar.util.Constantes;
  */
 public class NotificationService {
 
-    public void gerarNotificacao(Context context, Intent intent, CharSequence ticker, CharSequence titulo, CharSequence descricao, int numerodaNotificacao) {
+    public void gerarNotificacao(Context context, Intent intent,CharSequence titulo, CharSequence descricao, int numerodaNotificacao) {
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, numerodaNotificacao, intent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setTicker(ticker);
+        builder.setTicker(titulo);
         builder.setContentTitle(titulo);
         builder.setContentText(descricao);
         builder.setSmallIcon(R.drawable.rcc);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.rcc));
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         builder.setContentIntent(pendingIntent);
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            builder.setFullScreenIntent(pendingIntent, true);
-//
-//        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setFullScreenIntent(pendingIntent, true);
+
+        }
 
         Notification n = builder.build();
         n.vibrate = new long[]{150, 300, 150, 600};

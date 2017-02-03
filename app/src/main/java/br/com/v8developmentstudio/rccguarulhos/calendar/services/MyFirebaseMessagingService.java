@@ -78,7 +78,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 List<Evento> events = persistenceDao.recuperaEventoPorUID(uid, persistenceDao.openDB());
                 if (events != null && events.size() > 0) {
                     sendNotification("BEM NOVA NOTIFICAAO","TEST",this);
-                    //notificationService.gerarNotificacao(this, notificationService.redirectDescricaoDoEvento(getApplicationContext(), events.get(0), DescricaoActivity.class), ticker, title, descricao, 0);
+                  notificationService.gerarNotificacao(this, notificationService.redirectDescricaoDoEvento(getApplicationContext(), events.get(0), DescricaoActivity.class),title, descricao, 0);
                 }
             }
             if(remoteMessage.getData().get("URL")!=null){
@@ -86,10 +86,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificacao.setKey("URL");
                 notificacao.setValue(url);
                 persistenceDao.salvaNotificacao(notificacao,persistenceDao.openDB(this));
-                notificationService.gerarNotificacao(this,notificationService.redirectURL(getApplicationContext(),url),ticker,title,descricao,0);
+                notificationService.gerarNotificacao(this,notificationService.redirectURL(getApplicationContext(),url),title,descricao,0);
             }
-
-
         }
 
     }

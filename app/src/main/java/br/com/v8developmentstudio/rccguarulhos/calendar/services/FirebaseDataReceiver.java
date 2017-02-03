@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
+import br.com.v8developmentstudio.rccguarulhos.calendar.dao.PersistenceDao;
+import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.Notificacao;
+
 /**
  * Created by cleiton.dantas on 02/02/2017.
  */
@@ -12,17 +15,29 @@ import android.util.Log;
 public class FirebaseDataReceiver extends WakefulBroadcastReceiver {
     private final String TAG = "FirebaseDataReceiver";
     private NotificationService notificationService;
+    private PersistenceDao persistenceDao;
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "RECEBIDO PELO FirebaseDataReceiver");
         notificationService = new NotificationService();
-        if (intent.getExtras() != null) {
-            for (String key : intent.getExtras().keySet()) {
-                Object value = intent.getExtras().get(key);
-                Log.e("FirebaseDataReceiver", "Key: " + key + " Value: " + value);
-            }
+        persistenceDao = new PersistenceDao(context);
+        Notificacao notificacao = new Notificacao();
+        if(intent.getExtras().get("UID")!=null){
+            notificacao.setKey("UID");
+            notificacao.setValue((String)intent.getExtras().get("UID"));
         }
-        notificationService.gerarNotificacao(context,intent,"TICKET FIRE","TITULO FIRE","DESCRICAO FIRE",0);
+        if(intent.getExtras().get("URL")!=null){
+            notificacao.setKey("URL");
+            notificacao.setValue((String)intent.getExtras().get("URL"));
+        }
+        if(intent.getExtras().get("TICKER")!=null){
+            notificacao.setTituloTicker((String)intent.getExtras().get("TICKER"));
+        }
+        if(intent.getExtras().get("TITLE")!=null){
+            notificacao.setTitulo((String)intent.getExtras().get("TITLE"));
+        }
+
+        notificationService.gerarNotificacao(context,intent,"TITULO FIRE","DESCRICAO FIRE",0);
 
     }
 }

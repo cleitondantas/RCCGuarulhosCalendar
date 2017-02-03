@@ -33,7 +33,7 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
     private void sendRegistrationToServer(String token) {
         // Add custom implementation, as needed.
         //Enviar para servidor
-        Log.e("TOKEN:", token); //NOT PRINT
+        Log.e("TOKENID:", token); //NOT PRINT
 
         HttpURLConnection connection;
         OutputStreamWriter request = null;
