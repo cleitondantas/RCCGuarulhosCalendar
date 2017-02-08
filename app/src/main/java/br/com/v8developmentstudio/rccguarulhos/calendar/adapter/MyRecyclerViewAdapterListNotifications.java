@@ -24,10 +24,11 @@ import br.com.v8developmentstudio.rccguarulhos.calendar.util.ColorDrawables;
 public class MyRecyclerViewAdapterListNotifications extends RecyclerView.Adapter<MyRecyclerViewAdapterListNotifications.ViewHolder> {
     private List<Notificacao> notificaoes;
     private Activity activity;
-
+    private ColorDrawables dra ;
     public MyRecyclerViewAdapterListNotifications(List<Notificacao> notificaoes, Activity activity) {
         this.activity = activity;
         this.notificaoes = notificaoes;
+        dra = new ColorDrawables(activity);
     }
 
     @Override
@@ -41,6 +42,12 @@ public class MyRecyclerViewAdapterListNotifications extends RecyclerView.Adapter
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.titulo.setText(notificaoes.get(position).getTitulo());
         holder.texto.setText(notificaoes.get(position).getTexto());
+        int i = 8;
+        if(notificaoes.get(position).getAtivo()){
+            i = 4;
+        }
+        Drawable drawer = dra.customView(GradientDrawable.RECTANGLE,15,90,i);
+        holder.imagedrawr.setImageDrawable(drawer);
     }
 
     public void addItem(Notificacao dataObj, int index) {
@@ -69,6 +76,7 @@ public class MyRecyclerViewAdapterListNotifications extends RecyclerView.Adapter
             super(itemView);
             titulo = (TextView) itemView.findViewById(R.id.tv_notification_title);
             texto = (TextView) itemView.findViewById(R.id.tv_notification_text);
+            imagedrawr = (ImageView) itemView.findViewById(R.id.colorrowcardview_notification);
         }
     }
 }
