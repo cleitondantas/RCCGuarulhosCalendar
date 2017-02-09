@@ -34,7 +34,8 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
             for (Evento evento : persistenceDao.recuperaEventosPorDia(getDatePreferences(dia),persistenceDao.openDB(context))) {
                 numIdentificacao++;
                 if (persistenceDao.recuperaFavoritoPorUID(evento.getUid(),persistenceDao.openDB()).size() != 0) {
-                    notificationService.gerarNotificacao(context, notificationService.redirectDescricaoDoEvento(context, evento,DescricaoActivity.class), context.getString(R.string.lembrete), evento.getSumario(), dateFormat.format(evento.getDataHoraInicio()), numIdentificacao);
+                    Intent intents  =  notificationService.redirectDescricaoDoEvento(context, evento,DescricaoActivity.class);
+                    notificationService.gerarNotificacao(context,intents, context.getString(R.string.lembrete),dateFormat.format(evento.getDataHoraInicio()), numIdentificacao);
                 }
             }
         }

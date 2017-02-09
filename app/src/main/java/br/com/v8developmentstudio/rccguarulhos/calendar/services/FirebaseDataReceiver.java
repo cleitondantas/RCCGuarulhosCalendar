@@ -39,6 +39,7 @@ public class FirebaseDataReceiver extends WakefulBroadcastReceiver {
         if(intent.getExtras().get("DESCRICAO")!=null){
             notificacao.setTexto((String)intent.getExtras().get("DESCRICAO"));
         }
+
         persistenceDao.salvaNotificacao(notificacao,persistenceDao.openDB(context));
         notificationService.gerarNotificacao(context,intent,notificacao.getTitulo(),notificacao.getTexto(),0);
 
