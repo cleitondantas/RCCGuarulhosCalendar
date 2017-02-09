@@ -77,7 +77,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 persistenceDao.salvaNotificacao(notificacao,persistenceDao.openDB(this));
                 List<Evento> events = persistenceDao.recuperaEventoPorUID(uid, persistenceDao.openDB());
                 if (events != null && events.size() > 0) {
-                    sendNotification("BEM NOVA NOTIFICAAO","TEST",this);
                   notificationService.gerarNotificacao(this, notificationService.redirectDescricaoDoEvento(getApplicationContext(), events.get(0), DescricaoActivity.class),title, descricao, 0);
                 }
             }
@@ -91,31 +90,4 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
     }
-//
-    private void sendNotification(String title,String messageBody,Context context) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,  PendingIntent.FLAG_ONE_SHOT);
-        Log.d(TAG,messageBody);
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.rcc)
-                .setTicker(title)
-                .setContentTitle(title)
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.rcc));
-        notificationBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
-
-        notificationBuilder.setContentIntent(pendingIntent);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            notificationBuilder.setFullScreenIntent(pendingIntent, true);
-        }
-
-        NotificationManager notificationManager =  (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notificationBuilder.build());
-    }
-
 }

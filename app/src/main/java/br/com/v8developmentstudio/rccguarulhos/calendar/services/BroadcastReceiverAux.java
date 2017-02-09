@@ -7,7 +7,6 @@ package br.com.v8developmentstudio.rccguarulhos.calendar.services;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -42,7 +41,6 @@ public class BroadcastReceiverAux extends BroadcastReceiver {
     }
 
 
-    @NonNull
     private Date getDatePreferences(int dias) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
