@@ -17,16 +17,10 @@
     <bookmark url="file://$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/calendar/services/ServicoNotificacao.java" line="34" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eaf39dda-3d19-476e-902a-5da48d647cee" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/calendar/activitys/ActivityHub.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
+    <list default="true" id="eaf39dda-3d19-476e-902a-5da48d647cee" name="Default" comment="" />
+    <list id="af1cc78c-9066-424e-be33-1a0db9511fc5" name="New changelist" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/google-services.json" afterPath="$PROJECT_DIR$/app/google-services.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/calendar/services/BroadcastReceiverAux.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/calendar/services/BroadcastReceiverAux.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/calendar/services/FirebaseDataReceiver.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/calendar/services/FirebaseDataReceiver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/calendar/services/MyFirebaseMessagingService.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/calendar/services/MyFirebaseMessagingService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/library.iml" afterPath="$PROJECT_DIR$/library/library.iml" />
     </list>
     <ignored path="RCCGuarulhosCalendar.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -87,8 +81,8 @@
       <file leaf-file-name="ActivityHub.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/calendar/activitys/ActivityHub.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="501">
-              <caret line="47" column="31" selection-start-line="47" selection-start-column="31" selection-end-line="47" selection-end-column="31" />
+            <state relative-caret-position="518">
+              <caret line="48" column="56" selection-start-line="48" selection-start-column="56" selection-end-line="48" selection-end-column="56" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -3889,17 +3883,11 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="eaf39dda-3d19-476e-902a-5da48d647cee" name="Default" comment="" />
+      <changelist id="af1cc78c-9066-424e-be33-1a0db9511fc5" name="New changelist" comment="" />
       <created>1458217819498</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1458217819498</updated>
-    </task>
-    <task id="LOCAL-00037" summary="Criado Colapsed View &#10;">
-      <created>1461617974789</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1461617974789</updated>
     </task>
     <task id="LOCAL-00038" summary="Ajustado métodos de Atualização de dados&#10;">
       <created>1462301070620</created>
@@ -4237,7 +4225,14 @@
       <option name="project" value="LOCAL" />
       <updated>1486151908726</updated>
     </task>
-    <option name="localTasksCounter" value="86" />
+    <task id="LOCAL-00086" summary="Criando metodos hub">
+      <created>1486654006694</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1486654006694</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
     <servers />
   </component>
   <component name="TodoView" selected-index="3">
@@ -4303,7 +4298,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Criado bolinha do Menu" />
     <MESSAGE value="Implementado Bolinhas coloridas" />
     <MESSAGE value="Arrumado problemas com Drawer" />
     <MESSAGE value="Criado marcacao" />
@@ -4328,7 +4322,9 @@
     <MESSAGE value="Criado Tela de registro de notificacoes" />
     <MESSAGE value="Criado persistencia da Notificacao" />
     <MESSAGE value="Criado FirebaseDataReceiver" />
-    <option name="LAST_COMMIT_MESSAGE" value="Criado FirebaseDataReceiver" />
+    <MESSAGE value="Criando metodos hub" />
+    <option name="LAST_COMMIT_MESSAGE" value="Criando metodos hub" />
+    <option name="PRESELECT_EXISTING_CHANGELIST" value="false" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -4701,8 +4697,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/v8developmentstudio/rccguarulhos/calendar/activitys/ActivityHub.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="501">
-          <caret line="47" column="31" selection-start-line="47" selection-start-column="31" selection-end-line="47" selection-end-column="31" />
+        <state relative-caret-position="518">
+          <caret line="48" column="56" selection-start-line="48" selection-start-column="56" selection-end-line="48" selection-end-column="56" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
