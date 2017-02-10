@@ -11,6 +11,7 @@ import android.util.Log;
 
 import java.util.List;
 
+import br.com.v8developmentstudio.rccguarulhos.calendar.AberturaSplashActivity;
 import br.com.v8developmentstudio.rccguarulhos.calendar.activitys.DescricaoActivity;
 import br.com.v8developmentstudio.rccguarulhos.calendar.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.Evento;
@@ -52,6 +53,9 @@ public class ActivityServicesImpl implements ActivityServices{
         Intent intentSite = new Intent(Intent.ACTION_VIEW);
         intentSite.setData(Uri.parse(url));
         context.startActivity(intentSite);
+        if(context instanceof AberturaSplashActivity){
+            ((AberturaSplashActivity)context).finish();
+        }
     }
 
     public void startFacebook(Context context, String facebookUrl) {
@@ -109,7 +113,11 @@ public class ActivityServicesImpl implements ActivityServices{
             PersistenceDao persistenceDao = new PersistenceDao(context);
             List<Evento> events = persistenceDao.recuperaEventoPorUID(notificacao.getValue(), persistenceDao.openDB());
             NotificationService notificationService = new NotificationService();
-            notificationService.redirectDescricaoDoEvento(context,events.get(0), DescricaoActivity.class);
+           Intent intent = notificationService.redirectDescricaoDoEvento(context,events.get(0), DescricaoActivity.class);
+            context.startActivity(intent);
+            if(context instanceof AberturaSplashActivity){
+                ((AberturaSplashActivity)context).finish();
+            }
         }
     }
 }
