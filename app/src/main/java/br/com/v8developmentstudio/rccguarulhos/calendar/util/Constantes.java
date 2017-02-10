@@ -24,6 +24,7 @@ public class Constantes {
     public static String UID ="UID";
     public static String URI ="URI";
     public static String CURRENT_MONTH ="CURRENT_MONTH";
+    public static String OBJ_NOTIFICACAO = "NOTIFICACAO";
 
 
 }

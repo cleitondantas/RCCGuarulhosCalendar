@@ -10,6 +10,9 @@ public interface ActivityServices {
     public void redirect(Context context,Class<?>  clazz, Bundle dados);
     public boolean isOnline(Context context);
     public void redirectWebBrowser(Context context,String url);
+    public void startFacebook(Context context, String facebookUrl);
+    public void startYoutube(Context context,String youtubeUrl);
+    public void hub(Context context,Bundle bundle);
 }
 
 

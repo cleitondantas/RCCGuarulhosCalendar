@@ -74,7 +74,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 String uid = remoteMessage.getData().get("UID");
                 notificacao.setKey("UID");
                 notificacao.setValue(uid);
-                persistenceDao.salvaNotificacao(notificacao,persistenceDao.openDB(this));
                 List<Evento> events = persistenceDao.recuperaEventoPorUID(uid, persistenceDao.openDB());
                 if (events != null && events.size() > 0) {
                   notificationService.gerarNotificacao(this, notificationService.redirectDescricaoDoEvento(getApplicationContext(), events.get(0), DescricaoActivity.class),title, descricao, 0);
@@ -84,7 +83,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 String url = remoteMessage.getData().get("URL");
                 notificacao.setKey("URL");
                 notificacao.setValue(url);
-                persistenceDao.salvaNotificacao(notificacao,persistenceDao.openDB(this));
+
                 notificationService.gerarNotificacao(this,notificationService.redirectURL(getApplicationContext(),url),title,descricao,0);
             }
         }

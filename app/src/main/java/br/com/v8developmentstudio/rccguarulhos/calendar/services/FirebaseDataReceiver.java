@@ -2,12 +2,17 @@ package br.com.v8developmentstudio.rccguarulhos.calendar.services;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
+import br.com.v8developmentstudio.rccguarulhos.calendar.AberturaSplashActivity;
+import br.com.v8developmentstudio.rccguarulhos.calendar.activitys.DescricaoActivity;
+import br.com.v8developmentstudio.rccguarulhos.calendar.activitys.SettingsActivity;
 import br.com.v8developmentstudio.rccguarulhos.calendar.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.Notificacao;
 import br.com.v8developmentstudio.rccguarulhos.calendar.task.TaskProcessBackground;
+import br.com.v8developmentstudio.rccguarulhos.calendar.util.Constantes;
 
 /**
  * Created by cleiton.dantas on 02/02/2017.
@@ -64,7 +69,11 @@ public class FirebaseDataReceiver extends WakefulBroadcastReceiver {
         }
 
         persistenceDao.salvaNotificacao(notificacao,persistenceDao.openDB(context));
-        notificationService.gerarNotificacao(context,intent,notificacao.getTitulo(),notificacao.getTexto(),0);
+        Intent newIntent = new Intent(context, AberturaSplashActivity.class);
+        Bundle dados = new Bundle();
+        dados.putSerializable(Constantes.OBJ_NOTIFICACAO,notificacao);
+        newIntent.putExtras(dados);
+        notificationService.gerarNotificacao(context,newIntent,notificacao.getTitulo(),notificacao.getTexto(),0);
 
     }
 }

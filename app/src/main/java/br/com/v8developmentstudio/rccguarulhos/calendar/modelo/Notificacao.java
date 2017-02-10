@@ -1,9 +1,11 @@
 package br.com.v8developmentstudio.rccguarulhos.calendar.modelo;
 
+import java.io.Serializable;
+
 /**
  * Created by cleiton.dantas on 01/04/2016.
  */
-public class Notificacao {
+public class Notificacao implements Serializable {
 
     private Integer id;
     private String tituloTicker;
