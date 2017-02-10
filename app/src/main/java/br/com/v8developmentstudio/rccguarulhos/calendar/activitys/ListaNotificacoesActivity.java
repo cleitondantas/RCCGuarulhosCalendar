@@ -19,6 +19,8 @@ import br.com.v8developmentstudio.rccguarulhos.calendar.R;
 import br.com.v8developmentstudio.rccguarulhos.calendar.adapter.MyRecyclerViewAdapterListNotifications;
 import br.com.v8developmentstudio.rccguarulhos.calendar.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.Notificacao;
+import br.com.v8developmentstudio.rccguarulhos.calendar.services.ActivityServices;
+import br.com.v8developmentstudio.rccguarulhos.calendar.services.ActivityServicesImpl;
 
 /**
  * Created by cleiton.dantas on 01/02/2017.
@@ -27,9 +29,11 @@ import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.Notificacao;
 public class ListaNotificacoesActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener, View.OnClickListener {
     private RecyclerView recyclerView;
     private GestureDetectorCompat gestureDetector;
-    List<Notificacao> notificaoes;
+    private List<Notificacao> notificaoes;
     private PersistenceDao persistenceDao = PersistenceDao.getInstance(this);
     private MyRecyclerViewAdapterListNotifications myRecyclerViewAdapterListNotifications;
+    private ActivityServices activityServices = new ActivityServicesImpl();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +77,12 @@ public class ListaNotificacoesActivity extends AppCompatActivity implements Recy
 
     @Override
     public void onClick(View view) {
-
+        mostraNotificacao(notificaoes.get(view.getId()));
     }
+    private void mostraNotificacao(final Notificacao notificacao){
+        activityServices.hub(this,notificacao);
+    }
+
 
     private class RecyclerViewOnGestureListener extends GestureDetector.SimpleOnGestureListener {
 

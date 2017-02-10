@@ -92,6 +92,10 @@ public class ActivityServicesImpl implements ActivityServices{
 
     public void hub(Context context,Bundle bundle){
        Notificacao notificacao = (Notificacao)bundle.getSerializable(Constantes.OBJ_NOTIFICACAO);
+        hub(context,notificacao);
+    }
+
+    public void hub(Context context, Notificacao notificacao){
         if(notificacao.getKey().contains("URL")){
             redirectWebBrowser(context,notificacao.getValue());
         }
@@ -107,8 +111,5 @@ public class ActivityServicesImpl implements ActivityServices{
             NotificationService notificationService = new NotificationService();
             notificationService.redirectDescricaoDoEvento(context,events.get(0), DescricaoActivity.class);
         }
-
-
-
     }
 }
