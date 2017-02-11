@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class Notificacao implements Serializable {
 
     private Integer id;
+    private Integer numericNotification;
     private String tituloTicker;
     private String titulo;
     private String texto;
@@ -25,6 +26,14 @@ public class Notificacao implements Serializable {
 
     public Integer getId() {
         return id;
+    }
+
+    public Integer getNumericNotification() {
+        return numericNotification;
+    }
+
+    public void setNumericNotification(Integer numericNotification) {
+        this.numericNotification = numericNotification;
     }
 
     public String getTituloTicker() {

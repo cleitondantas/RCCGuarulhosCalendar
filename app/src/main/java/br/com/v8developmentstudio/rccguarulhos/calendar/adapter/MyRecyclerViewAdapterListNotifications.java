@@ -42,9 +42,9 @@ public class MyRecyclerViewAdapterListNotifications extends RecyclerView.Adapter
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.titulo.setText(notificaoes.get(position).getTitulo());
         holder.texto.setText(notificaoes.get(position).getTexto());
-        int i = 8;
+        int i = 4;
         if(notificaoes.get(position).getAtivo()){
-            i = 4;
+            i = 8;
         }
         Drawable drawer = dra.customView(GradientDrawable.RECTANGLE,15,90,i);
         holder.imagedrawr.setImageDrawable(drawer);

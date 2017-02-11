@@ -1,5 +1,6 @@
 package br.com.v8developmentstudio.rccguarulhos.calendar.services;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -74,24 +75,22 @@ public class ActivityServicesImpl implements ActivityServices{
                 uri = Uri.parse("fb://page" + pageID);
             }
             Log.d("FACE", "startFacebook: uri = " + uri.toString());
-            context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            context.startActivity(new Intent(Intent.ACTION_VIEW, uri).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
         } catch (Throwable e) {
-            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl)));
-
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl)).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
         }
     }
 
     public void startYoutube(Context context, String youtubeUrl){
-        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(youtubeUrl));
+        String replaceURL = youtubeUrl.replace("https://www.youtube.com/watch?v=","");
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + replaceURL));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + youtubeUrl));
+        appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         try {
-            if(context.getPackageManager().getPackageInfo("com.google.android.youtube", 0)!=null){
-                intent.setClassName("com.google.android.youtube", "com.google.android.youtube.WatchActivity");
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e("ERRO AO ABRIR YOUTUBE",e.getMessage());
+            context.startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            context.startActivity(webIntent);
         }
-        context.startActivity(intent);
-
     }
 
     public void hub(Context context,Bundle bundle){
@@ -100,6 +99,9 @@ public class ActivityServicesImpl implements ActivityServices{
     }
 
     public void hub(Context context, Notificacao notificacao){
+        PersistenceDao persistenceDao = new PersistenceDao(context);
+        notificacao.setAtivo(false);
+        persistenceDao.updateInvalidaNotificacao(persistenceDao.openDB(),notificacao.getNumericNotification());
         if(notificacao.getKey().contains("URL")){
             redirectWebBrowser(context,notificacao.getValue());
         }
@@ -110,7 +112,7 @@ public class ActivityServicesImpl implements ActivityServices{
             startYoutube(context,notificacao.getValue());
         }
         if(notificacao.getKey().contains("UID")){
-            PersistenceDao persistenceDao = new PersistenceDao(context);
+
             List<Evento> events = persistenceDao.recuperaEventoPorUID(notificacao.getValue(), persistenceDao.openDB());
             NotificationService notificationService = new NotificationService();
            Intent intent = notificationService.redirectDescricaoDoEvento(context,events.get(0), DescricaoActivity.class);

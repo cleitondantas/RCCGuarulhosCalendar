@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
+import java.util.Random;
+
 import br.com.v8developmentstudio.rccguarulhos.calendar.AberturaSplashActivity;
 import br.com.v8developmentstudio.rccguarulhos.calendar.activitys.DescricaoActivity;
 import br.com.v8developmentstudio.rccguarulhos.calendar.activitys.SettingsActivity;
@@ -67,6 +69,7 @@ public class FirebaseDataReceiver extends WakefulBroadcastReceiver {
                 }
             }
         }
+        notificacao.setNumericNotification(new Random().nextInt(10000));
 
         persistenceDao.salvaNotificacao(notificacao,persistenceDao.openDB(context));
         Intent newIntent = new Intent(context, AberturaSplashActivity.class);
