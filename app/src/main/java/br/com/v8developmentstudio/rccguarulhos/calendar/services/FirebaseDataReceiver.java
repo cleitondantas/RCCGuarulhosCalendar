@@ -3,6 +3,7 @@ package br.com.v8developmentstudio.rccguarulhos.calendar.services;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
@@ -25,6 +26,7 @@ public class FirebaseDataReceiver extends WakefulBroadcastReceiver {
     private NotificationService notificationService;
     private PersistenceDao persistenceDao;
     private ActivityServices activityServices = new ActivityServicesImpl();
+    public final String NOTIFICATION = "NOTIFICACAO";
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "RECEBIDO PELO FirebaseDataReceiver");
@@ -77,6 +79,6 @@ public class FirebaseDataReceiver extends WakefulBroadcastReceiver {
         dados.putSerializable(Constantes.OBJ_NOTIFICACAO,notificacao);
         newIntent.putExtras(dados);
         notificationService.gerarNotificacao(context,newIntent,notificacao.getTitulo(),notificacao.getTexto(),0);
-
+        Log.i(NOTIFICATION,"NotificationService");
     }
 }

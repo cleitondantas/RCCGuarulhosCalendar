@@ -38,6 +38,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private PersistenceDao persistenceDao;
     private NotificationService notificationService;
     private ActivityServices activityServices = new ActivityServicesImpl();
+    public final String NOTIFICATION = "NOTIFICACAO";
     /**
      * Called when message is received.
      *
@@ -115,6 +116,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             dados.putSerializable(Constantes.OBJ_NOTIFICACAO,notificacao);
             newIntent.putExtras(dados);
             notificationService.gerarNotificacao(getApplicationContext(),newIntent,notificacao.getTitulo(),notificacao.getTexto(),0);
+            Log.i(NOTIFICATION,"onMessageReceived");
         }
     }
 }

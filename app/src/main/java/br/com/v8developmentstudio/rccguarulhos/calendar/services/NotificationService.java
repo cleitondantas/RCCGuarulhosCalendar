@@ -22,10 +22,10 @@ import br.com.v8developmentstudio.rccguarulhos.calendar.util.Constantes;
  * Created by cleiton.dantas on 19/12/2016.
  */
 public class NotificationService {
-
+    public final String NOTIFICATION = "NOTIFICACAO";
     public void gerarNotificacao(Context context, Intent intent,CharSequence titulo, CharSequence descricao, int numerodaNotificacao) {
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, numerodaNotificacao, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, numerodaNotificacao, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setTicker(titulo);
         builder.setContentTitle(titulo);
@@ -33,18 +33,15 @@ public class NotificationService {
         builder.setSmallIcon(R.drawable.rcc);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.rcc));
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setVibrate(new long[]{150, 300, 150, 600});
+        builder.setAutoCancel(true);
         builder.setContentIntent(pendingIntent);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setFullScreenIntent(pendingIntent, true);
-
         }
-
-        Notification n = builder.build();
-        n.vibrate = new long[]{150, 300, 150, 600};
-        n.flags = Notification.FLAG_AUTO_CANCEL;
-        nm.notify(numerodaNotificacao, n);
-
         emitirNotificacaoSonora(context);
+        nm.notify(numerodaNotificacao,builder.build());
+        Log.i(NOTIFICATION,"NotificationService");
     }
 
     private void emitirNotificacaoSonora(Context context){
@@ -58,7 +55,6 @@ public class NotificationService {
                 toque.stop();
                 toque.play();
             }
-
         }
         catch(Exception e){
             Log.e("ERROR", "EMITIR SOM ()--> " + e);
