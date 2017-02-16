@@ -38,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
         final Preferences preferences = new Preferences(this);
         TextView dataAtulizcao = (TextView) findViewById(R.id.atualizacaoView);
         TextView versao =(TextView) findViewById(R.id.idVersionApp);
+        Log.i("MyFirebaseID", preferences.getPreferencesTokenFirebase());
 
         Date date = new Date(preferences.preferencesTimeAtulizacao());
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy  HH:mm");

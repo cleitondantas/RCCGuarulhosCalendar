@@ -54,7 +54,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
 
     public static final String NOTIFICATION_TITLE ="TITLE";
     public static final String NOTIFICATION_NUMERIC ="NUMERIC";
-    public static final String NOTIFICATION_TICKER ="TICKER";
     public static final String NOTIFICATION_DESCRICAO ="DESCRICAO";
     public static final String NOTIFICATION_KEY ="KEY";
     public static final String NOTIFICATION_VALUE ="VALUE";
@@ -476,12 +475,11 @@ public class PersistenceDao extends SQLiteOpenHelper {
         Notificacao notificacao;
         List<Notificacao> notificacaos = new ArrayList<Notificacao>();
         try {
-            cursor = bancoDados.query(TB_NOTIFICACAO, new String[]{ID, NOTIFICATION_TITLE, NOTIFICATION_TICKER, NOTIFICATION_DESCRICAO, NOTIFICATION_KEY,NOTIFICATION_VALUE,NOTIFICATION_NUMERIC,NOTIFICATION_ISATIVO}, null, null, null, null, null);
+            cursor = bancoDados.query(TB_NOTIFICACAO, new String[]{ID, NOTIFICATION_TITLE,NOTIFICATION_DESCRICAO, NOTIFICATION_KEY,NOTIFICATION_VALUE,NOTIFICATION_NUMERIC,NOTIFICATION_ISATIVO}, null, null, null, null, null);
             while (cursor.moveToNext()) {
                 notificacao = new Notificacao();
                 notificacao.setId(cursor.getInt(cursor.getColumnIndex(ID)));
                 notificacao.setTitulo(cursor.getString(cursor.getColumnIndex(NOTIFICATION_TITLE)));
-                notificacao.setTituloTicker(cursor.getString(cursor.getColumnIndex(NOTIFICATION_TICKER)));
                 notificacao.setTexto(cursor.getString(cursor.getColumnIndex(NOTIFICATION_DESCRICAO)));
                 notificacao.setKey(cursor.getString(cursor.getColumnIndex(NOTIFICATION_KEY)));
                 notificacao.setValue(cursor.getString(cursor.getColumnIndex(NOTIFICATION_VALUE)));
@@ -498,7 +496,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
     }
 
     public  Integer contNotificacoesAtivas(SQLiteDatabase bancoDados){
-        cursor = bancoDados.query(TB_NOTIFICACAO, new String[]{ID, NOTIFICATION_TITLE, NOTIFICATION_TICKER, NOTIFICATION_DESCRICAO, NOTIFICATION_KEY,NOTIFICATION_VALUE,NOTIFICATION_NUMERIC,NOTIFICATION_ISATIVO}, null, null, null, null, null);
+        cursor = bancoDados.query(TB_NOTIFICACAO, new String[]{ID, NOTIFICATION_TITLE,NOTIFICATION_DESCRICAO, NOTIFICATION_KEY,NOTIFICATION_VALUE,NOTIFICATION_NUMERIC,NOTIFICATION_ISATIVO}, null, null, null, null, null);
         Integer i = 0;
         while (cursor.moveToNext()) {
             if(cursor.getInt(cursor.getColumnIndex(NOTIFICATION_ISATIVO))>0) {
@@ -534,7 +532,6 @@ public class PersistenceDao extends SQLiteOpenHelper {
 
             contentValues.put(NOTIFICATION_NUMERIC,notificacao.getNumericNotification() );
             contentValues.put(NOTIFICATION_TITLE,notificacao.getTitulo() );
-            contentValues.put(NOTIFICATION_TICKER, notificacao.getTituloTicker());
             contentValues.put(NOTIFICATION_DESCRICAO,notificacao.getTexto());
             contentValues.put(NOTIFICATION_KEY,notificacao.getKey());
             contentValues.put(NOTIFICATION_VALUE,notificacao.getValue());
@@ -594,7 +591,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
         bancoDados.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_CONFIG_CALENDAR +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+NOME_CALENDARIO+" VARCHAR NOT NULL UNIQUE,"+NOME_LABEL+" VARCHAR NOT NULL,"+URL+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
         bancoDados.execSQL("CREATE TABLE IF NOT EXISTS "+ TB_FAVORITOS +" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+ID_CALENDARIO+" INTEGER NOT NULL,"+ID_EVENTO+" INTEGER NOT NULL,"+UID+" VARCHAR NOT NULL,"+ALARME+" BOOLEAN );");
         bancoDados.execSQL("CREATE TABLE IF NOT EXISTS " + TB_EVENTOS + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+UID+" VARCHAR NOT NULL, " +ID_CALENDARIO+" INTEGER NOT NULL," + DATAHORAINICIO + " DATETIME NOT NULL, " + DATAHORAFIM + " DATETIME, " + DATAHORAMODIFICADO + " DATETIME, " + LOCAL + " VARCHAR (200),"+ SUMARIO + " VARCHAR (200) NOT NULL, "+ DESCRICAO +" TEXT,"+ URI +" VARCHAR (300),"+URLIMAGEM+" VARCHAR (300));");
-        bancoDados.execSQL("CREATE TABLE IF NOT EXISTS " + TB_NOTIFICACAO + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ NOTIFICATION_NUMERIC + " INTEGER, "+ NOTIFICATION_TITLE+ " VARCHAR (200),"+NOTIFICATION_TICKER+" VARCHAR (200),"+NOTIFICATION_DESCRICAO+" TEXT,"+NOTIFICATION_KEY+" VARCHAR (50)," +NOTIFICATION_VALUE+" TEXT,"+NOTIFICATION_ISATIVO+" BOOLEAN);");
+        bancoDados.execSQL("CREATE TABLE IF NOT EXISTS " + TB_NOTIFICACAO + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ NOTIFICATION_NUMERIC + " INTEGER, "+ NOTIFICATION_TITLE+ " VARCHAR (200),"+NOTIFICATION_DESCRICAO+" TEXT,"+NOTIFICATION_KEY+" VARCHAR (50)," +NOTIFICATION_VALUE+" TEXT,"+NOTIFICATION_ISATIVO+" BOOLEAN);");
         if(bancoDados.isOpen()){
             bancoDados.close();
         }
@@ -616,7 +613,7 @@ public class PersistenceDao extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TB_NOTIFICACAO + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ NOTIFICATION_NUMERIC + " INTEGER, "+ NOTIFICATION_TITLE+ " VARCHAR (200),"+NOTIFICATION_TICKER+" VARCHAR (200),"+NOTIFICATION_DESCRICAO+" TEXT,"+NOTIFICATION_KEY+" VARCHAR (50)," +NOTIFICATION_VALUE+" TEXT,"+NOTIFICATION_ISATIVO+" BOOLEAN);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TB_NOTIFICACAO + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ NOTIFICATION_NUMERIC + " INTEGER, "+ NOTIFICATION_TITLE+ " VARCHAR (200),"+NOTIFICATION_DESCRICAO+" TEXT,"+NOTIFICATION_KEY+" VARCHAR (50)," +NOTIFICATION_VALUE+" TEXT,"+NOTIFICATION_ISATIVO+" BOOLEAN);");
         if(db.isOpen()){
             db.close();
         }

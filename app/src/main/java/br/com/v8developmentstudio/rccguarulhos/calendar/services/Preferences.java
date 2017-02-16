@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import br.com.v8developmentstudio.rccguarulhos.calendar.util.Constantes;
+
 /**
  * Created by cleiton.dantas on 06/04/2016.
  */
@@ -12,6 +14,19 @@ public class Preferences {
     public Preferences(Context context){
         this.context = context;
     }
+
+    public void salvarTokenFirebase(String tokenFirebase){
+        SharedPreferences settings = context.getSharedPreferences("Preferences", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(Constantes.TOKENFIREBASE,tokenFirebase);
+        editor.commit();
+        Log.i("DEBUG", "PERSISTINDO tokenFirebase");
+    }
+    public String getPreferencesTokenFirebase(){
+        SharedPreferences settings = context.getSharedPreferences("Preferences", 0);
+        return settings.getString(Constantes.TOKENFIREBASE,"");
+    }
+
 
     public void salvarPrefTimeAtulizacao(long timemilles){
         SharedPreferences settings = context.getSharedPreferences("Preferences", 0);

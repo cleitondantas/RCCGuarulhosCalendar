@@ -24,6 +24,7 @@ import br.com.v8developmentstudio.rccguarulhos.calendar.util.Constantes;
  */
 public class ActivityServicesImpl implements ActivityServices{
     private Context context;
+
     public ActivityServicesImpl(){
 
     }
@@ -53,6 +54,7 @@ public class ActivityServicesImpl implements ActivityServices{
     public void redirectWebBrowser(Context context,String url){
         Intent intentSite = new Intent(Intent.ACTION_VIEW);
         intentSite.setData(Uri.parse(url));
+        intentSite.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intentSite);
         if(context instanceof AberturaSplashActivity){
             ((AberturaSplashActivity)context).finish();
@@ -116,6 +118,7 @@ public class ActivityServicesImpl implements ActivityServices{
             List<Evento> events = persistenceDao.recuperaEventoPorUID(notificacao.getValue(), persistenceDao.openDB());
             NotificationService notificationService = new NotificationService();
            Intent intent = notificationService.redirectDescricaoDoEvento(context,events.get(0), DescricaoActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(intent);
             if(context instanceof AberturaSplashActivity){
                 ((AberturaSplashActivity)context).finish();

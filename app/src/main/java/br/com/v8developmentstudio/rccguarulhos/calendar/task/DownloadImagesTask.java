@@ -3,7 +3,10 @@ package br.com.v8developmentstudio.rccguarulhos.calendar.task;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TableRow;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,10 +23,12 @@ public class DownloadImagesTask extends AsyncTask<Object, Void, Bitmap> {
     ImageView imageView = null;
     String pathTemp = System.getProperty("java.io.tmpdir");
     String nomeFile ="";
+    ProgressBar viewProgressBar = null;
     @Override
     protected Bitmap doInBackground(Object... imageViews) {
         this.imageView = (ImageView)imageViews[0];
         nomeFile = new File((String) imageViews[1]).getName();
+        viewProgressBar = (ProgressBar) imageViews[3];
         return download_Image((String)imageView.getTag());
     }
 
@@ -47,6 +52,9 @@ public class DownloadImagesTask extends AsyncTask<Object, Void, Bitmap> {
 
             if(!fileImag.exists()){
                 criaArquivo(is,nomeFile);
+            }
+            if(viewProgressBar!=null) {
+                viewProgressBar.setVisibility(View.GONE);
             }
             if (null != bmp)
                 return bmp;

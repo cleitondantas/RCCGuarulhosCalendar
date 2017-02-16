@@ -9,7 +9,6 @@ public class Notificacao implements Serializable {
 
     private Integer id;
     private Integer numericNotification;
-    private String tituloTicker;
     private String titulo;
     private String texto;
     private String key;
@@ -35,15 +34,6 @@ public class Notificacao implements Serializable {
     public void setNumericNotification(Integer numericNotification) {
         this.numericNotification = numericNotification;
     }
-
-    public String getTituloTicker() {
-        return tituloTicker;
-    }
-
-    public void setTituloTicker(String tituloTicker) {
-        this.tituloTicker = tituloTicker;
-    }
-
     public String getTitulo() {
         return titulo;
     }

@@ -32,13 +32,14 @@ public class NotificationService {
         builder.setContentText(descricao);
         builder.setSmallIcon(R.drawable.rcc);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.rcc));
-        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setPriority(Notification.PRIORITY_MAX);
+        builder.setDefaults(Notification.DEFAULT_ALL);
+        builder.setVibrate(new long[]{150, 300, 150, 600});
         builder.setContentIntent(pendingIntent);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setFullScreenIntent(pendingIntent, true);
 
         }
-
         Notification n = builder.build();
         n.vibrate = new long[]{150, 300, 150, 600};
         n.flags = Notification.FLAG_AUTO_CANCEL;
@@ -51,14 +52,12 @@ public class NotificationService {
         try{
             Uri som = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             Ringtone toque = RingtoneManager.getRingtone(context, som);
-
             if(toque.isPlaying()){
                 toque.play();
             }else{
                 toque.stop();
                 toque.play();
             }
-
         }
         catch(Exception e){
             Log.e("ERROR", "EMITIR SOM ()--> " + e);

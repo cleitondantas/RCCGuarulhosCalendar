@@ -46,39 +46,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-
         persistenceDao = new PersistenceDao(getApplicationContext());
         notificationService = new NotificationService();
         // TODO(developer): Handle FCM messages here.
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
-        String titulo = remoteMessage.getFrom();
-        String texto ="";
-        if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
-        }
-
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            texto = remoteMessage.getNotification().getBody();
-        }
+        String titulo =  remoteMessage.getNotification().getTitle();// TITULO DA MENSAGEM (Título)(ANDROID E IOS) (no console console.firebase.google.com)
+        String texto = remoteMessage.getNotification().getBody(); // CORPO DA MENSAGEM (Texto da mensagem) (no console console.firebase.google.com)
+            Log.d(TAG, "Titulo :" +titulo);
+            Log.d(TAG, "Texto :" +texto);
+            Notificacao notificacao = new Notificacao();
+            notificacao.setTitulo(titulo);
+            notificacao.setTexto(texto);
 
         if(!remoteMessage.getData().isEmpty()) {
-
-            Notificacao notificacao = new Notificacao();
             notificacao.setAtivo(true);
-
-            if(remoteMessage.getData().get("TICKER")!=null){
-                notificacao.setTituloTicker((String)remoteMessage.getData().get("TICKER"));
-            }
-            if(remoteMessage.getData().get("TITLE")!=null){
-                notificacao.setTitulo((String)remoteMessage.getData().get("TITLE"));
-            }
-            if(remoteMessage.getData().get("DESCRICAO")!=null){
-                notificacao.setTexto((String)remoteMessage.getData().get("DESCRICAO"));
-            }
-
             if(remoteMessage.getData().get("UID")!=null){
                 notificacao.setKey("UID");
                 notificacao.setValue((String)remoteMessage.getData().get("UID"));
@@ -115,6 +97,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             dados.putSerializable(Constantes.OBJ_NOTIFICACAO,notificacao);
             newIntent.putExtras(dados);
             notificationService.gerarNotificacao(getApplicationContext(),newIntent,notificacao.getTitulo(),notificacao.getTexto(),0);
+
         }
     }
 }

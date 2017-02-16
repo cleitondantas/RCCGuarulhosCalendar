@@ -1,10 +1,13 @@
 package br.com.v8developmentstudio.rccguarulhos.calendar.services;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
+
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.Random;
 
@@ -27,19 +30,22 @@ public class FirebaseDataReceiver extends WakefulBroadcastReceiver {
     private ActivityServices activityServices = new ActivityServicesImpl();
     @Override
     public void onReceive(Context context, Intent intent) {
+        startWakefulService(context,intent);
+
+        for (String key : intent.getExtras().keySet()) {
+            System.out.println(key + ":" + intent.getExtras().get(key));
+            Log.i(TAG, "-> KEY: "+ key+ " DATA:" +intent.getExtras().get(key));
+        }
         Log.d(TAG, "RECEBIDO PELO FirebaseDataReceiver");
         notificationService = new NotificationService();
         persistenceDao = new PersistenceDao(context);
         Notificacao notificacao = new Notificacao();
 
-        if(intent.getExtras().get("TICKER")!=null){
-            notificacao.setTituloTicker((String)intent.getExtras().get("TICKER"));
+        if(intent.getExtras().get("gcm.notification.title")!=null){
+            notificacao.setTitulo((String)intent.getExtras().get("gcm.notification.title"));
         }
-        if(intent.getExtras().get("TITLE")!=null){
-            notificacao.setTitulo((String)intent.getExtras().get("TITLE"));
-        }
-        if(intent.getExtras().get("DESCRICAO")!=null){
-            notificacao.setTexto((String)intent.getExtras().get("DESCRICAO"));
+        if(intent.getExtras().get("gcm.notification.body")!=null){
+            notificacao.setTexto((String)intent.getExtras().get("gcm.notification.body"));
         }
 
         if(intent.getExtras().get("UID")!=null){
@@ -69,8 +75,8 @@ public class FirebaseDataReceiver extends WakefulBroadcastReceiver {
                 }
             }
         }
-        notificacao.setNumericNotification(new Random().nextInt(10000));
 
+        notificacao.setNumericNotification(new Random().nextInt(10000));
         persistenceDao.salvaNotificacao(notificacao,persistenceDao.openDB(context));
         Intent newIntent = new Intent(context, AberturaSplashActivity.class);
         Bundle dados = new Bundle();
@@ -78,5 +84,9 @@ public class FirebaseDataReceiver extends WakefulBroadcastReceiver {
         newIntent.putExtras(dados);
         notificationService.gerarNotificacao(context,newIntent,notificacao.getTitulo(),notificacao.getTexto(),0);
 
+
+        completeWakefulIntent(intent);
     }
+
+
 }

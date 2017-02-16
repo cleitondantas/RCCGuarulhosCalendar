@@ -80,7 +80,7 @@ public class DescricaoActivity extends AppCompatActivity {
     private int mShortAnimationDuration;
     private  PermissionService permissionService;
     private int currentMonthIndex;
-
+    private ProgressBar viewProgressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,9 +124,9 @@ public class DescricaoActivity extends AppCompatActivity {
         textViewDataHoraFim = (TextView) findViewById(R.id.idDataHoraFim);
         textViewLocal = (TextView) findViewById(R.id.idLocal);
         thumbnail = (ScaleImageView) findViewById(R.id.thumbnail);
+        viewProgressBar = (ProgressBar) findViewById(R.id.pbHeaderProgress);
 
 
-        final ProgressBar viewProgressBar = (ProgressBar) findViewById(R.id.pbHeaderProgress);
         viewProgressBar.setVisibility(View.GONE);
 
         final Animation animeFloating = AnimationUtils.loadAnimation(this, R.anim.rotate);
@@ -204,7 +204,7 @@ public class DescricaoActivity extends AppCompatActivity {
         if (evento.getUrlImg() != null) {
             viewProgressBar.setVisibility(View.VISIBLE);
             thumbnail.setTag(evento.getUrlImg());
-            Object[] obj = {thumbnail, evento.getUrlImg()};
+            Object[] obj = {thumbnail, evento.getUrlImg(),viewProgressBar};
             new DownloadImagesTask().execute(obj);
             int width = size.x;
             int height = size.y/2;

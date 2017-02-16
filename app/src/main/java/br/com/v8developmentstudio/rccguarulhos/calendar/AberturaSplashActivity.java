@@ -73,7 +73,7 @@ public class AberturaSplashActivity  extends Activity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent minhaintent = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent minhaintent = new Intent(context, MainActivity.class);
                             AberturaSplashActivity.this.startActivity(minhaintent);
                             AberturaSplashActivity.this.finish();
                         }
