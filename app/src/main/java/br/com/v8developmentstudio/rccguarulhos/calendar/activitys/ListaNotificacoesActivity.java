@@ -23,6 +23,7 @@ import br.com.v8developmentstudio.rccguarulhos.calendar.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.Notificacao;
 import br.com.v8developmentstudio.rccguarulhos.calendar.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.calendar.services.ActivityServicesImpl;
+import br.com.v8developmentstudio.rccguarulhos.calendar.util.Constantes;
 
 /**
  * Created by cleiton.dantas on 01/02/2017.
@@ -60,8 +61,15 @@ public class ListaNotificacoesActivity extends AppCompatActivity implements Recy
         myRecyclerViewAdapterListNotifications = new MyRecyclerViewAdapterListNotifications(notificaoes,this);
         recyclerView.setAdapter(myRecyclerViewAdapterListNotifications);
     }
-
     @Override
+    public void onBackPressed() {
+             activityServices.redirect(this, MainActivity.class, null);
+
+        }
+
+
+
+        @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:

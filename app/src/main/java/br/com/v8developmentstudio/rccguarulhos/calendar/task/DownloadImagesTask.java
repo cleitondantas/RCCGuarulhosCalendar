@@ -28,12 +28,15 @@ public class DownloadImagesTask extends AsyncTask<Object, Void, Bitmap> {
     protected Bitmap doInBackground(Object... imageViews) {
         this.imageView = (ImageView)imageViews[0];
         nomeFile = new File((String) imageViews[1]).getName();
-        viewProgressBar = (ProgressBar) imageViews[3];
+        viewProgressBar = (ProgressBar) imageViews[2];
         return download_Image((String)imageView.getTag());
     }
 
     @Override
     protected void onPostExecute(Bitmap result) {
+        if(viewProgressBar!=null) {
+            viewProgressBar.setVisibility(View.GONE);
+        }
         imageView.setImageBitmap(result);
     }
     Bitmap bmp =null;
@@ -53,9 +56,7 @@ public class DownloadImagesTask extends AsyncTask<Object, Void, Bitmap> {
             if(!fileImag.exists()){
                 criaArquivo(is,nomeFile);
             }
-            if(viewProgressBar!=null) {
-                viewProgressBar.setVisibility(View.GONE);
-            }
+
             if (null != bmp)
                 return bmp;
 

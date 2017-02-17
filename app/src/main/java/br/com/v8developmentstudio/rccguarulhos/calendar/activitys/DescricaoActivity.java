@@ -80,7 +80,6 @@ public class DescricaoActivity extends AppCompatActivity {
     private int mShortAnimationDuration;
     private  PermissionService permissionService;
     private int currentMonthIndex;
-    private ProgressBar viewProgressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +123,7 @@ public class DescricaoActivity extends AppCompatActivity {
         textViewDataHoraFim = (TextView) findViewById(R.id.idDataHoraFim);
         textViewLocal = (TextView) findViewById(R.id.idLocal);
         thumbnail = (ScaleImageView) findViewById(R.id.thumbnail);
-        viewProgressBar = (ProgressBar) findViewById(R.id.pbHeaderProgress);
+        final ProgressBar viewProgressBar = (ProgressBar) findViewById(R.id.pbHeaderProgress);
 
 
         viewProgressBar.setVisibility(View.GONE);
