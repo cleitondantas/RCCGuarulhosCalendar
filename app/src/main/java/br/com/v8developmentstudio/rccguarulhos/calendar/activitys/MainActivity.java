@@ -145,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
 
         int qtd =  persistenceDao.contNotificacoesAtivas(persistenceDao.openDB());
         setCounting(this, icon,""+qtd);
-       // ShortcutBadger.applyCount(this, 2);
         return true;
     }
 
@@ -158,10 +157,6 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
         }
 
         if (id == R.id.action_notification) {
-//            LayerDrawable icon2 = (LayerDrawable) notificationItemMenu.getIcon();
-//            setCounting(this, icon2,"0");
-//            invalidateOptionsMenu();//for refreshing menu
-
             ac.redirect(this, ListaNotificacoesActivity.class, null);
             return true;
         }

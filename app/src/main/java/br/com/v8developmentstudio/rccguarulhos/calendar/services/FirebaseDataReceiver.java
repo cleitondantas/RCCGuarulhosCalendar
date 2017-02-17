@@ -77,6 +77,7 @@ public class FirebaseDataReceiver extends WakefulBroadcastReceiver {
         }
 
         notificacao.setNumericNotification(new Random().nextInt(10000));
+        notificacao.setAtivo(true);
         persistenceDao.salvaNotificacao(notificacao,persistenceDao.openDB(context));
         Intent newIntent = new Intent(context, AberturaSplashActivity.class);
         Bundle dados = new Bundle();

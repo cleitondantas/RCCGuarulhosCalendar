@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.com.v8developmentstudio.rccguarulhos.calendar.R;
@@ -55,7 +56,7 @@ public class ListaNotificacoesActivity extends AppCompatActivity implements Recy
         gestureDetector = new GestureDetectorCompat(this, new ListaNotificacoesActivity.RecyclerViewOnGestureListener());
 
         notificaoes = persistenceDao.recuperaTodasNotificaoes(persistenceDao.openDB(this));
-
+        Collections.reverse(notificaoes);
         myRecyclerViewAdapterListNotifications = new MyRecyclerViewAdapterListNotifications(notificaoes,this);
         recyclerView.setAdapter(myRecyclerViewAdapterListNotifications);
     }

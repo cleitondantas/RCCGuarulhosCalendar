@@ -60,7 +60,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificacao.setTexto(texto);
 
         if(!remoteMessage.getData().isEmpty()) {
-            notificacao.setAtivo(true);
+
             if(remoteMessage.getData().get("UID")!=null){
                 notificacao.setKey("UID");
                 notificacao.setValue((String)remoteMessage.getData().get("UID"));
@@ -89,7 +89,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
             }
             notificacao.setNumericNotification(new Random().nextInt(10000));
-
+            notificacao.setAtivo(true);
             persistenceDao.salvaNotificacao(notificacao,persistenceDao.openDB(getApplicationContext()));
 
             Intent newIntent = new Intent(getApplicationContext(), AberturaSplashActivity.class);
