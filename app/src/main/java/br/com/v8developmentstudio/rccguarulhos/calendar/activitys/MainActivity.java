@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     private Toolbar toolbar;
     private ColorDrawables drawablecolor;
     private MenuItem notificationItemMenu;
+    public static LayerDrawable icon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,10 +142,9 @@ public class MainActivity extends AppCompatActivity implements RobotoCalendarLis
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         notificationItemMenu = menu.findItem(R.id.action_notification);
-        LayerDrawable icon = (LayerDrawable) notificationItemMenu.getIcon();
-
+        icon = (LayerDrawable) notificationItemMenu.getIcon();
         int qtd =  persistenceDao.contNotificacoesAtivas(persistenceDao.openDB());
-        setCounting(this, icon,""+qtd);
+        setCounting(this, icon,qtd);
         return true;
     }
 

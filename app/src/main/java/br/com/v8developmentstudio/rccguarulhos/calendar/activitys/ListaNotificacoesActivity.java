@@ -18,12 +18,15 @@ import java.util.Collections;
 import java.util.List;
 
 import br.com.v8developmentstudio.rccguarulhos.calendar.R;
+import br.com.v8developmentstudio.rccguarulhos.calendar.adapter.Count;
 import br.com.v8developmentstudio.rccguarulhos.calendar.adapter.MyRecyclerViewAdapterListNotifications;
 import br.com.v8developmentstudio.rccguarulhos.calendar.dao.PersistenceDao;
 import br.com.v8developmentstudio.rccguarulhos.calendar.modelo.Notificacao;
 import br.com.v8developmentstudio.rccguarulhos.calendar.services.ActivityServices;
 import br.com.v8developmentstudio.rccguarulhos.calendar.services.ActivityServicesImpl;
 import br.com.v8developmentstudio.rccguarulhos.calendar.util.Constantes;
+
+import static br.com.v8developmentstudio.rccguarulhos.calendar.adapter.Count.setCounting;
 
 /**
  * Created by cleiton.dantas on 01/02/2017.
@@ -64,10 +67,7 @@ public class ListaNotificacoesActivity extends AppCompatActivity implements Recy
     @Override
     public void onBackPressed() {
              activityServices.redirect(this, MainActivity.class, null);
-
         }
-
-
 
         @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -96,6 +96,9 @@ public class ListaNotificacoesActivity extends AppCompatActivity implements Recy
 
     @Override
     public void onClick(View view) {
+        if(Count.getCont()>0){
+            setCounting(this,MainActivity.icon,(Count.getCont()-1));
+        }
         mostraNotificacao(notificaoes.get(view.getId()));
     }
     private void mostraNotificacao(final Notificacao notificacao){

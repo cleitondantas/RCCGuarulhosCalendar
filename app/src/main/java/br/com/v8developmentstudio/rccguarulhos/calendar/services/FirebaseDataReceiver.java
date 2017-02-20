@@ -83,9 +83,7 @@ public class FirebaseDataReceiver extends WakefulBroadcastReceiver {
         Bundle dados = new Bundle();
         dados.putSerializable(Constantes.OBJ_NOTIFICACAO,notificacao);
         newIntent.putExtras(dados);
-        notificationService.gerarNotificacao(context,newIntent,notificacao.getTitulo(),notificacao.getTexto(),0);
-
-
+        notificationService.gerarNotificacao(context,newIntent,notificacao.getTitulo(),notificacao.getTexto(),notificacao.getNumericNotification());
         completeWakefulIntent(intent);
     }
 

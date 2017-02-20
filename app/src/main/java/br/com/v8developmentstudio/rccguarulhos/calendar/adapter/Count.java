@@ -1,6 +1,7 @@
 package br.com.v8developmentstudio.rccguarulhos.calendar.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -23,6 +24,7 @@ public class Count extends Drawable {
     private Rect rect1 = new Rect();
     private String count1 = "";
     private boolean draw1;
+    private static Integer contValue;
 
     public Count(Context context) {
         float mTextSize = context.getResources().getDimension(R.dimen.dayOfMonthTextSize);
@@ -107,8 +109,8 @@ public class Count extends Drawable {
     }
 
 
-    public static void setCounting(Context context, LayerDrawable icon, String count) {
-
+    public static void setCounting(Context context, LayerDrawable icon, Integer count) {
+        contValue = count;
         Count badge;
 
         // Reuse drawable if possible
@@ -119,9 +121,12 @@ public class Count extends Drawable {
             badge = new Count(context);
         }
 
-        badge.setCount(count);
+        badge.setCount(""+count);
         icon.mutate();
         icon.setDrawableByLayerId(R.id.ic_badge, badge);
+    }
+    public static Integer getCont(){
+        return contValue;
     }
 
 }
